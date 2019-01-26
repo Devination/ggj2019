@@ -45,9 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnRadius: 30
   spawnTimer: 1
+  mushroomRadius: 1
   maxNumberOfMushrooms: 40
   mushroomPrefab: {fileID: 4753447804207123792, guid: 22c9fe79ad63e93409e19fd68eb6cf70,
     type: 3}
   obstructedLayers:
   - serializedVersion: 2
     m_Bits: 256
+  - serializedVersion: 2
+    m_Bits: 1280
