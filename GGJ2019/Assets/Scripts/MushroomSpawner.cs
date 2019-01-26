@@ -11,7 +11,7 @@ public class MushroomSpawner : MonoBehaviour
     public GameObject mushroomPrefab;
     public List<LayerMask> obstructedLayers;
 
-    private int m_numMushrooms = 0;
+    private static int m_numMushrooms = 0;
     private float m_currentSpawnTime = 0.0f;
     private LayerMask m_obstructedMask;
     private List<GameObject> m_mushroomPool;
@@ -93,7 +93,7 @@ public class MushroomSpawner : MonoBehaviour
         return SPAWN_RESULT.FAIL;
     }
 
-    public void RemoveMushroom()
+    public static void RemoveMushroom()
     {
         m_numMushrooms -= 1;
     }
