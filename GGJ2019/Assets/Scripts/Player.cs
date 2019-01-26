@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
 	}
 
 	void Throw () {
-		/*GameObject mushroom = Instantiate( ThrownMushroom, body.transform.position, body.transform.rotation );
-		ThrownMushroom mushScript = mushroom.GetComponent<ThrownMushroom>();
+		/*GameObject mushroom = Instantiate( Mushroom, body.transform.position, body.transform.rotation );
+		Mushroom mushScript = mushroom.GetComponent<Mushroom>();
 		mushScript.SetVelocity( body.velocity, new Vector2( direction.x, direction.y ) );*/
 	}
 
