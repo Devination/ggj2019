@@ -6,13 +6,11 @@ public class Player : MonoBehaviour
 {
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
-	float slowStartTime;
-	Vector3 headDirection;
-	private Rigidbody body;
+	private float m_slowStartTime;
+	private Rigidbody m_body;
 
 	void Start () {
-		body = GetComponent<Rigidbody>();
-		headDirection = new Vector3( 0, 0, -1 );
+		m_body = GetComponent<Rigidbody>();
 	}
 
 	void Throw () {
@@ -26,29 +24,19 @@ public class Player : MonoBehaviour
 		Vector3 input = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
 		Vector3 velocity = input * SPEED;
 		// Slow player movement if there is no input.
-		if( input.x == 0 && input.z == 0 && body.velocity != Vector3.zero ) {
-			slowStartTime = slowStartTime == -1 ? Time.time : slowStartTime;
-			float slowElapsedTime = Time.time - slowStartTime;
-			body.velocity = Vector3.Lerp( body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
-		}
-		else {
-			body.velocity = velocity;
-			slowStartTime = -1;
-		}
-
-		/*if( input.x ) {
-			headDirection = headInput;
-			noInputStartTime = -1;
-		}
-		else if( headInput.x != 0 && headInput.y != 0 ) {
-			headDirection.x = 0;
-			headDirection.y = headInput.y;
-		}
-		else if( headInput == Vector2.zero ) {
-			noInputStartTime = noInputStartTime == -1 ? Time.time : noInputStartTime;
-			if( HEAD_DOWN_DURATION >= Time.time - noInputStartTime ) {
-				headDirection = Vector2.down;
+		if( input.x == 0 && input.z == 0 ) {
+			if( m_body.velocity != Vector3.zero ) {
+				m_slowStartTime = m_slowStartTime == -1 ? Time.time : m_slowStartTime;
+				float slowElapsedTime = Time.time - m_slowStartTime;
+				m_body.velocity = Vector3.Lerp( m_body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
 			}
-		}*/
+		} else {
+			// TODO: Probably want some sort of lerp here.
+			Vector3 newDir = Vector3.RotateTowards( transform.forward, input, 90, 0.0f );
+			transform.rotation = Quaternion.LookRotation( newDir );
+
+			m_body.velocity = velocity;
+			m_slowStartTime = -1;
+		}
 	}
 }
