@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	const float SPEED = 15f;
+	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
 	float slowStartTime;
 	Vector2 headDirection;
