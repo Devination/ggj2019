@@ -52,6 +52,7 @@ public class EnemySpawner : MonoBehaviour
     {
         GameObject enemy = Instantiate( enemyPrefab, position, Quaternion.identity );
         enemy.transform.SetParent( m_enemyContainer.transform );
+        m_numEnemies += 1;
     }
 
     private bool IsValidPlacement( Vector3 position )
