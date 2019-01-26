@@ -25,10 +25,13 @@ public class MushroomSpawner : MonoBehaviour
     private void Start()
     {
         m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms);
-        for( int i = 0; i < maxNumberOfMushrooms; ++i )
+        GameObject mushroomContainer = new GameObject("ShroomContainer");
+
+        for ( int i = 0; i < maxNumberOfMushrooms; ++i )
         {
             m_mushroomPool.Insert(i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
             m_mushroomPool[i].SetActive( false );
+            m_mushroomPool[i].transform.SetParent( mushroomContainer.transform );
         }
         for ( int i = 0; i < obstructedLayers.Count; ++i )
         {
