@@ -7,12 +7,12 @@ public class Player : MonoBehaviour
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
 	float slowStartTime;
-	Vector2 headDirection;
+	Vector3 headDirection;
 	private Rigidbody body;
 
 	void Start () {
 		body = GetComponent<Rigidbody>();
-		headDirection = Vector2.down;
+		headDirection = new Vector3( 0, 0, -1 );
 	}
 
 	void Throw () {
@@ -24,8 +24,6 @@ public class Player : MonoBehaviour
 	void FixedUpdate () {
 		// Handle player movement
 		Vector3 input = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
-		Debug.Log( "X: " + input.x );
-		Debug.Log( "Y: " + input.z );
 		Vector3 velocity = input * SPEED;
 		// Slow player movement if there is no input.
 		if( input.x == 0 && input.z == 0 && body.velocity != Vector3.zero ) {
@@ -37,5 +35,20 @@ public class Player : MonoBehaviour
 			body.velocity = velocity;
 			slowStartTime = -1;
 		}
+
+		/*if( input.x ) {
+			headDirection = headInput;
+			noInputStartTime = -1;
+		}
+		else if( headInput.x != 0 && headInput.y != 0 ) {
+			headDirection.x = 0;
+			headDirection.y = headInput.y;
+		}
+		else if( headInput == Vector2.zero ) {
+			noInputStartTime = noInputStartTime == -1 ? Time.time : noInputStartTime;
+			if( HEAD_DOWN_DURATION >= Time.time - noInputStartTime ) {
+				headDirection = Vector2.down;
+			}
+		}*/
 	}
 }
