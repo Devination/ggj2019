@@ -11,16 +11,21 @@ public class Mushroom : MonoBehaviour
         Throw
     };
 
-    private MushroomState m_state;
+    [HideInInspector]
+    public int mushroomIndex;
 
+    private MushroomState m_state;
+   
     private void Start()
     {
         m_state = MushroomState.Idle;
+        mushroomIndex = -1;
     }
 
-    void OnDestroy()
+    // never actually remove the mushroom gameobject, just call this instead, it will return it to the pool
+    void DestroyMushroom()
     {
-        MushroomSpawner.RemoveMushroom();
+        MushroomSpawner.RemoveMushroom( mushroomIndex );
     }
 
     public void SetState( MushroomState state )

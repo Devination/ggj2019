@@ -1,41 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class MushroomSpawner : MonoBehaviour
 {
-    public float spawnRadius = 30.0f;
-    public float spawnTimer = 1.0f;
-    public float mushroomRadius = 1.0f; // replace with mushroom collider bounds?
-    public int maxNumberOfMushrooms = 40;
-    public GameObject mushroomPrefab;
-    public List<LayerMask> obstructedLayers;
-
-    private static int m_numMushrooms = 0;
-    private float m_currentSpawnTime = 0.0f;
-    private LayerMask m_obstructedMask;
-    private List<GameObject> m_mushroomPool;
-
     public enum SPAWN_RESULT
     {
         SUCESS,
         FAIL
     };
 
+    public float spawnRadius = 30.0f;
+    public float spawnTimer = 1.0f;
+    public float mushroomRadius = 1.0f; // replace with mushroom collider bounds?
+    public int maxNumberOfMushrooms = 40;
+    public GameObject mushroomPrefab;
+    public LayerMask obstructedLayerMask;
+
+    private static int m_numMushrooms = 0;
+    private static List<GameObject> m_mushroomPool;
+    private float m_currentSpawnTime = 0.0f;
+
     private void Start()
     {
-        m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms);
+        m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms );
         GameObject mushroomContainer = new GameObject("ShroomContainer");
 
         for ( int i = 0; i < maxNumberOfMushrooms; ++i )
         {
-            m_mushroomPool.Insert(i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
+            m_mushroomPool.Insert( i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
             m_mushroomPool[i].SetActive( false );
             m_mushroomPool[i].transform.SetParent( mushroomContainer.transform );
-        }
-        for ( int i = 0; i < obstructedLayers.Count; ++i )
-        {
-            m_obstructedMask |= obstructedLayers[i];
+            m_mushroomPool[i].GetComponent<Mushroom>().mushroomIndex = i;
         }
     }
 
@@ -62,7 +59,7 @@ public class MushroomSpawner : MonoBehaviour
   
     private bool IsValidPlacement( Vector3 position )
     {
-        return !( Physics.CheckSphere( position, mushroomRadius, m_obstructedMask) );
+        return !( Physics.CheckSphere( position, mushroomRadius, obstructedLayerMask) );
     }
 
     private int FindFreeMushroom()
@@ -93,9 +90,17 @@ public class MushroomSpawner : MonoBehaviour
         return SPAWN_RESULT.FAIL;
     }
 
-    public static void RemoveMushroom()
+    public static void RemoveMushroom( int index )
     {
+        Assert.IsTrue( index >= 0 && index < m_mushroomPool.Count );
+        m_mushroomPool[index].SetActive( false );
         m_numMushrooms -= 1;
+    }
+
+    public static GameObject GetMushroomFromIndex( int index )
+    {
+        Assert.IsTrue(index >= 0 && index < m_mushroomPool.Count);
+        return m_mushroomPool[index];
     }
 
     void OnDrawGizmos()
@@ -110,7 +115,7 @@ public class MushroomSpawner : MonoBehaviour
         UnityEditor.Handles.color = Color.green;
         for (int i = 0; i < m_mushroomPool.Count; ++i)
         {
-            if ( m_mushroomPool[i].activeSelf )
+            if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf )
             {
                 UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
             }
