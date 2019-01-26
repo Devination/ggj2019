@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 208296392866532376}
   - component: {fileID: 8343024819692938128}
+  - component: {fileID: 9154656935294970096}
   m_Layer: 8
   m_Name: Mushroom
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1186814991743507449}
+  - {fileID: 3826965449004925207}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -45,7 +46,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!1001 &1186814991743631737
+--- !u!114 &9154656935294970096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4753447804207123792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0200db551faf45a4585efc9922fcfdc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &3826965449005325207
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -58,7 +71,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -74,11 +87,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -114,9 +127,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
---- !u!4 &1186814991743507449 stripped
+--- !u!4 &3826965449004925207 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d,
     type: 3}
-  m_PrefabInstance: {fileID: 1186814991743631737}
+  m_PrefabInstance: {fileID: 3826965449005325207}
   m_PrefabAsset: {fileID: 0}
