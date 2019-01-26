@@ -65,7 +65,7 @@ public class MushroomSpawner : MonoBehaviour
     private int FindFreeMushroom()
     {
         int freeIndex = -1;
-        for (int i = 0; i < m_mushroomPool.Count; ++i)
+        for ( int i = 0; i < m_mushroomPool.Count; ++i )
         {
             if( !m_mushroomPool[i].activeSelf )
             {
@@ -81,8 +81,7 @@ public class MushroomSpawner : MonoBehaviour
         if( index >= 0 )
         {
             Renderer mushroomRenderer = m_mushroomPool[index].GetComponentInChildren<Renderer>();
-            float height = mushroomRenderer.bounds.center.y + mushroomRenderer.bounds.extents.y;
-            m_mushroomPool[index].transform.position = new Vector3( position.x, position.y + height, position.z );
+            m_mushroomPool[index].transform.position = position;
             m_mushroomPool[index].SetActive( true );
             m_numMushrooms += 1;
             return SPAWN_RESULT.SUCESS;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 208296392866532376}
   - component: {fileID: 8343024819692938128}
   - component: {fileID: 9154656935294970096}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Mushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4753447804207123792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 3826965449004925207}
   m_Father: {fileID: 0}
@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0200db551faf45a4585efc9922fcfdc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mushroomIndex: 0
 --- !u!1001 &3826965449005325207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65,10 +66,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 208296392866532376}
     m_Modifications:
-    - target: {fileID: 100000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
-      propertyPath: m_Name
-      value: Mushroom_01
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -124,6 +121,18 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
+      propertyPath: m_Name
+      value: Mushroom_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d74d821bbaad134d8acdfb4e0b97b6d, type: 3}
