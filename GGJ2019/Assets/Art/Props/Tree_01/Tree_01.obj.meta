@@ -1,20 +1,28 @@
 fileFormatVersion: 2
-guid: 827f296590a13374088f67fb113b1794
+guid: 72715cf3bfba9ea4f83f6b956a40cbdd
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: No Name
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Plane001
+    100000: Tree_01
+    100002: //RootNode
+    400000: Tree_01
+    400002: //RootNode
+    2100000: palette
+    2100002: Tree_01Mat
+    2300000: Tree_01
+    3300000: Tree_01
+    4300000: Tree_01
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: No Name
-    second: {fileID: 2100000, guid: bf1532f2a5170b4428cc74f1a12519d1, type: 2}
+      name: Tree_01Mat
+    second: {fileID: 2100000, guid: 453c0a3b5297e6649ab12a974222b032, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: palette
+    second: {fileID: 2100000, guid: 453c0a3b5297e6649ab12a974222b032, type: 2}
   materials:
     importMaterials: 0
     materialName: 0
