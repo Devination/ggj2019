@@ -12,9 +12,19 @@ ModelImporter:
     2300000: Tree_01
     3300000: Tree_01
     4300000: Tree_01
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree_01Mat
+    second: {fileID: 2100000, guid: 453c0a3b5297e6649ab12a974222b032, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: palette
+    second: {fileID: 2100000, guid: 453c0a3b5297e6649ab12a974222b032, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
