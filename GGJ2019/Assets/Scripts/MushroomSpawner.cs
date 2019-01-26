@@ -102,6 +102,31 @@ public class MushroomSpawner : MonoBehaviour
         return m_mushroomPool[index];
     }
 
+    public static GameObject FindClosestIdleMushroom( Vector3 position )
+    {
+        GameObject closestMush = null;
+        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, LayerMask.NameToLayer( "Mushroom") );
+        if ( colliders.Length > 0 )
+        {
+            float distance = float.MaxValue;
+            for (int i = 0; i < colliders.Length; ++i)
+            {
+                Mushroom mushroom = colliders[i].GetComponent<Mushroom>();
+                if( mushroom.State != Mushroom.MushroomState.Idle )
+                {
+                    continue;
+                }
+                float currDist = Vector3.SqrMagnitude( position - colliders[i].transform.position );
+                if (currDist < distance)
+                {
+                    distance = currDist;
+                    closestMush = colliders[i].gameObject;
+                }
+            }
+        }
+        return closestMush;
+    }
+
     void OnDrawGizmos()
     {
         UnityEditor.Handles.color = Color.yellow;

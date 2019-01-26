@@ -12,10 +12,10 @@ public class EnemySpawner : MonoBehaviour
 
     public GameObject player;
     public GameObject enemyPrefab;
+    private GameObject m_enemyContainer;
     public LayerMask obstructedLayerMask;
     private static int m_numEnemies = 0;
     private float m_currentSpawnTime = 0.0f;
-    private GameObject m_enemyContainer;
 
     private void Start()
     {
