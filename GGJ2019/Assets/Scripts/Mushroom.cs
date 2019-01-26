@@ -7,6 +7,8 @@ public class Mushroom : MonoBehaviour
     public enum MushroomState
     {
         Idle,
+        EnemyTracking,
+        EnemyConsuming,
         Picked,
         Throw
     };
@@ -14,11 +16,11 @@ public class Mushroom : MonoBehaviour
     [HideInInspector]
     public int mushroomIndex;
 
-    private MushroomState m_state;
-   
+    public MushroomState State { get; private set; }
+
     private void Start()
     {
-        m_state = MushroomState.Idle;
+        State = MushroomState.Idle;
         mushroomIndex = -1;
     }
 
@@ -30,11 +32,11 @@ public class Mushroom : MonoBehaviour
 
     public void SetState( MushroomState state )
     {
-        if ( m_state != state )
+        if ( State != state )
         {
-            OnExitState( m_state );
+            OnExitState( State );
             OnEnterState( state );
-            m_state = state;
+            State = state;
         }
     }
 
@@ -66,7 +68,7 @@ public class Mushroom : MonoBehaviour
 
     void UpdateState()
     {
-        switch ( m_state )
+        switch ( State )
         {
             case MushroomState.Idle:
                 break;
