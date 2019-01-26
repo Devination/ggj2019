@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
 			m_slowStartTime = m_slowStartTime == -1 ? Time.time : m_slowStartTime;
 			float slowElapsedTime = Time.time - m_slowStartTime;
 			m_body.velocity = Vector3.Lerp( m_body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
-			Debug.Log( "Slow percent: " + slowElapsedTime / SLOW_DURATION );
 			m_animator.SetFloat( "MoveSpeed", Mathf.Max( 1 - ( slowElapsedTime / SLOW_DURATION ), 0 ) );
 		} else {
 			// TODO: Probably want some sort of lerp here.
@@ -39,7 +38,6 @@ public class Player : MonoBehaviour
 
 			m_body.velocity = velocity;
 			m_slowStartTime = -1;
-			Debug.Log( "We movin baby" );
 			if( input != Vector3.zero ) {
 				// TODO: Walk support ???
 				m_animator.SetFloat( "MoveSpeed", 1 );
