@@ -8,10 +8,10 @@ public class Player : MonoBehaviour
 	const float SLOW_DURATION = 0.25f;
 	float slowStartTime;
 	Vector2 headDirection;
-	private Rigidbody2D body;
+	private Rigidbody body;
 
 	void Start () {
-		body = GetComponent<Rigidbody2D>();
+		body = GetComponent<Rigidbody>();
 		headDirection = Vector2.down;
 	}
 
@@ -23,13 +23,15 @@ public class Player : MonoBehaviour
 
 	void FixedUpdate () {
 		// Handle player movement
-		Vector2 input = new Vector2( Input.GetAxisRaw( "Horizontal" ), Input.GetAxisRaw( "Vertical" ) );
-		Vector2 velocity = input * SPEED;
+		Vector3 input = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
+		Debug.Log( "X: " + input.x );
+		Debug.Log( "Y: " + input.z );
+		Vector3 velocity = input * SPEED;
 		// Slow player movement if there is no input.
-		if( input.x == 0 && input.y == 0 && body.velocity != Vector2.zero ) {
+		if( input.x == 0 && input.z == 0 && body.velocity != Vector3.zero ) {
 			slowStartTime = slowStartTime == -1 ? Time.time : slowStartTime;
 			float slowElapsedTime = Time.time - slowStartTime;
-			body.velocity = Vector2.Lerp( body.velocity, Vector2.zero, slowElapsedTime / SLOW_DURATION );
+			body.velocity = Vector3.Lerp( body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
 		}
 		else {
 			body.velocity = velocity;
