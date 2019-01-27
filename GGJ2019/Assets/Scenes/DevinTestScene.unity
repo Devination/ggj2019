@@ -1530,7 +1530,7 @@ PrefabInstance:
     - target: {fileID: 4185400935389689541, guid: b018c2c8c238fbc48af6f073347eee4e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4185400935389689541, guid: b018c2c8c238fbc48af6f073347eee4e,
         type: 3}
@@ -1741,4 +1741,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  nightAtAngle: -10
