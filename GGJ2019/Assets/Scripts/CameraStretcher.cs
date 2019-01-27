@@ -5,11 +5,16 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class CameraStretcher : MonoBehaviour
 {
-    public GameObject MushroomHome;
+    [HideInInspector]
     public float stretchTime;
+    [HideInInspector]
     public float scaleFactor;
+    [HideInInspector]
     public float vignetteInTime;
+    [HideInInspector]
     public float vignetteOutTime;
+    [HideInInspector]
+    public GameObject MushroomHome;
 
     private Camera mainCamera;
     private float startSize;
@@ -25,7 +30,6 @@ public class CameraStretcher : MonoBehaviour
         volume.profile.TryGetSettings(out vignette);
         mainCamera = GetComponent<Camera>();
         startSize = mainCamera.orthographicSize;
-        LookAtHome();
     }
 
     public void Stretch()

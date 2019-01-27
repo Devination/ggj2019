@@ -12,7 +12,10 @@ public class Player : MonoBehaviour
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
 	const float MAX_PICKUP_DISTANCE = 100f;
-	const float PICKING_TIME = 1.5f;
+	const float PICKING_TIME = 1f;
+	const float DAMAGE_TIME = 1.0f;
+	const float FLASH_TIME = 0.05f;
+	const float NO_MOVE_TIME = 0.3f;
 
 	public LayerMask PickMask;
 
@@ -22,8 +25,12 @@ public class Player : MonoBehaviour
 	private Animator m_animator;
 	private BoxCollider m_collider;
 	private GameObject m_mushroomPosition;
+	private SkinnedMeshRenderer m_meshRenderer;
 
 	private float m_slowStartTime;
+	private float m_damageStartTime;
+	private bool m_flashOn = true;
+	private float m_flashTime = -1;
 
 	private Collider m_pickingShroom;
 	private float m_pickStartTime;
@@ -35,6 +42,7 @@ public class Player : MonoBehaviour
 		m_collider = GetComponent<BoxCollider>();
 		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
 		PickedMushrooms = new Stack<GameObject>();
+		m_meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 		SetState( PlayerState.Normal );
 	}
 
@@ -45,6 +53,7 @@ public class Player : MonoBehaviour
 
 		Mushroom mushScript = throwMushroom.GetComponent<Mushroom>();
 		mushScript.Throw( transform.forward );
+		m_animator.SetTrigger("Throw");
 	}
 
 	void Pick () {
@@ -101,10 +110,37 @@ public class Player : MonoBehaviour
 		if( throwPressed && m_state == PlayerState.Normal && PickedMushrooms.Count > 0 ) {
 			Throw();
 		}
-	} 
+	}
+
+
+	void UpdatePicking () {
+		float pickElapsedTime = Time.time - m_pickStartTime;
+		if( pickElapsedTime > PICKING_TIME ) {
+			SetState( PlayerState.Normal );
+		}
+	}
+
+
+	void UpdateDamaged() {
+		float timeSinceDamage = Time.time - m_damageStartTime;
+		if( timeSinceDamage > NO_MOVE_TIME ) {
+			UpdateIdle();
+		}
+
+		if( m_flashTime == -1 || Time.time - m_flashTime > FLASH_TIME ) {
+			m_flashTime = Time.time;
+			m_flashOn = !m_flashOn;
+			m_meshRenderer.enabled = m_flashOn;
+		}
+
+		if( timeSinceDamage > DAMAGE_TIME ) {
+			SetState( PlayerState.Normal );
+		}
+	}
 
 
 	void OnEnterPicking () {
+		m_animator.SetTrigger("Pickup");
 		m_pickStartTime = Time.time;
 	}
 
@@ -117,6 +153,28 @@ public class Player : MonoBehaviour
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.gameObject;
 		PickUp( pickedShroom );
+	}
+
+
+	void OnEnterDamaged() {
+		m_damageStartTime = Time.time;
+		// TODO: Play Damage Anim
+		int numDroppedMushrooms = (int)Mathf.Ceil( PickedMushrooms.Count / 2f );
+		Debug.Log( "NUM DROPPED: " + numDroppedMushrooms );
+		for( int i = 0; i < numDroppedMushrooms; i++ ) {
+			GameObject dropMush = PickedMushrooms.Pop();
+			Mushroom mushScript = dropMush.GetComponent<Mushroom>();
+			dropMush.transform.SetParent( null, true );
+			mushScript.SetState( Mushroom.MushroomState.Throw );
+		}
+	}
+
+
+	void OnExitDamaged() {
+		m_damageStartTime = -1;
+		m_flashTime = -1;
+		m_flashOn = true;
+		m_meshRenderer.enabled = true;
 	}
 
 
@@ -135,22 +193,20 @@ public class Player : MonoBehaviour
 
 
 	void OnCollisionEnter ( Collision collision ) {
-		if( collision.gameObject.tag == "Mushroom" ) {
+		string collisionTag = collision.gameObject.tag;
+		if( collisionTag == "Mushroom" ) {
 			GameObject mushroom = collision.gameObject;
 			Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
 			if( mushroomScript.State == Mushroom.MushroomState.OnGround ) {
 				PickUp( mushroom );
 			}
 		}
-	}
 
-
-	void UpdatePicking() {
-		float pickElapsedTime = Time.time - m_pickStartTime;
-		if( pickElapsedTime > PICKING_TIME ) {
-			SetState( PlayerState.Normal );
+		if( m_state != PlayerState.Damaged && collisionTag == "Enemy" ) {
+			SetState( PlayerState.Damaged );
 		}
 	}
+
 
 	void SetState ( PlayerState state ) {
 		if( m_state != state ) {
@@ -168,6 +224,7 @@ public class Player : MonoBehaviour
 				OnEnterPicking();
 				break;
 			case PlayerState.Damaged:
+				OnEnterDamaged();
 				break;
 		}
 	}
@@ -181,6 +238,7 @@ public class Player : MonoBehaviour
 				OnExitPicking();
 				break;
 			case PlayerState.Damaged:
+				OnExitDamaged();
 				break;
 		}
 	}
@@ -194,6 +252,7 @@ public class Player : MonoBehaviour
 				UpdatePicking();
 				break;
 			case PlayerState.Damaged:
+				UpdateDamaged();
 				break;
 		}
 	}

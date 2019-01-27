@@ -5,24 +5,24 @@ using UnityEngine;
 public class MushroomHome : MonoBehaviour
 {
     public float scale;
-    public float minScale = 5.0f;
-    public float maxScale = 70.0f;
     public float growthTime;
     public float scaleFactor;
+    public float eatTime;
+
+    [HideInInspector]
+    public GameManager gm;
+
+    private int mushroomCount = 0;
+    public int mushroomsToCollect = 0;
 
     public Mesh[] meshes;
 
     private int currentMesh = -1;
 
-
-    private void Start()
+    public void Grow()
     {
-        // Assuming uniform scaling
-        scale = minScale;
-    }
+        mushroomCount = 0;
 
-    public void IncreaseSize()
-    {
         StartCoroutine("IncreaseSizeOverTime");
     }
 
@@ -55,4 +55,51 @@ public class MushroomHome : MonoBehaviour
         }
     }
 
+    public void EatMushroom()
+    {
+        StartCoroutine("AnimateEating");
+
+        mushroomCount++;
+        if (mushroomCount >= mushroomsToCollect)
+        {
+            gm.UpgradeHome();
+        }
+    }
+
+    IEnumerator AnimateEating()
+    {
+        float eatTimer = 0.0f;
+        float scale = transform.localScale.y;
+        float targetScale = scale * scaleFactor;
+
+        // Scale up
+        while (eatTimer < eatTime / 2.0f)
+        {
+            float pct = eatTimer / eatTime;
+            float newScale = Mathf.Lerp(scale, targetScale, pct);
+            transform.localScale = new Vector3(newScale, newScale, newScale);
+
+            eatTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        // Scale down
+        while (eatTimer < eatTime)
+        {
+            float pct = eatTimer / eatTime;
+            float newScale = Mathf.Lerp(targetScale, scale, pct);
+            transform.localScale = new Vector3(newScale, newScale, newScale);
+
+            eatTimer += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Mushroom"))
+        {
+            EatMushroom();
+        }
+    }
 }

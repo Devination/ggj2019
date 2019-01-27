@@ -148,4 +148,8 @@ public class Mushroom : MonoBehaviour
     {
         UpdateState();
     }
+
+    private void OnEnable() {
+    	
+    }
 }
