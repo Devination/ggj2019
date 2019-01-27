@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c693257e3a7d4596b7ef63c7f8999e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numLevels: 8
+  numLevels: 7
   homeGrowthTime: 1
   screenExpandTime: 1
   vignetteInTime: 0.75

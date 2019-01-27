@@ -28,6 +28,7 @@ public class CameraStretcher : MonoBehaviour
         PostProcessVolume volume = transform.GetComponentInChildren<PostProcessVolume>();
         volume.profile.TryGetSettings(out depthOfField);
         volume.profile.TryGetSettings(out vignette);
+        vignetteValue = vignette.intensity.value;
         mainCamera = GetComponent<Camera>();
         startSize = mainCamera.orthographicSize;
     }
@@ -43,11 +44,23 @@ public class CameraStretcher : MonoBehaviour
         mainCamera.gameObject.transform.LookAt(pos);
     }
 
+    private void Update()
+    {
+        LookAtHome();
+    }
+
     IEnumerator StretchOverTime()
     {
         float stretchTimer = 0.0f;
         startSize = mainCamera.fieldOfView;
         float targetSize = startSize * scaleFactor;
+
+        // HACK: also moving camera down along y-axis
+        Vector3 startPos = transform.position;
+        float y = startPos.y;
+        y *= 2.0f - scaleFactor;
+        Vector3 endPos = startPos;
+        endPos.y = y;
 
         float focalLength = depthOfField.focalLength.value;
         float targetFocalLength = focalLength * ( 2.0f - scaleFactor );
@@ -57,6 +70,7 @@ public class CameraStretcher : MonoBehaviour
             float pct = stretchTimer / stretchTime;
             depthOfField.focalLength.value = Mathf.Lerp(focalLength, targetFocalLength, pct);
             mainCamera.fieldOfView = Mathf.Lerp(startSize, targetSize, pct);
+            transform.position = Vector3.Lerp(startPos, endPos, pct);
 
             yield return null;
         }
@@ -70,7 +84,7 @@ public class CameraStretcher : MonoBehaviour
     IEnumerator VignetteInOverTime()
     {
         float vignetteTimer = 0.0f;
-        float targetVignette = 1.0f;
+        float targetVignette = 0.5f;
         while (vignetteTimer < vignetteInTime)
         {
             vignetteTimer += Time.deltaTime;
@@ -88,7 +102,7 @@ public class CameraStretcher : MonoBehaviour
     IEnumerator VignetteOutOverTime()
     {
         float vignetteTimer = 0.0f;
-        float resultVignette = 1.0f;
+        float resultVignette = 0.5f;
         while (vignetteTimer < vignetteOutTime)
         {
             vignetteTimer += Time.deltaTime;
