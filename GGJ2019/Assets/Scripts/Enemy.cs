@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour
         {
             SetState( EnemyState.HUNGRY );
         }
-        float newScale = 3.0f + Mathf.PingPong( Time.time, 0.5f );
+        float newScale = 1.0f + Mathf.PingPong( Time.time, 0.5f );
         transform.localScale = new Vector3( newScale, transform.localScale.y, newScale );
     }
 
