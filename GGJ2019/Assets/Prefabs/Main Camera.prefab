@@ -56,7 +56,7 @@ Camera:
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
   m_GateFitMode: 2
-  m_FocalLength: 152.47444
+  m_FocalLength: 124.62477
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -65,7 +65,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 5000
-  field of view: 9.000001
+  field of view: 11
   orthographic: 0
   orthographic size: 50
   m_Depth: -1

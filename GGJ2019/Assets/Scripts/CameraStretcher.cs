@@ -40,7 +40,8 @@ public class CameraStretcher : MonoBehaviour
 
     public void LookAtHome()
     {
-        Vector3 pos = MushroomHome.GetComponent<Renderer>().bounds.center;
+        Vector3 pos = transform.position;
+        //Vector3 pos = MushroomHome.GetComponent<Renderer>().bounds.center;
         mainCamera.gameObject.transform.LookAt(pos);
     }
 

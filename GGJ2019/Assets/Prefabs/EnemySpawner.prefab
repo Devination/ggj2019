@@ -43,11 +43,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8f0c2bfa50c0ea4491393b216d37cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRadius: 30
-  spawnTimer: 1
-  enemyRadius: 1
-  maxNumberOfEnemies: 20
-  enemyPrefab: {fileID: 0}
+  spawnRadius: 65
+  enemyRadius: 2
+  minSpawnDistanceFromPlayer: 40
+  maxNumberOfEnemies: 10
+  player: {fileID: 0}
+  enemyPrefab: {fileID: 8173721298526446494, guid: a4a0deb46eb46a14aa5d0d9a20cf04db,
+    type: 3}
   obstructedLayerMask:
     serializedVersion: 2
     m_Bits: 1792
