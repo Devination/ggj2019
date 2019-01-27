@@ -403,12 +403,46 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677310187}
   m_Enabled: 1
+<<<<<<< Updated upstream
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c92f733e6971dc94b880788a3bb51d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
 --- !u!1 &2044856650 stripped
+=======
+  serializedVersion: 8
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: 3
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+--- !u!1 &1941257425
+>>>>>>> Stashed changes
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3611961828906991330, guid: 5e661df963929415a85870b1e2bd2552,
     type: 3}
@@ -674,10 +708,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
     - target: {fileID: 3611961828906991328, guid: 5e661df963929415a85870b1e2bd2552,
         type: 3}
       propertyPath: MushroomHome
       value: 
       objectReference: {fileID: 597972555}
+=======
+    - target: {fileID: 177900310789792011, guid: 5e661df963929415a85870b1e2bd2552,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e661df963929415a85870b1e2bd2552, type: 3}
