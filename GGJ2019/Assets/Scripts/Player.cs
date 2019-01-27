@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour
 {
@@ -36,7 +37,10 @@ public class Player : MonoBehaviour
 	private float m_pickStartTime;
 	public Stack<GameObject> PickedMushrooms { get; private set; }
 
-	void Start () {
+    private bool wrappingNS = false;
+    private float wrapTimer = 0.0f;
+
+    void Start () {
 		m_body = GetComponent<Rigidbody>();
 		m_animator = GetComponentInChildren<Animator>();
 		m_collider = GetComponent<BoxCollider>();
@@ -258,5 +262,73 @@ public class Player : MonoBehaviour
 
 	private void Update() {
 		UpdateState();
-	}
+        WrapEdges();
+    }
+
+    private void WrapEdges()
+    {
+        if (wrappingNS)
+        {
+            wrapTimer += Time.deltaTime;
+            if (wrapTimer >= 0.2f)
+            {
+                wrapTimer = 0.0f;
+                wrappingNS = false;
+            }
+            return;
+        }
+
+        Camera cam = Camera.main;
+        float bound = 0.1f;
+        Vector3 pos = transform.position;
+        Vector3 vPos = cam.WorldToScreenPoint(pos);
+        bool willChangePos = false;
+
+        if (vPos.x < -(bound*cam.pixelWidth))
+        {
+            vPos.x = cam.pixelWidth + (bound * cam.pixelWidth);
+            willChangePos = true;
+        }
+
+        else if (vPos.x > cam.pixelWidth + (bound * cam.pixelWidth))
+        {
+            vPos.x = -(bound * cam.pixelWidth);
+            willChangePos = true;
+        }
+
+        else if (vPos.y < -(bound * cam.pixelHeight))
+        {
+            vPos.y = cam.pixelHeight + (cam.pixelHeight * bound);
+            Ray ray = cam.ScreenPointToRay(vPos);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Water")))
+            {
+                Vector3 newPos = hit.point;
+                newPos.y = pos.y;
+                transform.position = newPos;
+                wrappingNS = true;
+                return;
+            }
+        }
+
+        else if (vPos.y > cam.pixelHeight + (bound * cam.pixelHeight) )
+        {
+            vPos.y = -(bound * cam.pixelHeight);
+            Ray ray = cam.ScreenPointToRay(vPos);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Water")))
+            {
+                Vector3 newPos = hit.point;
+                newPos.y = pos.y;
+                transform.position = newPos;
+                wrappingNS = true;
+                return;
+            }
+        }
+
+        if (willChangePos)
+        {
+            transform.position = cam.ScreenToWorldPoint(vPos);
+        }
+    }
 }
