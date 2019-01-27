@@ -132,6 +132,7 @@ public class Enemy : MonoBehaviour
 
     private void OnExitStateEating()
     {
+        transform.localScale = Vector3.one;
         m_currentEatTime = 0.0f;
         PickedMushrooms.Push( m_currentTargetMushroom );
         Mushroom mushroomScript = m_currentTargetMushroom.GetComponent<Mushroom>();
