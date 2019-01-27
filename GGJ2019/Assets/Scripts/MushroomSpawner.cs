@@ -103,8 +103,8 @@ public class MushroomSpawner : MonoBehaviour
 
     public static GameObject FindClosestIdleMushroom( Vector3 position )
     {
-        GameObject closestMush = null;
-        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, LayerMask.NameToLayer( "Mushroom") );
+        GameObject closestMush = null; 
+        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, (1 << LayerMask.NameToLayer( "Mushroom")) );
         if ( colliders.Length > 0 )
         {
             float distance = float.MaxValue;
