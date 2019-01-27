@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -11,20 +12,47 @@ public class EnemySpawner : MonoBehaviour
 
     public GameObject player;
     public GameObject enemyPrefab;
-    private GameObject m_enemyContainer;
+    private static GameObject m_enemyContainer;
     public LayerMask obstructedLayerMask;
+
+    private static List<GameObject> mEnemyPool;
     private static int m_numEnemies = 0;
     private float m_currentSpawnTime = 0.0f;
 	private float m_spawnTimer = 3.0f;
 
 	private void Start()
     {
-       m_enemyContainer = new GameObject("EnemyContainer");
+        mEnemyPool = new List<GameObject>();
+        m_enemyContainer = new GameObject("EnemyContainer");
+        for (int i = 0; i < maxNumberOfEnemies; ++i)
+        {
+            mEnemyPool.Insert(i, Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity));
+            mEnemyPool[i].name = "Enemy " + i;
+            mEnemyPool[i].SetActive(false);
+            mEnemyPool[i].transform.SetParent( m_enemyContainer.transform );
+            mEnemyPool[i].GetComponent<Enemy>().enemyIndex = i;
+        }
     }
 
-    public static void RemoveEnemy()
+    public static void RemoveEnemy( int index )
     {
+        Assert.IsTrue(index >= 0 && index < mEnemyPool.Count);
+        mEnemyPool[index].transform.SetParent( m_enemyContainer.transform );
+        mEnemyPool[index].SetActive(false);
         m_numEnemies -= 1;
+    }
+
+    private int FindFreeEnemy()
+    {
+        int freeIndex = -1;
+        for (int i = 0; i < mEnemyPool.Count; ++i)
+        {
+            if ( !mEnemyPool[i].active )
+            {
+                return i;
+            }
+        }
+        return freeIndex;
     }
 
     void Update()
@@ -53,9 +81,13 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy( Vector3 position )
     {
-        GameObject enemy = Instantiate( enemyPrefab, position, Quaternion.identity );
-        enemy.transform.SetParent( m_enemyContainer.transform );
-        m_numEnemies += 1;
+        int index = FindFreeEnemy();
+        if (index >= 0)
+        {
+            mEnemyPool[index].transform.position = position;
+            mEnemyPool[index].SetActive(true);
+            m_numEnemies += 1;
+        }
     }
 
     private bool IsValidPlacement( Vector3 position )

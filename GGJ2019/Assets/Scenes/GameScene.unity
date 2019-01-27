@@ -188,7 +188,7 @@ PrefabInstance:
     - target: {fileID: 5643242844229905470, guid: fe4511f7263a2ab4b93688d54dfa4dea,
         type: 3}
       propertyPath: spawnRadius
-      value: 120
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5643242844229905470, guid: fe4511f7263a2ab4b93688d54dfa4dea,
         type: 3}
@@ -427,7 +427,7 @@ PrefabInstance:
     - target: {fileID: 7968759019399506646, guid: 2714f8cb4629b9f41aabf33a6f57ce2e,
         type: 3}
       propertyPath: spawnRadius
-      value: 150.97
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7968759019399506646, guid: 2714f8cb4629b9f41aabf33a6f57ce2e,
         type: 3}
@@ -679,6 +679,11 @@ PrefabInstance:
         type: 3}
       propertyPath: MushroomHome
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925793732941637337, guid: 5e661df963929415a85870b1e2bd2552,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e661df963929415a85870b1e2bd2552, type: 3}

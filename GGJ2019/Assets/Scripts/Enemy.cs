@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour
     public float eatTimer = 5.0f;
     public float moveSpeed = 10.0f;
 
+    [HideInInspector]
+    public int enemyIndex;
+
     public GameObject myMushroomPosition;
     public List<GameObject> PickedMushrooms { get; private set; }
     private GameObject m_player;
@@ -32,6 +35,16 @@ public class Enemy : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         m_player = GameObject.Find("Player");
         m_currentEatTime = 0.0f;
+    }
+
+    // never actually remove the enemy gameobject, just call this instead, it will return it to the pool
+    public void DestroyEnemy()
+    {
+        m_currentEatTime = 0.0f;
+        SetState( EnemyState.HUNGRY );
+        m_agent.destination = transform.position; 
+        transform.position = Vector3.zero;
+        EnemySpawner.RemoveEnemy(enemyIndex);
     }
 
     public void SetState(EnemyState state )
@@ -84,11 +97,6 @@ public class Enemy : MonoBehaviour
                 OnEnemyStateChasePlayer();
                 break;
         }
-    }
-
-    private void OnDestroy()
-    {
-        EnemySpawner.RemoveEnemy();
     }
 
     private void OnEnterStateHungry()
@@ -201,8 +209,6 @@ public class Enemy : MonoBehaviour
 
     private void OnEnterStateDamaged()
     {
-        m_agent.destination = transform.position; // stop movement
-        
         for (int i = 0; i < PickedMushrooms.Count; ++i)
         {
             PickedMushrooms[i].transform.parent = MushroomSpawner.mushroomContainer.transform;
@@ -210,8 +216,9 @@ public class Enemy : MonoBehaviour
             mushroom.SetState(Mushroom.MushroomState.OnGround);
         }
 
-        EnemySpawner.RemoveEnemy();
-        Destroy(gameObject);
+
+
+        DestroyEnemy();
     }
 
     void OnCollisionEnter(Collision collision)
