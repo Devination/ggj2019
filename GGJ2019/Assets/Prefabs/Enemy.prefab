@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eatTimer: 5
-  moveSpeed: 5
+  moveSpeed: 10
   myMushroomPosition: {fileID: 5988080170092608088}
 --- !u!195 &7340254264172027250
 NavMeshAgent:

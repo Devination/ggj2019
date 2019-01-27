@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
 
     public EnemyState State { get; private set; }
     public float eatTimer = 5.0f;
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 10.0f;
 
     public GameObject myMushroomPosition;
     public List<GameObject> PickedMushrooms { get; private set; }

@@ -18,6 +18,7 @@ public class MushroomSpawner : MonoBehaviour
     public GameObject mushroomPrefab;
     public LayerMask obstructedLayerMask;
 
+    private static GameObject m_mushroomContainer;
     private static int m_numMushrooms = 0;
     private static List<GameObject> m_mushroomPool;
     private float m_currentSpawnTime = 0.0f;
@@ -25,14 +26,14 @@ public class MushroomSpawner : MonoBehaviour
     private void Start()
     {
         m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms );
-        GameObject mushroomContainer = new GameObject( "ShroomContainer" );
+        m_mushroomContainer = new GameObject( "ShroomContainer" );
 
         for ( int i = 0; i < maxNumberOfMushrooms; ++i )
         {
             m_mushroomPool.Insert( i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
             m_mushroomPool[i].name = "Mushroom " + i;
             m_mushroomPool[i].SetActive( false );
-            m_mushroomPool[i].transform.SetParent( mushroomContainer.transform );
+            m_mushroomPool[i].transform.SetParent( m_mushroomContainer.transform );
             m_mushroomPool[i].GetComponent<Mushroom>().mushroomIndex = i;
         }
     }
@@ -68,7 +69,7 @@ public class MushroomSpawner : MonoBehaviour
         int freeIndex = -1;
         for ( int i = 0; i < m_mushroomPool.Count; ++i )
         {
-            if( !m_mushroomPool[i].activeSelf )
+            if( !m_mushroomPool[i].active )
             {
                 return i;
             }
@@ -92,6 +93,7 @@ public class MushroomSpawner : MonoBehaviour
     public static void RemoveMushroom( int index )
     {
         Assert.IsTrue( index >= 0 && index < m_mushroomPool.Count );
+        m_mushroomPool[index].transform.SetParent( m_mushroomContainer.transform );
         m_mushroomPool[index].SetActive( false );
         m_numMushrooms -= 1;
     }

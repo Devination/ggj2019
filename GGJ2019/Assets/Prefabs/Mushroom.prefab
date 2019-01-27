@@ -77,6 +77,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mushroomIndex: 0
   isEnemyTracking: 0
+  currentDisolveTime: 0
+  timeToDissolve: 10
 --- !u!54 &4563922833917373394
 Rigidbody:
   m_ObjectHideFlags: 0
