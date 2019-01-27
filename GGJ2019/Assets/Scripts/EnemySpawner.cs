@@ -64,9 +64,15 @@ public class EnemySpawner : MonoBehaviour
         return false;
     }
 
-    public void IncreaseRadius(float scaleFactor)
+    public void LevelUp(float scaleFactor)
     {
         spawnRadius *= scaleFactor;
+
+        // Increase enemy speeds
+        foreach (Enemy enemy in m_enemyContainer.GetComponentsInChildren<Enemy>())
+        {
+            enemy.moveSpeed *= scaleFactor;
+        }
     }
 
     void OnDrawGizmos()

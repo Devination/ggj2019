@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine("UpgradeHomeCoroutine");
         SetShroomsCollect();
         shroomSpawner.IncreaseRadius(scaleFactor);
-        enemySpawner.IncreaseRadius(scaleFactor);
+        enemySpawner.LevelUp(scaleFactor);
     }
 
     IEnumerator UpgradeHomeCoroutine()
