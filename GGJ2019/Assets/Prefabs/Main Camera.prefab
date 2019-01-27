@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3611961828906991331}
   - component: {fileID: 3611961828906991328}
   - component: {fileID: 177900310789792011}
+  - component: {fileID: 3263738324822073076}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -97,6 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd8bddf52d4041f8bf08ef9e59d1015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MushroomHome: {fileID: 0}
+  stretchTime: 0
+  scaleFactor: 0
+  vignetteInTime: 0
+  vignetteOutTime: 0
 --- !u!114 &177900310789792011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +163,25 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &3263738324822073076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3611961828906991330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c693257e3a7d4596b7ef63c7f8999e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mushroomHome: {fileID: 0}
+  numLevels: 3
+  homeGrowthTime: 1
+  screenExpandTime: 1
+  vignetteInTime: 0.75
+  vignetteOutTime: 0.75
+  pauseTime: 0.75
 --- !u!1 &4074173793750575448
 GameObject:
   m_ObjectHideFlags: 0

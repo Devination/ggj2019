@@ -6,12 +6,12 @@ public class GameManager : MonoBehaviour
 {
     public MushroomHome mushroomHome;
 
-    public int numLevels = 10;
+    public int numLevels = 3;
     public float homeGrowthTime = 1.0f;
     public float screenExpandTime = 1.0f;
-    public float vignetteInTime = 0.25f;
-    public float vignetteOutTime = 0.25f;
-    public float pauseTime = 0.25f;
+    public float vignetteInTime = 0.75f;
+    public float vignetteOutTime = 0.75f;
+    public float pauseTime = 0.75f;
 
 
     private CameraStretcher cameraStretcher;
@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
             cameraStretcher.VignetteIn();
             yield return new WaitForSeconds(vignetteInTime);
 
+            yield return new WaitForSeconds(pauseTime);
             mushroomHome.SwapMesh();
             yield return new WaitForSeconds(pauseTime);
 
