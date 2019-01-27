@@ -116,16 +116,34 @@ public class Player : MonoBehaviour
 	void OnExitPicking() {
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.gameObject;
-		PickedMushrooms.Push( pickedShroom );
-		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
+		PickUp( pickedShroom );
+	}
+
+
+	void PickUp( GameObject mushroom ) {
+		PickedMushrooms.Push( mushroom );
+		mushroom.transform.rotation = Quaternion.identity;
+		Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
 
 		int headMushCount = PickedMushrooms.Count;
-		float mushroomHeight = headMushCount * pickedShroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
+		float mushroomHeight = headMushCount * mushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
-		pickedShroom.transform.SetParent( transform );
-		pickedShroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
+		mushroom.transform.SetParent( transform );
+		mushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
 	}
+
+
+	void OnCollisionEnter ( Collision collision ) {
+		if( collision.gameObject.tag == "Mushroom" ) {
+			GameObject mushroom = collision.gameObject;
+			Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
+			if( mushroomScript.State == Mushroom.MushroomState.OnGround ) {
+				PickUp( mushroom );
+			}
+		}
+	}
+
 
 	void UpdatePicking() {
 		float pickElapsedTime = Time.time - m_pickStartTime;

@@ -18,7 +18,7 @@ public class Mushroom : MonoBehaviour
     [HideInInspector]
     public bool isEnemyTracking;
 
-	public static float THROW_SPEED = 50f;
+	public static float THROW_SPEED = 35f;
 
     public MushroomState State { get; private set; }
 
@@ -123,7 +123,15 @@ public class Mushroom : MonoBehaviour
         }
     }
 
-    private void OnGroundUpdate()
+
+	private void OnCollisionEnter ( Collision collision ) {
+		if( collision.gameObject.tag == "Ground" ) {
+			SetState( MushroomState.OnGround );
+		}
+	}
+
+
+	private void OnGroundUpdate()
     {
         // bob up and down and rotate 
         float centerY = 5.0f;
