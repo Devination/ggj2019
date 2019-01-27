@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!111 &8259891173721004850
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5895562767755972910}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 521b11766b3c5ea41b77bf919331311d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 521b11766b3c5ea41b77bf919331311d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &5988080170092608088
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +140,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100002, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
       propertyPath: m_Name
-      value: slime_01_eyes
+      value: Art
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -184,6 +200,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
+--- !u!1 &5895562767755972910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100002, guid: 1a0859ed33fe0e348a7405f512cfbeec,
+    type: 3}
+  m_PrefabInstance: {fileID: 5895562767755941772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5895562767755808014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400002, guid: 1a0859ed33fe0e348a7405f512cfbeec,

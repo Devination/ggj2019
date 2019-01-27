@@ -144,4 +144,8 @@ public class Mushroom : MonoBehaviour
     {
         UpdateState();
     }
+
+    private void OnEnable() {
+    	Debug.Log(123);
+    }
 }
