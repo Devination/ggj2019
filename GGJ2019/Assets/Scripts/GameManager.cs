@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private MushroomHome mushroomHome;
     private CameraStretcher cameraStretcher;
+    private MushroomSpawner shroomSpawner;
+    private EnemySpawner enemySpawner;
     private int currentLevel = 0;
     private float scaleFactor;
     private int swapMeshLevel;
@@ -38,6 +40,16 @@ public class GameManager : MonoBehaviour
             SetShroomsCollect();
         }
 
+        if (shroomSpawner == null)
+        {
+            shroomSpawner = GameObject.Find("MushroomSpawner").GetComponent<MushroomSpawner>();
+        }
+
+        if (enemySpawner == null)
+        {
+            enemySpawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
+        }
+
         cameraStretcher.scaleFactor = scaleFactor;
         cameraStretcher.stretchTime = screenExpandTime;
         mushroomHome.growthTime = homeGrowthTime;
@@ -58,6 +70,8 @@ public class GameManager : MonoBehaviour
         currentLevel++;
         StartCoroutine("UpgradeHomeCoroutine");
         SetShroomsCollect();
+        shroomSpawner.IncreaseRadius(scaleFactor);
+        enemySpawner.IncreaseRadius(scaleFactor);
     }
 
     IEnumerator UpgradeHomeCoroutine()
