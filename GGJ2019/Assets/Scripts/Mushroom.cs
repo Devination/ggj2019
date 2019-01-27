@@ -124,7 +124,7 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Throw:
                 break;
             case MushroomState.OnGround:
-                //OnGroundUpdate();
+                OnGroundUpdate();
                 break;
         }
     }

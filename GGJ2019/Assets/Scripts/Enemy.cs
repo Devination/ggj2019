@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
         PICKING,
         CHASE_PLAYER,
         SEEKING_MUSHROOM,
+        DAMAGE,
     };
 
     public EnemyState State { get; private set; }
@@ -49,6 +50,9 @@ public class Enemy : MonoBehaviour
         {
             case EnemyState.HUNGRY:
                 OnEnterStateHungry();
+                break;
+            case EnemyState.DAMAGE:
+                OnEnterStateDamaged();
                 break;
         }
     }
@@ -136,6 +140,11 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector3.Distance( transform.position, m_player.transform.position );
         float distanceToTarget = Vector3.Distance( transform.position, m_currentTargetMushroom.transform.position );
 
+        if( !m_player )
+        {
+            m_player = GameObject.Find("Player");
+        }
+
         if( distanceToPlayer < distanceToTarget )
         {
             if( m_player.GetComponent<Player>().PickedMushrooms.Count > 1 )
@@ -182,6 +191,7 @@ public class Enemy : MonoBehaviour
             float mushroomHeight = headMushCount * m_currentTargetMushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
             Vector3 mushroomPosition = myMushroomPosition.transform.position;
             m_currentTargetMushroom.transform.SetParent( transform );
+            m_currentTargetMushroom.transform.rotation = Quaternion.identity;
             m_currentTargetMushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
         }
         m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
@@ -189,21 +199,70 @@ public class Enemy : MonoBehaviour
         m_currentEatTime = 0.0f;
     }
 
+    private void OnEnterStateDamaged()
+    {
+        m_agent.destination = transform.position; // stop movement
+        
+        for (int i = 0; i < PickedMushrooms.Count; ++i)
+        {
+            PickedMushrooms[i].transform.parent = MushroomSpawner.mushroomContainer.transform;
+            Mushroom mushroom = PickedMushrooms[i].GetComponent<Mushroom>();
+            mushroom.SetState(Mushroom.MushroomState.OnGround);
+        }
+
+        EnemySpawner.RemoveEnemy();
+        Destroy(gameObject);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        string collisionTag = collision.gameObject.tag;
+        if ( collisionTag == "Mushroom" )
+        {
+            GameObject mushroom = collision.gameObject;
+            Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
+            if ( mushroomScript.State == Mushroom.MushroomState.Throw )
+            {
+                SetState( EnemyState.DAMAGE );
+            }
+        }
+    }
+
     private void Update()
     {
+        int prevCount = PickedMushrooms.Count;
         for( int i = 0; i < PickedMushrooms.Count; ++i )
         {
             Mushroom mushroom = PickedMushrooms[i].GetComponent<Mushroom>();
-            if( mushroom.State == Mushroom.MushroomState.InsideEnemy )
+            if ( mushroom.State == Mushroom.MushroomState.InsideEnemy )
             {
                 mushroom.currentDisolveTime += Time.deltaTime;
-                if( mushroom.currentDisolveTime > mushroom.timeToDissolve )
+                if ( mushroom.currentDisolveTime > mushroom.timeToDissolve )
                 {
                     PickedMushrooms.RemoveAt( i );
                     mushroom.DestroyMushroom();
                 }
             }
         }
+
+        int newCount = PickedMushrooms.Count;
+        if ( prevCount != newCount )
+        {
+            List<GameObject> tmpList = new List<GameObject>();
+            Vector3 mushroomPosition = myMushroomPosition.transform.position;
+
+            for (int i = 0; i < PickedMushrooms.Count; i++)
+            {
+                if ( PickedMushrooms[i] != null )
+                {
+                    float height = PickedMushrooms[i].GetComponentInChildren<MeshRenderer>().bounds.extents.y;
+                    tmpList.Add(PickedMushrooms[i]);
+                    PickedMushrooms[i].transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + ( i + 1 ) * height, mushroomPosition.z );
+                }
+            }
+            PickedMushrooms = tmpList;
+        }
+
         UpdateState();
     }
 }
