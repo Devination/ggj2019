@@ -18,13 +18,18 @@ public class Mushroom : MonoBehaviour
     [HideInInspector]
     public bool isEnemyTracking;
 
+	public static float THROW_SPEED = 50f;
+
     public MushroomState State { get; private set; }
+
+	private Rigidbody m_body;
 
     private void Start()
     {
         State = MushroomState.Idle;
         mushroomIndex = -1;
         isEnemyTracking = false;
+		m_body = GetComponent<Rigidbody>();
     }
 
     // never actually remove the mushroom gameobject, just call this instead, it will return it to the pool
@@ -43,6 +48,35 @@ public class Mushroom : MonoBehaviour
         }
     }
 
+
+	public void Throw( Vector3 direction ) {
+		SetState( MushroomState.Throw );
+		m_body.velocity = THROW_SPEED * direction;
+	}
+
+
+	void OnEnterThrow() {
+		m_body.isKinematic = false;
+		m_body.useGravity = true;
+	}
+
+
+	void OnExitThrow () {
+		m_body.isKinematic = true;
+		m_body.useGravity = false;
+	}
+
+
+	void OnEnterPicked() {
+		GetComponent<Collider>().enabled = false;
+	}
+	
+
+	void OnExitPicked() {
+		GetComponent<Collider>().enabled = true;
+	}
+
+
     void OnEnterState( MushroomState state )
     {
         switch ( state )
@@ -50,9 +84,11 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-                break;
+				OnEnterPicked();
+				break;
             case MushroomState.Throw:
-                break;
+				OnEnterThrow();
+				break;
         }
     }
 
@@ -63,8 +99,10 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-                break;
+				OnExitPicked();
+				break;
             case MushroomState.Throw:
+				OnExitThrow();
                 break;
         }
     }

@@ -27,21 +27,24 @@ public class Player : MonoBehaviour
 
 	private Collider m_pickingShroom;
 	private float m_pickStartTime;
-	private static Stack<GameObject> m_pickedMushrooms;
+	public Stack<GameObject> PickedMushrooms { get; private set; }
 
 	void Start () {
 		m_body = GetComponent<Rigidbody>();
 		m_animator = GetComponentInChildren<Animator>();
 		m_collider = GetComponent<BoxCollider>();
 		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
-		m_pickedMushrooms = new Stack<GameObject>();
+		PickedMushrooms = new Stack<GameObject>();
 		SetState( PlayerState.Normal );
 	}
 
-	void Throw () {
-		/*GameObject mushroom = Instantiate( Mushroom, body.transform.position, body.transform.rotation );
-		Mushroom mushScript = mushroom.GetComponent<Mushroom>();
-		mushScript.SetVelocity( body.velocity, new Vector2( direction.x, direction.y ) );*/
+	void Throw() {
+		GameObject throwMushroom = PickedMushrooms.Pop();
+		throwMushroom.transform.SetParent( null, true );
+		throwMushroom.transform.position = m_collider.bounds.center + transform.forward * 2;
+
+		Mushroom mushScript = throwMushroom.GetComponent<Mushroom>();
+		mushScript.Throw( transform.forward );
 	}
 
 	void Pick () {
@@ -93,7 +96,12 @@ public class Player : MonoBehaviour
 		if( pickPressed && m_state == PlayerState.Normal ) {
 			Pick();
 		}
-	}
+
+		bool throwPressed = Input.GetButtonDown( "Fire2" );
+		if( throwPressed && m_state == PlayerState.Normal && PickedMushrooms.Count > 0 ) {
+			Throw();
+		}
+	} 
 
 
 	void OnEnterPicking () {
@@ -108,11 +116,12 @@ public class Player : MonoBehaviour
 	void OnExitPicking() {
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.gameObject;
-		m_pickedMushrooms.Push( pickedShroom );
+		PickedMushrooms.Push( pickedShroom );
 		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
-		int headMushCount = m_pickedMushrooms.Count;
-		float mushroomHeight = headMushCount * m_pickingShroom.bounds.extents.y;
+
+		int headMushCount = PickedMushrooms.Count;
+		float mushroomHeight = headMushCount * pickedShroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
 		pickedShroom.transform.SetParent( transform );
 		pickedShroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
