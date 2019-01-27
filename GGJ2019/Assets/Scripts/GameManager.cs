@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public MushroomHome mushroomHome;
-
     public int numLevels = 3;
     public float homeGrowthTime = 1.0f;
     public float screenExpandTime = 1.0f;
@@ -14,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float pauseTime = 0.75f;
 
 
+    private MushroomHome mushroomHome;
     private CameraStretcher cameraStretcher;
     private int currentLevel = 0;
     private float scaleFactor;
@@ -23,14 +22,20 @@ public class GameManager : MonoBehaviour
     {
         cameraStretcher = GetComponent<CameraStretcher>();
         scaleFactor = 1 + 1.0f / numLevels;
-        mushroomHome.scaleFactor = scaleFactor;
-        cameraStretcher.scaleFactor = scaleFactor;
-        cameraStretcher.stretchTime = screenExpandTime;
-        swapMeshLevel = numLevels / mushroomHome.meshes.Length;
     }
 
     private void Update()
     {
+        if (mushroomHome == null)
+        {
+            mushroomHome = GameObject.Find("MushroomHome").GetComponent<MushroomHome>();
+            swapMeshLevel = numLevels / mushroomHome.meshes.Length;
+            mushroomHome.scaleFactor = scaleFactor;
+            cameraStretcher.MushroomHome = mushroomHome.gameObject;
+        }
+
+        cameraStretcher.scaleFactor = scaleFactor;
+        cameraStretcher.stretchTime = screenExpandTime;
         mushroomHome.growthTime = homeGrowthTime;
         cameraStretcher.vignetteInTime = vignetteInTime;
         cameraStretcher.vignetteOutTime = vignetteOutTime;

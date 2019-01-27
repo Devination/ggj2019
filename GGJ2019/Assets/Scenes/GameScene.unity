@@ -575,18 +575,6 @@ PrefabInstance:
       objectReference: {fileID: 4300000, guid: 4beff98139e874a4ba438d97dd595d2e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b018c2c8c238fbc48af6f073347eee4e, type: 3}
---- !u!114 &1866599790374831554 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 108643148100286589, guid: b018c2c8c238fbc48af6f073347eee4e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1866599790374831553}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 665837912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25bfd83c4e8b24884917876a0579f343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3611961828544923294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -654,55 +642,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3611961828906991329, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: orthographic size
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 3611961828906991328, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3611961828906991328, guid: 5e661df963929415a85870b1e2bd2552,
         type: 3}
       propertyPath: MushroomHome
       value: 
       objectReference: {fileID: 665837912}
-    - target: {fileID: 177900310789792011, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1051383439824342556, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: mushroomHome
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1051383439824342556, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: numLevels
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1051383439824342556, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: vignetteInTime
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1051383439824342556, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: vignetteOutTime
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 1051383439824342556, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: pauseTime
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3263738324822073076, guid: 5e661df963929415a85870b1e2bd2552,
-        type: 3}
-      propertyPath: mushroomHome
-      value: 
-      objectReference: {fileID: 1866599790374831554}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e661df963929415a85870b1e2bd2552, type: 3}

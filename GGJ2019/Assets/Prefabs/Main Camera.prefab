@@ -62,7 +62,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 57.5
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -98,11 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd8bddf52d4041f8bf08ef9e59d1015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MushroomHome: {fileID: 0}
   stretchTime: 0
   scaleFactor: 0
   vignetteInTime: 0
   vignetteOutTime: 0
+  MushroomHome: {fileID: 0}
 --- !u!114 &177900310789792011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c693257e3a7d4596b7ef63c7f8999e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mushroomHome: {fileID: 0}
   numLevels: 3
   homeGrowthTime: 1
   screenExpandTime: 1
