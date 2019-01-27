@@ -64,6 +64,11 @@ public class EnemySpawner : MonoBehaviour
         return false;
     }
 
+    public void IncreaseRadius(float scaleFactor)
+    {
+        spawnRadius *= scaleFactor;
+    }
+
     void OnDrawGizmos()
     {
         UnityEditor.Handles.color = Color.red;

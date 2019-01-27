@@ -136,6 +136,11 @@ public class MushroomSpawner : MonoBehaviour
         return closestMush;
     }
 
+    public void IncreaseRadius(float scaleFactor)
+    {
+        spawnRadius *= scaleFactor;
+    }
+
     void OnDrawGizmos()
     {
         UnityEditor.Handles.color = Color.yellow;
