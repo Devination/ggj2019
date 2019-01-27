@@ -8,16 +8,21 @@ public class CameraStretcher : MonoBehaviour
     public GameObject MushroomHome;
     public float stretchTime;
     public float scaleFactor;
+    public float vignetteInTime;
+    public float vignetteOutTime;
 
     private Camera mainCamera;
     private float startSize;
+    private float vignetteValue;
 
-    DepthOfField depthOfField = null;
+    private DepthOfField depthOfField = null;
+    private Vignette vignette = null;
 
     private void Start()
     {
         PostProcessVolume volume = transform.GetComponentInChildren<PostProcessVolume>();
         volume.profile.TryGetSettings(out depthOfField);
+        volume.profile.TryGetSettings(out vignette);
         mainCamera = GetComponent<Camera>();
         startSize = mainCamera.orthographicSize;
         LookAtHome();
@@ -49,6 +54,42 @@ public class CameraStretcher : MonoBehaviour
             depthOfField.focalLength.value = Mathf.Lerp(focalLength, targetFocalLength, pct);
             mainCamera.orthographicSize = Mathf.Lerp(startSize, targetSize, pct);
 
+            yield return null;
+        }
+    }
+
+    public void VignetteIn()
+    {
+        StartCoroutine("VignetteInOverTime");
+    }
+
+    IEnumerator VignetteInOverTime()
+    {
+        float vignetteTimer = 0.0f;
+        float targetVignette = 1.0f;
+        while (vignetteTimer < vignetteInTime)
+        {
+            vignetteTimer += Time.deltaTime;
+            float pct = vignetteTimer / vignetteInTime;
+            vignette.intensity.value = Mathf.Lerp(vignetteValue, targetVignette, pct);
+            yield return null;
+        }
+    }
+
+    public void VignetteOut()
+    {
+        StartCoroutine("VignetteOutOverTime");
+    }
+
+    IEnumerator VignetteOutOverTime()
+    {
+        float vignetteTimer = 0.0f;
+        float resultVignette = 1.0f;
+        while (vignetteTimer < vignetteOutTime)
+        {
+            vignetteTimer += Time.deltaTime;
+            float pct = vignetteTimer / vignetteOutTime;
+            vignette.intensity.value = Mathf.Lerp(resultVignette, vignetteValue, pct);
             yield return null;
         }
     }

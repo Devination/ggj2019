@@ -10,6 +10,11 @@ public class MushroomHome : MonoBehaviour
     public float growthTime;
     public float scaleFactor;
 
+    public Mesh[] meshes;
+
+    private int currentMesh = -1;
+
+
     private void Start()
     {
         // Assuming uniform scaling
@@ -38,6 +43,15 @@ public class MushroomHome : MonoBehaviour
             Camera.main.gameObject.GetComponent<CameraStretcher>().LookAtHome();
 
             yield return null;
+        }
+    }
+
+    public void SwapMesh()
+    {
+        currentMesh++;
+        if (currentMesh < meshes.Length)
+        {
+            GetComponent<MeshFilter>().mesh = meshes[currentMesh];
         }
     }
 
