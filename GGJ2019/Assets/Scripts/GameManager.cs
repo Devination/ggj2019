@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float vignetteInTime = 0.75f;
     public float vignetteOutTime = 0.75f;
     public float pauseTime = 0.75f;
+    public float eatTime = 0.25f;
 
 
     private MushroomHome mushroomHome;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     private int currentLevel = 0;
     private float scaleFactor;
     private int swapMeshLevel;
+    private int mushroomsToCollect;
 
     private void Start()
     {
@@ -29,33 +31,38 @@ public class GameManager : MonoBehaviour
         if (mushroomHome == null)
         {
             mushroomHome = GameObject.Find("MushroomHome").GetComponent<MushroomHome>();
+            mushroomHome.gm = this;
             swapMeshLevel = numLevels / mushroomHome.meshes.Length;
             mushroomHome.scaleFactor = scaleFactor;
             cameraStretcher.MushroomHome = mushroomHome.gameObject;
+            SetShroomsCollect();
         }
 
         cameraStretcher.scaleFactor = scaleFactor;
         cameraStretcher.stretchTime = screenExpandTime;
         mushroomHome.growthTime = homeGrowthTime;
+        mushroomHome.eatTime = eatTime;
         cameraStretcher.vignetteInTime = vignetteInTime;
         cameraStretcher.vignetteOutTime = vignetteOutTime;
+    }
+
+    public void SetShroomsCollect()
+    {
+        mushroomsToCollect = (int)Mathf.Pow(2.0f, currentLevel);
+        mushroomHome.mushroomsToCollect = mushroomsToCollect;
     }
 
     // Called by MushroomHome when ready to upgrade
     public void UpgradeHome()
     {
-        // TODO: Mesh Flicker,
-
-        // TODO: Flash/VFX,
-
-        // TODO: Replace model,
+        SetShroomsCollect();
 
         StartCoroutine("UpgradeHomeCoroutine");
     }
 
     IEnumerator UpgradeHomeCoroutine()
     {
-        mushroomHome.IncreaseSize();
+        mushroomHome.Grow();
         yield return new WaitForSeconds(homeGrowthTime);
 
         cameraStretcher.Stretch();
