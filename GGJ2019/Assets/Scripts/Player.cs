@@ -190,6 +190,7 @@ public class Player : MonoBehaviour
 		int headMushCount = PickedMushrooms.Count;
 		float mushroomHeight = headMushCount * mushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
+        mushroom.transform.rotation = Quaternion.identity;
 		mushroom.transform.SetParent( transform );
 		mushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
 	}
