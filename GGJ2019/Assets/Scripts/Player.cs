@@ -50,13 +50,14 @@ public class Player : MonoBehaviour
 			return;
 		}
 
-		Mushroom mushroomScript = gameObject.GetComponent<Mushroom>();
+		Collider firstMushroom = colliders[0];
+		Mushroom mushroomScript = firstMushroom.gameObject.GetComponent<Mushroom>();
 		if( mushroomScript.State != Mushroom.MushroomState.Idle )
 		{
 			return;
 		}
 		SetState( PlayerState.Picking );
-		m_pickingShroom = colliders[0];
+		m_pickingShroom = firstMushroom;
 	}
 
 	void UpdateIdle () {
