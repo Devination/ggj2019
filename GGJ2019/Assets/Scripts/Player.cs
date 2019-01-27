@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 	private Rigidbody m_body;
 	private Animator m_animator;
 	private BoxCollider m_collider;
+	private GameObject m_mushroomPosition;
 
 	private float m_slowStartTime;
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
 		m_body = GetComponent<Rigidbody>();
 		m_animator = GetComponentInChildren<Animator>();
 		m_collider = GetComponent<BoxCollider>();
+		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
 		SetState( PlayerState.Normal );
 	}
 
@@ -91,13 +93,19 @@ public class Player : MonoBehaviour
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.collider.gameObject;
 		m_pickedMushrooms.Push( pickedShroom );
-
+		Mushroom mushroomScript = gameObject.GetComponent<Mushroom>();
+		mushroomScript.SetState( Mushroom.MushroomState.Picked );
+		int headMushCount = m_pickedMushrooms.Count;
+		float mushroomHeight = headMushCount * m_pickingShroom.collider.bounds.extents.y;
+		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
+		pickedShroom.transform.SetParent( transform );
+		pickedShroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
 	}
 
 	void UpdatePicking() {
 		float pickElapsedTime = Time.time - m_pickStartTime;
 		if( pickElapsedTime > PICKING_TIME ) {
-
+			SetState( PlayerState.Normal );
 		}
 	}
 
@@ -126,7 +134,7 @@ public class Player : MonoBehaviour
 			case PlayerState.Normal:
 				break;
 			case PlayerState.Picking:
-				
+				OnExitPicking();
 				break;
 			case PlayerState.Damaged:
 				break;
