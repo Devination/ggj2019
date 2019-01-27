@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 	const float MAX_PICKUP_DISTANCE = 100f;
 	const float PICKING_TIME = 1.5f;
 
+	public LayerMask PickMask;
+
 	private PlayerState m_state;
 	
 	private Rigidbody m_body;
@@ -23,7 +25,7 @@ public class Player : MonoBehaviour
 
 	private float m_slowStartTime;
 
-	private RaycastHit m_pickingShroom;
+	private Collider m_pickingShroom;
 	private float m_pickStartTime;
 	private static Stack<GameObject> m_pickedMushrooms;
 
@@ -42,33 +44,20 @@ public class Player : MonoBehaviour
 		mushScript.SetVelocity( body.velocity, new Vector2( direction.x, direction.y ) );*/
 	}
 
-	void OnDrawGizmos () {
-		Gizmos.color = Color.red;
-		//Draw a cube at the maximum distance
-		Gizmos.DrawWireCube( m_collider.bounds.center + transform.forward * ( m_collider.bounds.extents.x + 5 ), m_collider.bounds.extents * 3 );
-	}
-
 	void Pick () {
-		RaycastHit hit;
-		bool hitDetect = Physics.BoxCast( m_collider.bounds.center, m_collider.bounds.extents * 3, transform.forward, out hit, transform.rotation, m_collider.bounds.extents.x + 3 );
-		if( !hitDetect ) {
+		Collider[] colliders = Physics.OverlapSphere( m_collider.bounds.center + transform.forward * 5, 5, PickMask );
+		if( colliders.Length <= 0 ) {
 			return;
 		}
 
-		GameObject gameObject = hit.collider.gameObject;
-		bool hitIsMushroom = gameObject.tag == "Mushroom";
-		if( !hitIsMushroom ) {
-			return;
-		}
-
-		Mushroom mushroomScript = gameObject.GetComponent<Mushroom>();
+		Collider firstMushroom = colliders[0];
+		Mushroom mushroomScript = firstMushroom.gameObject.GetComponent<Mushroom>();
 		if( mushroomScript.State != Mushroom.MushroomState.Idle )
 		{
 			return;
 		}
-		Debug.Log( "All the way" );
 		SetState( PlayerState.Picking );
-		m_pickingShroom = hit;
+		m_pickingShroom = firstMushroom;
 	}
 
 	void UpdateIdle () {
@@ -76,11 +65,16 @@ public class Player : MonoBehaviour
 		Vector3 moveInput = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
 		Vector3 velocity = moveInput * SPEED;
 		// Slow player movement if there is no input.
-		if( moveInput.x == 0 && moveInput.z == 0 && m_body.velocity != Vector3.zero ) {
-			m_slowStartTime = m_slowStartTime == -1 ? Time.time : m_slowStartTime;
-			float slowElapsedTime = Time.time - m_slowStartTime;
-			m_body.velocity = Vector3.Lerp( m_body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
-			m_animator.SetFloat( "MoveSpeed", Mathf.Max( 1 - ( slowElapsedTime / SLOW_DURATION ), 0 ) );
+		if( moveInput.x == 0 && moveInput.z == 0 ) {
+			if( m_body.velocity != Vector3.zero ) {
+				m_slowStartTime = m_slowStartTime == -1 ? Time.time : m_slowStartTime;
+				float slowElapsedTime = Time.time - m_slowStartTime;
+				m_body.velocity = Vector3.Lerp( m_body.velocity, Vector3.zero, ( slowElapsedTime / SLOW_DURATION ) );
+				m_animator.SetFloat( "MoveSpeed", Mathf.Max( 1 - ( slowElapsedTime / SLOW_DURATION ), 0 ) );
+			}
+			else {
+				m_animator.SetFloat( "MoveSpeed", 0 );
+			}
 		}
 		else {
 			// TODO: Probably want some sort of lerp here.
@@ -113,12 +107,12 @@ public class Player : MonoBehaviour
 
 	void OnExitPicking() {
 		m_pickStartTime = -1;
-		GameObject pickedShroom = m_pickingShroom.collider.gameObject;
+		GameObject pickedShroom = m_pickingShroom.gameObject;
 		m_pickedMushrooms.Push( pickedShroom );
 		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
 		int headMushCount = m_pickedMushrooms.Count;
-		float mushroomHeight = headMushCount * m_pickingShroom.collider.bounds.extents.y;
+		float mushroomHeight = headMushCount * m_pickingShroom.bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
 		pickedShroom.transform.SetParent( transform );
 		pickedShroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
@@ -177,7 +171,7 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	private void FixedUpdate() {
+	private void Update() {
 		UpdateState();
 	}
 }
