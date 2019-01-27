@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour {
 	public float vignetteOutTime = 0.75f;
 	public float pauseTime = 0.75f;
 	public float eatTime = 0.25f;
+	public AudioClip Tutorial1Audio;
+	public AudioClip Tutorial2Audio;
+	public AudioSource TutorialSource;
 	public static GameState CurrentGameState = GameState.TitleScreen;
 
 	public static void SetState ( GameState newState ) {
@@ -36,6 +39,17 @@ public class GameManager : MonoBehaviour {
 
 	public static bool ShouldSpawnEnemies() {
 		return !InUI() && GetState() != GameState.Tutorial;
+	}
+
+	public void PlayTutorial ( int index ) {
+		if( index == 0 ) {
+			TutorialSource.clip = Tutorial1Audio;
+		}
+		else {
+			TutorialSource.clip = Tutorial2Audio;
+		}
+
+		TutorialSource.Play();
 	}
 
 private MushroomHome mushroomHome;
@@ -89,12 +103,14 @@ private MushroomHome mushroomHome;
         mushroomHome.mushroomsToCollect = mushroomsToCollect;
     }
 
+
     // Called by MushroomHome when ready to upgrade
     public void UpgradeHome()
     {
         currentLevel++;
 		if( currentLevel == 2 ) {
-			GameManager.SetState( GameState.MainGame ); 
+			GameManager.SetState( GameState.MainGame );
+			PlayTutorial( 1 );
 		}
         StartCoroutine("UpgradeHomeCoroutine");
         SetShroomsCollect();

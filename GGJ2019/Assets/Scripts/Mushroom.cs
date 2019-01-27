@@ -131,7 +131,7 @@ public class Mushroom : MonoBehaviour
 
 
 	private void OnCollisionEnter ( Collision collision ) {
-		if( collision.gameObject.tag == "Ground" ) {
+		if(collision.gameObject != null  && collision.gameObject.tag == "Ground" ) {
 			SetState( MushroomState.OnGround );
 		}
 	}

@@ -8,6 +8,11 @@ public class MushroomHome : MonoBehaviour
     public float growthTime;
     public float scaleFactor;
     public float eatTime;
+	public AudioClip EatSound;
+	public AudioClip GrowSound;
+	public AudioClip Tutorial1Sound;
+	public AudioClip Tutorial2Sound;
+	public AudioSource HomeAudioSource;
 
     [HideInInspector]
     public GameManager gm;
@@ -24,6 +29,8 @@ public class MushroomHome : MonoBehaviour
     {
         if (!isGrowing)
         {
+			HomeAudioSource.clip = GrowSound;
+			HomeAudioSource.Play();
             StartCoroutine("IncreaseSizeOverTime");
             mushroomCount = 0;
         }
@@ -75,7 +82,10 @@ public class MushroomHome : MonoBehaviour
 
     IEnumerator AnimateEating()
     {
-        float eatTimer = 0.0f;
+		HomeAudioSource.clip = EatSound;
+		HomeAudioSource.Play();
+
+		float eatTimer = 0.0f;
         float scale = transform.localScale.y;
         float targetScale = scale * scaleFactor;
 

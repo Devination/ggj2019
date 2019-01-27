@@ -16,10 +16,10 @@ public class SceneTransition : MonoBehaviour {
 	}
 
 	void Update() {
-		Debug.Log( "GAME STATE" + GameManager.GetState() );
 		if ( GameManager.GetState() == GameManager.GameState.TitleScreen ) {
 			if (Input.anyKeyDown || Input.GetAxis("Horizontal") > 0.1f || Input.GetAxis("Vertical") > 0.1f) {
 				GameManager.SetState( GameManager.GameState.Tutorial );
+				GameObject.Find( "Main Camera" ).GetComponent<GameManager>().PlayTutorial( 0 );
 			}
 		}
 		else {
