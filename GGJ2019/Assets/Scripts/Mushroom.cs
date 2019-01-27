@@ -17,9 +17,11 @@ public class Mushroom : MonoBehaviour
     public int mushroomIndex;
     [HideInInspector]
     public bool isEnemyTracking;
+    [HideInInspector]
+    public float currentDisolveTime = 0.0f;
 
+    public float timeToDissolve = 10.0f;
 	public static float THROW_SPEED = 35f;
-
     public MushroomState State { get; private set; }
 
 	private Rigidbody m_body;
@@ -27,14 +29,16 @@ public class Mushroom : MonoBehaviour
     private void Start()
     {
         State = MushroomState.Idle;
-        mushroomIndex = -1;
         isEnemyTracking = false;
 		m_body = GetComponent<Rigidbody>();
     }
 
     // never actually remove the mushroom gameobject, just call this instead, it will return it to the pool
-    void DestroyMushroom()
+    public void DestroyMushroom()
     {
+        currentDisolveTime = 0.0f;
+        isEnemyTracking = false;
+        SetState( MushroomState.Idle );
         MushroomSpawner.RemoveMushroom( mushroomIndex );
     }
 
