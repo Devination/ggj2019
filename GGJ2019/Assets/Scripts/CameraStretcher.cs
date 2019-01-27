@@ -5,11 +5,13 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class CameraStretcher : MonoBehaviour
 {
-    public GameObject MushroomHome;
     public float stretchTime;
     public float scaleFactor;
     public float vignetteInTime;
     public float vignetteOutTime;
+
+    [HideInInspector]
+    public GameObject MushroomHome;
 
     private Camera mainCamera;
     private float startSize;
