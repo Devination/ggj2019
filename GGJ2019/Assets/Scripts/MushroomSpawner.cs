@@ -11,7 +11,7 @@ public class MushroomSpawner : MonoBehaviour
         FAIL
     };
 
-    public float spawnRadius = 30.0f;
+    public float spawnRadius = 40.0f;
     public float spawnTimer = 1.0f;
     public float mushroomRadius = 1.0f; // replace with mushroom collider bounds?
     public int maxNumberOfMushrooms = 40;
