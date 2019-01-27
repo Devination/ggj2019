@@ -160,11 +160,15 @@ public class Player : MonoBehaviour
 		m_damageStartTime = Time.time;
 		// TODO: Play Damage Anim
 		int numDroppedMushrooms = (int)Mathf.Ceil( PickedMushrooms.Count / 2f );
-		for( int i = 0; i < numDroppedMushrooms; i++ ) {
-			GameObject dropMush = PickedMushrooms.Pop();
-			Mushroom mushScript = dropMush.GetComponent<Mushroom>();
-			dropMush.transform.SetParent( null, true );
-			mushScript.SetState( Mushroom.MushroomState.Throw );
+		for( int i = 0; i < numDroppedMushrooms; i++ )
+        {
+            if( PickedMushrooms.Count > 0 ) 
+            {
+                GameObject dropMush = PickedMushrooms.Pop();
+                Mushroom mushScript = dropMush.GetComponent<Mushroom>();
+                dropMush.transform.SetParent(null, true);
+                mushScript.SetState(Mushroom.MushroomState.Throw);
+            }
 		}
 	}
 
@@ -186,24 +190,31 @@ public class Player : MonoBehaviour
 		int headMushCount = PickedMushrooms.Count;
 		float mushroomHeight = headMushCount * mushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
+        mushroom.transform.rotation = Quaternion.identity;
 		mushroom.transform.SetParent( transform );
 		mushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
 	}
 
 
 	void OnCollisionEnter ( Collision collision ) {
-		string collisionTag = collision.gameObject.tag;
-		if( collisionTag == "Mushroom" ) {
-			GameObject mushroom = collision.gameObject;
-			Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
-			if( mushroomScript.State == Mushroom.MushroomState.OnGround ) {
-				PickUp( mushroom );
-			}
-		}
+        if( collision.gameObject != null )
+        {
+            string collisionTag = collision.gameObject.tag;
+            if (collisionTag == "Mushroom")
+            {
+                GameObject mushroom = collision.gameObject;
+                Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
+                if (mushroomScript.State == Mushroom.MushroomState.OnGround)
+                {
+                    PickUp(mushroom);
+                }
+            }
 
-		if( m_state != PlayerState.Damaged && collisionTag == "Enemy" ) {
-			SetState( PlayerState.Damaged );
-		}
+            if (m_state != PlayerState.Damaged && collisionTag == "Enemy")
+            {
+                SetState(PlayerState.Damaged);
+            }
+        }
 	}
 
 

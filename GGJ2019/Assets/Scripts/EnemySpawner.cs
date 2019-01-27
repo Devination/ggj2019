@@ -112,7 +112,7 @@ public class EnemySpawner : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, spawnRadius);
+        //UnityEditor.Handles.color = Color.red;
+        //UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, spawnRadius);
     }
 }
