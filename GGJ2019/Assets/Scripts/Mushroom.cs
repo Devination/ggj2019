@@ -105,7 +105,8 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-				break;
+                OnExitPicked();
+                break;
             case MushroomState.Throw:
 				OnExitThrow();
                 break;
