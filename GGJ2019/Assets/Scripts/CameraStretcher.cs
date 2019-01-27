@@ -56,11 +56,11 @@ public class CameraStretcher : MonoBehaviour
         float targetSize = startSize * scaleFactor;
 
         // HACK: also moving camera down along y-axis
-        Vector3 startPos = transform.position;
-        float y = startPos.y;
-        y *= 2.0f - scaleFactor;
-        Vector3 endPos = startPos;
-        endPos.y = y;
+        //Vector3 startPos = transform.position;
+        //float y = startPos.y;
+        //y *= 2.0f - scaleFactor;
+        //Vector3 endPos = startPos;
+        //endPos.y = y;
 
         float focalLength = depthOfField.focalLength.value;
         float targetFocalLength = focalLength * ( 2.0f - scaleFactor );
@@ -70,7 +70,7 @@ public class CameraStretcher : MonoBehaviour
             float pct = stretchTimer / stretchTime;
             depthOfField.focalLength.value = Mathf.Lerp(focalLength, targetFocalLength, pct);
             mainCamera.fieldOfView = Mathf.Lerp(startSize, targetSize, pct);
-            transform.position = Vector3.Lerp(startPos, endPos, pct);
+            //transform.position = Vector3.Lerp(startPos, endPos, pct);
 
             yield return null;
         }
