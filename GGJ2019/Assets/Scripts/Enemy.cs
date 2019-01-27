@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
                     break;
 
                 case (int)ENEMYSTATE.ANGRY:
-
+                    
                     break;
             }
         }

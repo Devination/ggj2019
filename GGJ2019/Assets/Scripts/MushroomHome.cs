@@ -7,36 +7,36 @@ public class MushroomHome : MonoBehaviour
     public float scale;
     public float minScale = 5.0f;
     public float maxScale = 70.0f;
-
-    private float prevScale;
-    private CameraStretcher camStretch;
+    public float growthTime;
+    public float scaleFactor;
 
     private void Start()
     {
         // Assuming uniform scaling
         scale = minScale;
-        prevScale = transform.localScale.x; ;
-
-        camStretch = Camera.main.GetComponent<CameraStretcher>();
     }
 
-    private void Update()
+    public void IncreaseSize()
     {
-        if ( Mathf.Abs(scale - prevScale) > Mathf.Epsilon )
+        StartCoroutine("IncreaseSizeOverTime");
+    }
+
+    IEnumerator IncreaseSizeOverTime()
+    {
+        float scaleTimer = 0.0f;
+        float startScale = transform.localScale.y;
+        float targetScale = startScale * scaleFactor;
+
+        while (scaleTimer < growthTime)
         {
-            if (scale < minScale || scale > maxScale) return;
+            scaleTimer += Time.deltaTime;
+            float pct = scaleTimer / growthTime;
 
-            // Update home scale
-            prevScale = scale;
-            transform.localScale = new Vector3(scale, scale, scale);
+            float newScale = Mathf.Lerp(startScale, targetScale, pct);
+            transform.localScale = new Vector3(newScale, newScale, newScale);
 
-            // Snap to ground plane
-            float height = GetComponent<Renderer>().bounds.size.y;
-            Vector3 pos = transform.position;
-            pos.y = height / 2.0f;
-            transform.position = pos;
-
-            camStretch.Stretch(scale, pos);
+            yield return null;
         }
     }
+
 }
