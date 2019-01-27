@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1283216502750421981}
   - component: {fileID: 1283216502751749117}
   - component: {fileID: 1283216502752715069}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bush-5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1283216502750421983}
   - component: {fileID: 6474171924619007664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bush_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

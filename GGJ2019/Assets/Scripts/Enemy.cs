@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     public EnemyState State { get; private set; }
     public float eatTimer = 5.0f;
+    public float moveSpeed = 5.0f;
 
     public GameObject myMushroomPosition;
     public Stack<GameObject> PickedMushrooms { get; private set; }
@@ -98,6 +99,7 @@ public class Enemy : MonoBehaviour
         if ( m_currentTargetMushroom == null ) return;
         m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
         m_agent.destination = m_currentTargetMushroom.transform.position;
+        m_agent.speed = moveSpeed;
         SetState( EnemyState.SEEKING_MUSHROOM );
     }
 
@@ -126,13 +128,13 @@ public class Enemy : MonoBehaviour
         {
             SetState( EnemyState.HUNGRY );
         }
-        float newScale = 1.0f + Mathf.PingPong( Time.time, 0.5f );
+        float newScale = 3.0f + Mathf.PingPong( Time.time, 0.5f );
         transform.localScale = new Vector3( newScale, transform.localScale.y, newScale );
     }
 
     private void OnExitStateEating()
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = Vector3.one * 3.0f;
         m_currentEatTime = 0.0f;
         PickedMushrooms.Push( m_currentTargetMushroom );
         Mushroom mushroomScript = m_currentTargetMushroom.GetComponent<Mushroom>();
