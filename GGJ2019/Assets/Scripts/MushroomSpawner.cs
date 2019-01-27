@@ -30,6 +30,7 @@ public class MushroomSpawner : MonoBehaviour
         for ( int i = 0; i < maxNumberOfMushrooms; ++i )
         {
             m_mushroomPool.Insert( i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
+            m_mushroomPool[i].name = "Mushroom " + i;
             m_mushroomPool[i].SetActive( false );
             m_mushroomPool[i].transform.SetParent( mushroomContainer.transform );
             m_mushroomPool[i].GetComponent<Mushroom>().mushroomIndex = i;

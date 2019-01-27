@@ -39,6 +39,8 @@ public class Mushroom : MonoBehaviour
         currentDisolveTime = 0.0f;
         isEnemyTracking = false;
         SetState( MushroomState.Idle );
+        m_body.velocity = Vector3.zero;
+        transform.position = Vector3.zero;
         MushroomSpawner.RemoveMushroom( mushroomIndex );
     }
 
@@ -103,7 +105,6 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-				OnExitPicked();
 				break;
             case MushroomState.Throw:
 				OnExitThrow();
@@ -122,7 +123,7 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Throw:
                 break;
             case MushroomState.OnGround:
-                OnGroundUpdate();
+                //OnGroundUpdate();
                 break;
         }
     }
