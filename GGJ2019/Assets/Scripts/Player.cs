@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
 	const float NO_MOVE_TIME = 0.3f;
 
 	public LayerMask PickMask;
+	public AudioClip ThrowAudio;
+	public AudioClip DamageAudio;
+	public AudioClip PickupAudio;
 
 	private PlayerState m_state;
 	
@@ -27,6 +30,7 @@ public class Player : MonoBehaviour
 	private BoxCollider m_collider;
 	private GameObject m_mushroomPosition;
 	private SkinnedMeshRenderer m_meshRenderer;
+	private AudioSource m_audioSource;
 
 	private float m_slowStartTime;
 	private float m_damageStartTime;
@@ -43,6 +47,7 @@ public class Player : MonoBehaviour
     void Start () {
 		m_body = GetComponent<Rigidbody>();
 		m_animator = GetComponentInChildren<Animator>();
+		m_audioSource = GetComponent<AudioSource>();
 		m_collider = GetComponent<BoxCollider>();
 		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
 		PickedMushrooms = new Stack<GameObject>();
@@ -51,6 +56,8 @@ public class Player : MonoBehaviour
 	}
 
 	void Throw() {
+		m_audioSource.clip = ThrowAudio;
+		m_audioSource.Play();
 		GameObject throwMushroom = PickedMushrooms.Pop();
 		throwMushroom.transform.SetParent( null, true );
 		throwMushroom.transform.position = m_collider.bounds.center + transform.forward * 2;
@@ -174,6 +181,8 @@ public class Player : MonoBehaviour
                 mushScript.SetState(Mushroom.MushroomState.Throw);
             }
 		}
+		m_audioSource.clip = DamageAudio;
+		m_audioSource.Play();
 	}
 
 
@@ -197,6 +206,8 @@ public class Player : MonoBehaviour
         mushroom.transform.rotation = Quaternion.identity;
 		mushroom.transform.SetParent( transform );
 		mushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
+		m_audioSource.clip = PickupAudio;
+		m_audioSource.Play();
 	}
 
 
