@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public EnemyState State { get; private set; }
     public float eatTimer = 5.0f;
     public float moveSpeed = 10.0f;
+	public AudioClip DeadSound;
 
     [HideInInspector]
     public int enemyIndex;
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour
     private GameObject m_player;
     private GameObject m_currentTargetMushroom;
     private NavMeshAgent m_agent;
+	private AudioSource m_audioSource;
     private float m_currentEatTime;
     private float m_deathTimer;
 
@@ -37,6 +39,7 @@ public class Enemy : MonoBehaviour
         m_agent = GetComponent<NavMeshAgent>();
         m_player = GameObject.Find("Player");
         m_currentEatTime = 0.0f;
+		m_audioSource = GetComponent<AudioSource>();
     }
 
     // never actually remove the enemy gameobject, just call this instead, it will return it to the pool
@@ -221,7 +224,10 @@ public class Enemy : MonoBehaviour
         GetComponentInChildren<MeshRenderer>().enabled = false;
         GetComponentInChildren<BoxCollider>().enabled = false;
 
-        for ( int i = 0; i < PickedMushrooms.Count; ++i )
+		m_audioSource.clip = DeadSound;
+		m_audioSource.Play();
+
+		for ( int i = 0; i < PickedMushrooms.Count; ++i )
         {
             PickedMushrooms[i].transform.parent = MushroomSpawner.mushroomContainer.transform;
             Mushroom mushroom = PickedMushrooms[i].GetComponent<Mushroom>();
