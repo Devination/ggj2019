@@ -55,9 +55,9 @@ public class GameManager : MonoBehaviour
     // Called by MushroomHome when ready to upgrade
     public void UpgradeHome()
     {
-        SetShroomsCollect();
-
+        currentLevel++;
         StartCoroutine("UpgradeHomeCoroutine");
+        SetShroomsCollect();
     }
 
     IEnumerator UpgradeHomeCoroutine()
@@ -68,7 +68,6 @@ public class GameManager : MonoBehaviour
         cameraStretcher.Stretch();
         yield return new WaitForSeconds(screenExpandTime);
 
-        currentLevel++;
         if (currentLevel % swapMeshLevel == 0)
         {
             cameraStretcher.VignetteIn();
