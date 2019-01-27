@@ -46,7 +46,7 @@ public class CameraStretcher : MonoBehaviour
     IEnumerator StretchOverTime()
     {
         float stretchTimer = 0.0f;
-        startSize = mainCamera.orthographicSize;
+        startSize = mainCamera.fieldOfView;
         float targetSize = startSize * scaleFactor;
 
         float focalLength = depthOfField.focalLength.value;
@@ -56,7 +56,7 @@ public class CameraStretcher : MonoBehaviour
             stretchTimer += Time.deltaTime;
             float pct = stretchTimer / stretchTime;
             depthOfField.focalLength.value = Mathf.Lerp(focalLength, targetFocalLength, pct);
-            mainCamera.orthographicSize = Mathf.Lerp(startSize, targetSize, pct);
+            mainCamera.fieldOfView = Mathf.Lerp(startSize, targetSize, pct);
 
             yield return null;
         }
