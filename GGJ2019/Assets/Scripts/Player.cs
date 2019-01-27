@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 	};
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
-	const float MAX_PICKUP_DISTANCE = 2f;
+	const float MAX_PICKUP_DISTANCE = 100f;
 	const float PICKING_TIME = 1.5f;
 
 	private PlayerState m_state;
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 		m_animator = GetComponentInChildren<Animator>();
 		m_collider = GetComponent<BoxCollider>();
 		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
+		m_pickedMushrooms = new Stack<GameObject>();
 		SetState( PlayerState.Normal );
 	}
 
@@ -41,9 +42,15 @@ public class Player : MonoBehaviour
 		mushScript.SetVelocity( body.velocity, new Vector2( direction.x, direction.y ) );*/
 	}
 
+	void OnDrawGizmos () {
+		Gizmos.color = Color.red;
+		//Draw a cube at the maximum distance
+		Gizmos.DrawWireCube( m_collider.bounds.center + transform.forward * ( m_collider.bounds.extents.x + 5 ), m_collider.bounds.extents * 3 );
+	}
+
 	void Pick () {
 		RaycastHit hit;
-		bool hitDetect = Physics.BoxCast( m_collider.bounds.center, transform.localScale, transform.forward, out hit, transform.rotation, MAX_PICKUP_DISTANCE );
+		bool hitDetect = Physics.BoxCast( m_collider.bounds.center, m_collider.bounds.extents * 3, transform.forward, out hit, transform.rotation, m_collider.bounds.extents.x + 3 );
 		if( !hitDetect ) {
 			return;
 		}
@@ -59,16 +66,17 @@ public class Player : MonoBehaviour
 		{
 			return;
 		}
+		Debug.Log( "All the way" );
 		SetState( PlayerState.Picking );
 		m_pickingShroom = hit;
 	}
 
 	void UpdateIdle () {
 		// Handle player movement
-		Vector3 input = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
-		Vector3 velocity = input * SPEED;
+		Vector3 moveInput = new Vector3( Input.GetAxisRaw( "Horizontal" ), 0, Input.GetAxisRaw( "Vertical" ) );
+		Vector3 velocity = moveInput * SPEED;
 		// Slow player movement if there is no input.
-		if( input.x == 0 && input.z == 0 && m_body.velocity != Vector3.zero ) {
+		if( moveInput.x == 0 && moveInput.z == 0 && m_body.velocity != Vector3.zero ) {
 			m_slowStartTime = m_slowStartTime == -1 ? Time.time : m_slowStartTime;
 			float slowElapsedTime = Time.time - m_slowStartTime;
 			m_body.velocity = Vector3.Lerp( m_body.velocity, Vector3.zero, slowElapsedTime / SLOW_DURATION );
@@ -76,24 +84,38 @@ public class Player : MonoBehaviour
 		}
 		else {
 			// TODO: Probably want some sort of lerp here.
-			Vector3 newDir = Vector3.RotateTowards( transform.forward, input, 90, 0.0f );
+			Vector3 newDir = Vector3.RotateTowards( transform.forward, moveInput, 90, 0.0f );
 			transform.rotation = Quaternion.LookRotation( newDir );
 
 			m_body.velocity = velocity;
 			m_slowStartTime = -1;
-			if( input != Vector3.zero ) {
+			if( moveInput != Vector3.zero ) {
 				// TODO: Walk support ???
 				m_animator.SetFloat( "MoveSpeed", 1 );
 			}
 		}
+
+		bool pickPressed = Input.GetButtonDown( "Fire1" );
+		if( pickPressed && m_state == PlayerState.Normal ) {
+			Pick();
+		}
 	}
 
+
+	void OnEnterPicking () {
+		m_pickStartTime = Time.time;
+	}
+
+	void OnExitNormal() {
+		m_body.velocity = new Vector3( 0, 0, 0 );
+		m_animator.SetFloat( "MoveSpeed", 0 );
+	}
 
 	void OnExitPicking() {
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.collider.gameObject;
 		m_pickedMushrooms.Push( pickedShroom );
-		Mushroom mushroomScript = gameObject.GetComponent<Mushroom>();
+		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
 		int headMushCount = m_pickedMushrooms.Count;
 		float mushroomHeight = headMushCount * m_pickingShroom.collider.bounds.extents.y;
@@ -122,7 +144,7 @@ public class Player : MonoBehaviour
 			case PlayerState.Normal:
 				break;
 			case PlayerState.Picking:
-				m_pickStartTime = Time.time;
+				OnEnterPicking();
 				break;
 			case PlayerState.Damaged:
 				break;
@@ -132,6 +154,7 @@ public class Player : MonoBehaviour
 	void OnExitState ( PlayerState state ) {
 		switch( state ) {
 			case PlayerState.Normal:
+				OnExitNormal();
 				break;
 			case PlayerState.Picking:
 				OnExitPicking();
