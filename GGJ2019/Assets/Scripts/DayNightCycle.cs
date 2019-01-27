@@ -10,6 +10,9 @@ public class DayNightCycle : MonoBehaviour
 
 	void Update()
 	{
+		if( GameManager.GetState() == GameManager.GameState.TitleScreen || GameManager.GetState() == GameManager.GameState.Tutorial )
+			return;
+
 		if ( RotationSoFar < MAX_ROTATION )
 		{
 			float delta = speed * Time.deltaTime;

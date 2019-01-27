@@ -42,10 +42,14 @@ public class MushroomSpawner : MonoBehaviour
 
     void Update()
     {
+		if( !GameManager.ShouldSpawnMushrooms() )
+			return;
+
+		float maxNumMushrooms = GameManager.GetState() == GameManager.GameState.Tutorial ? 5 : m_mushroomPool.Count;
         m_currentSpawnTime += Time.deltaTime;
         if( m_currentSpawnTime > spawnTimer )
         {
-            if( m_numMushrooms < maxNumberOfMushrooms )
+            if( m_numMushrooms < maxNumMushrooms )
             {
                 Vector2 spawnPosition;
                 Vector3 spawnWorldPosition;

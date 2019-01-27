@@ -10,21 +10,16 @@ public class SceneTransition : MonoBehaviour {
 
 	private DayNightCycle daynight;
 	private Image image;
-	private float daynightSpeed = 1f;
-	private bool isPlaying = false;
 
 	void Start() {
 		image = gameObject.GetComponentInChildren<Image>();
-		daynight = Object.FindObjectOfType<DayNightCycle>();
-		daynightSpeed = daynight.speed;
-		daynight.speed = 0f;
 	}
 
 	void Update() {
-		if (!isPlaying) {
+		Debug.Log( "GAME STATE" + GameManager.GetState() );
+		if ( GameManager.GetState() == GameManager.GameState.TitleScreen ) {
 			if (Input.anyKeyDown) {
-				daynight.speed = daynightSpeed;
-				isPlaying = true;
+				GameManager.SetState( GameManager.GameState.Tutorial );
 			}
 		}
 		else {

@@ -29,7 +29,10 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        m_currentSpawnTime += Time.deltaTime;
+		if( !GameManager.ShouldSpawnEnemies() )
+			return;
+
+		m_currentSpawnTime += Time.deltaTime;
         if ( m_currentSpawnTime > spawnTimer )
         {
             if ( m_numEnemies < maxNumberOfEnemies )

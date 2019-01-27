@@ -2,18 +2,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
-    public int numLevels = 3;
-    public float homeGrowthTime = 1.0f;
-    public float screenExpandTime = 1.0f;
-    public float vignetteInTime = 0.75f;
-    public float vignetteOutTime = 0.75f;
-    public float pauseTime = 0.75f;
-    public float eatTime = 0.25f;
+public class GameManager : MonoBehaviour {
+	public enum GameState {
+		TitleScreen,
+		Tutorial,
+		MainGame,
+		Results,
+	}
+	public int numLevels = 3;
+	public float homeGrowthTime = 1.0f;
+	public float screenExpandTime = 1.0f;
+	public float vignetteInTime = 0.75f;
+	public float vignetteOutTime = 0.75f;
+	public float pauseTime = 0.75f;
+	public float eatTime = 0.25f;
+	public static GameState CurrentGameState = GameState.TitleScreen;
 
+	public static void SetState ( GameState newState ) {
+		CurrentGameState = newState;
+	}
 
-    private MushroomHome mushroomHome;
+	public static GameState GetState () {
+		return CurrentGameState;
+	}
+
+	public static bool InUI() {
+		return GetState() == GameState.TitleScreen || GetState() == GameState.Results;
+	}
+
+	public static bool ShouldSpawnMushrooms() {
+		return !InUI();
+	}
+
+	public static bool ShouldSpawnEnemies() {
+		return !InUI() && GetState() != GameState.Tutorial;
+	}
+
+private MushroomHome mushroomHome;
     private CameraStretcher cameraStretcher;
     private MushroomSpawner shroomSpawner;
     private EnemySpawner enemySpawner;
@@ -68,6 +93,9 @@ public class GameManager : MonoBehaviour
     public void UpgradeHome()
     {
         currentLevel++;
+		if( currentLevel == 2 ) {
+			GameManager.SetState( GameState.MainGame ); 
+		}
         StartCoroutine("UpgradeHomeCoroutine");
         SetShroomsCollect();
         shroomSpawner.IncreaseRadius(scaleFactor);
