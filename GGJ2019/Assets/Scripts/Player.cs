@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
 	const float MAX_PICKUP_DISTANCE = 100f;
-	const float PICKING_TIME = 1f;
+	const float PICKING_TIME = 0.5f;
 	const float DAMAGE_TIME = 1.0f;
 	const float FLASH_TIME = 0.05f;
 	const float NO_MOVE_TIME = 0.3f;

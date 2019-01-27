@@ -7,9 +7,7 @@ public class GameSoundsManager : MonoBehaviour
 	public enum BackgroundState {
 		Morning,
 		MorningFade,
-		Afternoon,
-		AfternoonFade,
-		Night
+		Night,
 	}
 	public const float FADE_TIME = 6f;
 	AudioSource m_backgroundSource;
@@ -18,14 +16,15 @@ public class GameSoundsManager : MonoBehaviour
 	public static bool m_fading = false;
 	public static float m_startBackgroundVolume;
 
-	float AFTERNOON_VOLUME = 0.06f;
+	float NIGHT_VOLUME = 0.06f;
 	float MORNING_VOLUME = 0.5f;
 
 	public AudioClip DaytimeAmbience;
 	public AudioClip AfternoonAmbience;
 	public AudioClip NighttimeAmbience;
-	public AudioClip[] NicePianoClips;
-	public AudioClip[] ScaryPianoClips;
+	public AudioClip[] PianoClips;
+	public float[] PianoClipsStartTime;
+	public int currentPianoClip = 0;
 	public AudioClip EndClip;
 
     // Start is called before the first frame update
@@ -38,6 +37,10 @@ public class GameSoundsManager : MonoBehaviour
 		m_backgroundSource.clip = DaytimeAmbience;
 		m_backgroundSource.Play();
 		m_otherSource.loop = false;
+		float timeStepSize = DayNightCycle.MAX_ROTATION / ( PianoClips.Length + 1 );
+		for( int i = 0; i < PianoClips.Length; i++ ) {
+			PianoClipsStartTime[i] = timeStepSize * ( i + 1 );
+		}
 	}
 
 
@@ -58,22 +61,24 @@ public class GameSoundsManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-		if( DayNightCycle.RotationSoFar > ( DayNightCycle.MAX_ROTATION / 1.4f ) ) {
-			/*m_backgroundSource.Stop();
-			m_backgroundSource.clip = NighttimeAmbience;
-			m_backgroundSource.Play();*/
-		} else if( DayNightCycle.RotationSoFar > ( DayNightCycle.MAX_ROTATION / 2.5f ) ) {
+		if( DayNightCycle.RotationSoFar > ( DayNightCycle.MAX_ROTATION / 2.5f ) ) {
 			if( CurrentState == BackgroundState.Morning ) {
 				CurrentState = BackgroundState.MorningFade;
-				IEnumerator fadeBackground = FadeOut( m_backgroundSource, BackgroundState.Afternoon );
+				IEnumerator fadeBackground = FadeOut( m_backgroundSource, BackgroundState.Night );
 				StartCoroutine( fadeBackground );
 			}
 
-			if( CurrentState == BackgroundState.Afternoon && m_backgroundSource.volume <= 0 ) {
+			if( CurrentState == BackgroundState.Night && m_backgroundSource.volume <= 0 ) {
 				m_backgroundSource.clip = AfternoonAmbience;
 				m_backgroundSource.Play();
-				SetBackgroundVolume( AFTERNOON_VOLUME );
+				SetBackgroundVolume( NIGHT_VOLUME );
 			}
+		}
+
+		if( currentPianoClip < PianoClips.Length && DayNightCycle.RotationSoFar > PianoClipsStartTime[currentPianoClip]  ) {
+			m_otherSource.clip = PianoClips[currentPianoClip];
+			m_otherSource.Play();
+			currentPianoClip++;
 		}
     }
 }

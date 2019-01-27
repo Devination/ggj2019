@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public float spawnRadius = 30.0f;
-    public float spawnTimer = 1.0f;
     public float enemyRadius = 1.0f;
     public float minSpawnDistanceFromPlayer = 20.0f;
     public int maxNumberOfEnemies = 20;
@@ -16,8 +15,9 @@ public class EnemySpawner : MonoBehaviour
     public LayerMask obstructedLayerMask;
     private static int m_numEnemies = 0;
     private float m_currentSpawnTime = 0.0f;
+	private float m_spawnTimer = 3.0f;
 
-    private void Start()
+	private void Start()
     {
        m_enemyContainer = new GameObject("EnemyContainer");
     }
@@ -29,8 +29,11 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        m_currentSpawnTime += Time.deltaTime;
-        if ( m_currentSpawnTime > spawnTimer )
+		if( !GameManager.ShouldSpawnEnemies() )
+			return;
+
+		m_currentSpawnTime += Time.deltaTime;
+        if ( m_currentSpawnTime > m_spawnTimer )
         {
             if ( m_numEnemies < maxNumberOfEnemies )
             {
