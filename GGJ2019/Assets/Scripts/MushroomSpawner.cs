@@ -101,25 +101,32 @@ public class MushroomSpawner : MonoBehaviour
         return m_mushroomPool[index];
     }
 
-    public static GameObject FindClosestIdleMushroom( Vector3 position )
+    public static GameObject FindClosestMushroom( Vector3 position )
     {
         GameObject closestMush = null; 
-        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, (1 << LayerMask.NameToLayer( "Mushroom")) );
+        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, ( 1 << LayerMask.NameToLayer( "Mushroom") ) );
         if ( colliders.Length > 0 )
         {
             float distance = float.MaxValue;
-            for (int i = 0; i < colliders.Length; ++i)
+            for ( int i = 0; i < colliders.Length; ++i )
             {
                 Mushroom mushroom = colliders[i].GetComponent<Mushroom>();
                 if( mushroom.isEnemyTracking )
                 {
                     continue;
                 }
-                float currDist = Vector3.SqrMagnitude( position - colliders[i].transform.position );
-                if (currDist < distance)
+                if( mushroom.State == Mushroom.MushroomState.Idle || mushroom.State == Mushroom.MushroomState.OnGround )
                 {
-                    distance = currDist;
-                    closestMush = colliders[i].gameObject;
+                    float currDist = Vector3.SqrMagnitude( position - colliders[i].transform.position );
+                    if ( mushroom.State == Mushroom.MushroomState.OnGround )
+                    {
+                        currDist -= distance * 0.25f; // i dont even know man....just trying to give higher priority to grounded shrooms, nawww meeeann
+                    }
+                    if ( currDist < distance )
+                    {
+                        distance = currDist;
+                        closestMush = colliders[i].gameObject;
+                    }
                 }
             }
         }

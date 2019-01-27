@@ -8,8 +8,8 @@ public class Enemy : MonoBehaviour
     public enum EnemyState
     {
         HUNGRY,
-        EATING,
-        ANGRY,
+        PICKING,
+        CHASE_PLAYER,
         SEEKING_MUSHROOM,
     };
 
@@ -45,13 +45,10 @@ public class Enemy : MonoBehaviour
 
     void OnEnterState(EnemyState state )
     {
-        switch ( state )
+        switch (state)
         {
             case EnemyState.HUNGRY:
-                break;
-            case EnemyState.EATING:
-                break;
-            case EnemyState.ANGRY:
+                OnEnterStateHungry();
                 break;
         }
     }
@@ -60,12 +57,8 @@ public class Enemy : MonoBehaviour
     {
         switch ( state )
         {
-            case EnemyState.HUNGRY:
-                break;
-            case EnemyState.EATING:
-                OnExitStateEating();
-                break;
-            case EnemyState.ANGRY:
+            case EnemyState.PICKING:
+                OnExitStatePicking();
                 break;
         }
     }
@@ -80,10 +73,11 @@ public class Enemy : MonoBehaviour
             case EnemyState.SEEKING_MUSHROOM:
                 OnEnemyStateSeekingMushroom();
                 break;
-            case EnemyState.EATING:
-                OnEnemyStateEating();
+            case EnemyState.PICKING:
+                OnEnemyStatePicking();
                 break;
-            case EnemyState.ANGRY:
+            case EnemyState.CHASE_PLAYER:
+                OnEnemyStateChasePlayer();
                 break;
         }
     }
@@ -93,14 +87,48 @@ public class Enemy : MonoBehaviour
         EnemySpawner.RemoveEnemy();
     }
 
+    private void OnEnterStateHungry()
+    {
+        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
+    }
+
     private void OnEnemyStateUpdateHungry()
     {
-        m_currentTargetMushroom = MushroomSpawner.FindClosestIdleMushroom(transform.position);
+        m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom( transform.position );
         if ( m_currentTargetMushroom == null ) return;
         m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
         m_agent.destination = m_currentTargetMushroom.transform.position;
         m_agent.speed = moveSpeed;
         SetState( EnemyState.SEEKING_MUSHROOM );
+    }
+
+    private void CheckCurrentMushroomStateChanged()
+    {
+        if ( m_currentTargetMushroom.GetComponent<Mushroom>().State == Mushroom.MushroomState.Picked )
+        {
+            SetState( EnemyState.HUNGRY );
+        }
+    }
+
+    private void OnEnemyStateChasePlayer()
+    {
+        m_agent.destination = m_player.transform.position;
+        m_agent.speed = moveSpeed * 1.5f;
+        if ( m_player.GetComponent<Player>().PickedMushrooms.Count <= 1 )
+        {
+            SetState( EnemyState.HUNGRY );
+        }
+
+        GameObject mushroom = MushroomSpawner.FindClosestMushroom(transform.position);
+        if( mushroom )
+        {
+            float distanceToTarget = Vector3.Distance( transform.position, mushroom.transform.position );
+            float distanceToPlayer = Vector3.Distance( transform.position, m_player.transform.position );
+            if( distanceToTarget < distanceToPlayer )
+            {
+                SetState( EnemyState.HUNGRY );
+            }
+        }
     }
 
     private void OnEnemyStateSeekingMushroom()
@@ -110,41 +138,56 @@ public class Enemy : MonoBehaviour
 
         if( distanceToPlayer < distanceToTarget )
         {
-            // check number of picked mushrooms, if its more than 1, consider seeking player ?
+            if( m_player.GetComponent<Player>().PickedMushrooms.Count > 1 )
+            {
+                m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
+                SetState( EnemyState.CHASE_PLAYER );
+            }
         }
+
+        CheckCurrentMushroomStateChanged();
 
         float sizeOfMushroom = m_currentTargetMushroom.GetComponentInChildren<Renderer>().bounds.size.x;
         if( distanceToTarget < sizeOfMushroom )
         {
             m_agent.destination = transform.position; // stop movement
-            SetState( EnemyState.EATING );
+            SetState( EnemyState.PICKING );
         }
     }
 
-    private void OnEnemyStateEating()
+    private void OnEnemyStatePicking()
     {
+        CheckCurrentMushroomStateChanged();
+
         m_currentEatTime += Time.deltaTime;
-        if( m_currentEatTime > eatTimer )
+        if( m_currentEatTime > eatTimer || m_currentTargetMushroom.GetComponent<Mushroom>().State == Mushroom.MushroomState.OnGround)
         {
+            m_currentEatTime = eatTimer;
             SetState( EnemyState.HUNGRY );
         }
         float newScale = 3.0f + Mathf.PingPong( Time.time, 0.5f );
         transform.localScale = new Vector3( newScale, transform.localScale.y, newScale );
     }
 
-    private void OnExitStateEating()
+    private void OnExitStatePicking()
     {
+        // we ate the mushroom, possibly to prematurely exit this state if the current mushroom state changes
+        if( m_currentEatTime >= eatTimer )
+        {
+            PickedMushrooms.Push(m_currentTargetMushroom);
+            Mushroom mushroomScript = m_currentTargetMushroom.GetComponent<Mushroom>();
+            mushroomScript.SetState( Mushroom.MushroomState.InsideEnemy );
+
+            int headMushCount = PickedMushrooms.Count;
+            float mushroomHeight = headMushCount * m_currentTargetMushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
+            Vector3 mushroomPosition = myMushroomPosition.transform.position;
+            m_currentTargetMushroom.transform.SetParent(transform);
+            m_currentTargetMushroom.transform.position = new Vector3(mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z);
+        }
+
+        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
         transform.localScale = Vector3.one * 3.0f;
         m_currentEatTime = 0.0f;
-        PickedMushrooms.Push( m_currentTargetMushroom );
-        Mushroom mushroomScript = m_currentTargetMushroom.GetComponent<Mushroom>();
-        mushroomScript.SetState( Mushroom.MushroomState.InsideEnemy );
-
-        int headMushCount = PickedMushrooms.Count;
-        float mushroomHeight = headMushCount * m_currentTargetMushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
-        Vector3 mushroomPosition = myMushroomPosition.transform.position;
-        m_currentTargetMushroom.transform.SetParent( transform );
-        m_currentTargetMushroom.transform.position = new Vector3(mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z);
     }
 
     private void Update()
@@ -152,5 +195,4 @@ public class Enemy : MonoBehaviour
         UpdateState();
     }
 }
-
 
