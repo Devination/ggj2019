@@ -160,7 +160,6 @@ public class Player : MonoBehaviour
 		m_damageStartTime = Time.time;
 		// TODO: Play Damage Anim
 		int numDroppedMushrooms = (int)Mathf.Ceil( PickedMushrooms.Count / 2f );
-		Debug.Log( "NUM DROPPED: " + numDroppedMushrooms );
 		for( int i = 0; i < numDroppedMushrooms; i++ ) {
 			GameObject dropMush = PickedMushrooms.Pop();
 			Mushroom mushScript = dropMush.GetComponent<Mushroom>();
