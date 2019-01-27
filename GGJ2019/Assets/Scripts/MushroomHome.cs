@@ -25,6 +25,11 @@ public class MushroomHome : MonoBehaviour
     private int currentMesh = -1;
     private bool isGrowing;
 
+    public int GetCurrentMeshindex()
+    {
+        return currentMesh;
+    }
+
     public void Grow()
     {
         if (!isGrowing)
@@ -61,6 +66,7 @@ public class MushroomHome : MonoBehaviour
     public void SwapMesh()
     {
         currentMesh++;
+        GameManager.mushroomHouseIndex = currentMesh;
         if (currentMesh < meshes.Length)
         {
             GetComponent<MeshFilter>().mesh = meshes[currentMesh];
@@ -74,6 +80,7 @@ public class MushroomHome : MonoBehaviour
         StartCoroutine("AnimateEating");
 
         mushroomCount++;
+        GameManager.numMushroomsCollected++;
         if (mushroomCount >= mushroomsToCollect)
         {
             gm.UpgradeHome();

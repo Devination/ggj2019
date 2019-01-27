@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 		MainGame,
 		Results,
 	}
+
 	public int numLevels = 3;
 	public float homeGrowthTime = 1.0f;
 	public float screenExpandTime = 1.0f;
@@ -19,7 +20,19 @@ public class GameManager : MonoBehaviour {
 	public AudioClip Tutorial1Audio;
 	public AudioClip Tutorial2Audio;
 	public AudioSource TutorialSource;
-	public static GameState CurrentGameState = GameState.TitleScreen;
+    public static GameState CurrentGameState = GameState.TitleScreen;
+    
+    // stats
+    public static int numMushroomsCollected = 0;
+    public static int mushroomHouseIndex = 0;
+    public static int mushroomHouseSize = 0;
+
+    public static void ResetStats()
+    {
+        numMushroomsCollected = 0;
+        mushroomHouseIndex = -1;
+        mushroomHouseSize = 0;
+    }
 
 	public static void SetState ( GameState newState ) {
 		CurrentGameState = newState;
@@ -52,7 +65,7 @@ public class GameManager : MonoBehaviour {
 		TutorialSource.Play();
 	}
 
-private MushroomHome mushroomHome;
+    private static MushroomHome mushroomHome;
     private CameraStretcher cameraStretcher;
     private MushroomSpawner shroomSpawner;
     private EnemySpawner enemySpawner;

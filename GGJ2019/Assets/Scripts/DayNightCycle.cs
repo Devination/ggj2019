@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DayNightCycle : MonoBehaviour
 {
@@ -19,5 +20,9 @@ public class DayNightCycle : MonoBehaviour
 			transform.Rotate(delta, 0, 0, Space.Self);
 			RotationSoFar += delta;
 		}
+        if( RotationSoFar >= 140.0f )
+        {
+            SceneManager.LoadScene("Results");
+        }
 	}
 }
