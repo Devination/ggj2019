@@ -53,6 +53,7 @@ public class Mushroom : MonoBehaviour
 		GetComponent<Collider>().enabled = true;
 	}
 
+
     void OnEnterState( MushroomState state )
     {
         switch ( state )

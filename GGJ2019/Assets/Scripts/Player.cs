@@ -111,8 +111,9 @@ public class Player : MonoBehaviour
 		PickedMushrooms.Push( pickedShroom );
 		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
+
 		int headMushCount = PickedMushrooms.Count;
-		float mushroomHeight = headMushCount * m_pickingShroom.bounds.extents.y;
+		float mushroomHeight = headMushCount * pickedShroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
 		pickedShroom.transform.SetParent( transform );
 		pickedShroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
