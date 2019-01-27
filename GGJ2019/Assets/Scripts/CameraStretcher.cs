@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraStretcher : MonoBehaviour
 {
     private Camera mainCamera;
+    private float minScale = 5.0f;
 
     private void Start()
     {
@@ -13,7 +14,7 @@ public class CameraStretcher : MonoBehaviour
 
     public void Stretch( float homeScale, Vector3 homePos )
     {
-        mainCamera.orthographicSize = homeScale;
+        mainCamera.orthographicSize = minScale + homeScale;
         mainCamera.gameObject.transform.LookAt(homePos);
     }
 }
