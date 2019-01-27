@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3611961828906991328}
   - component: {fileID: 177900310789792011}
   - component: {fileID: 3263738324822073076}
+  - component: {fileID: 755456650}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -182,6 +183,33 @@ MonoBehaviour:
   vignetteOutTime: 0.75
   pauseTime: 0.75
   eatTime: 0.25
+--- !u!114 &755456650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3611961828906991330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ede6423487dba479dac1a09ebe1470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DaytimeAmbience: {fileID: 8300000, guid: b50b80a95b1ba80409c53ce76e1f29fd, type: 3}
+  AfternoonAmbience: {fileID: 8300000, guid: f904602866da4344a8095cedb01d1550, type: 3}
+  NighttimeAmbience: {fileID: 8300000, guid: b50b80a95b1ba80409c53ce76e1f29fd, type: 3}
+  NicePianoClips:
+  - {fileID: 8300000, guid: 93cb80689d3aa48409758147274d3c8f, type: 3}
+  - {fileID: 8300000, guid: c465e7c14d1138b4abea3c40d9e9cb08, type: 3}
+  - {fileID: 8300000, guid: ee5a2f6d840d9734098689010311ce68, type: 3}
+  - {fileID: 8300000, guid: 6c9065b1cfbb5da41ab98e801896a1cf, type: 3}
+  ScaryPianoClips:
+  - {fileID: 8300000, guid: 13fb550760b4ba1428d0dc86c7150477, type: 3}
+  - {fileID: 8300000, guid: 63b880ab6f5414541b44cebf12276731, type: 3}
+  - {fileID: 8300000, guid: 68899ede795ef524db83d33849da546c, type: 3}
+  - {fileID: 8300000, guid: 3a750f80616a8824d859f4b4bdae6e09, type: 3}
+  - {fileID: 8300000, guid: 0862b5a9c5833c44599ec8540de06635, type: 3}
+  EndClip: {fileID: 8300000, guid: 8fd55304ad5e81c43aa92779a68ed688, type: 3}
 --- !u!1 &4074173793750575448
 GameObject:
   m_ObjectHideFlags: 0
