@@ -27,9 +27,11 @@ public class Enemy : MonoBehaviour
     private GameObject m_currentTargetMushroom;
     private NavMeshAgent m_agent;
     private float m_currentEatTime;
+    private float m_deathTimer;
 
     private void Start()
     {
+        m_deathTimer = 0.0f;
         PickedMushrooms = new List<GameObject>();
         State = EnemyState.HUNGRY;
         m_agent = GetComponent<NavMeshAgent>();
@@ -40,10 +42,13 @@ public class Enemy : MonoBehaviour
     // never actually remove the enemy gameobject, just call this instead, it will return it to the pool
     public void DestroyEnemy()
     {
+        m_deathTimer = 0.0f;
         m_currentEatTime = 0.0f;
         SetState( EnemyState.HUNGRY );
         m_agent.destination = transform.position; 
         transform.position = Vector3.zero;
+        GetComponentInChildren<MeshRenderer>().enabled = true;
+        GetComponentInChildren<BoxCollider>().enabled = true;
         EnemySpawner.RemoveEnemy(enemyIndex);
     }
 
@@ -95,6 +100,9 @@ public class Enemy : MonoBehaviour
                 break;
             case EnemyState.CHASE_PLAYER:
                 OnEnemyStateChasePlayer();
+                break;
+            case EnemyState.DAMAGE:
+                OnUpdateStateDamaged();
                 break;
         }
     }
@@ -209,16 +217,26 @@ public class Enemy : MonoBehaviour
 
     private void OnEnterStateDamaged()
     {
-        for (int i = 0; i < PickedMushrooms.Count; ++i)
+        GetComponentInChildren<ParticleSystem>().Play();
+        GetComponentInChildren<MeshRenderer>().enabled = false;
+        GetComponentInChildren<BoxCollider>().enabled = false;
+
+        for ( int i = 0; i < PickedMushrooms.Count; ++i )
         {
             PickedMushrooms[i].transform.parent = MushroomSpawner.mushroomContainer.transform;
             Mushroom mushroom = PickedMushrooms[i].GetComponent<Mushroom>();
-            mushroom.SetState(Mushroom.MushroomState.OnGround);
+            mushroom.SetState( Mushroom.MushroomState.OnGround );
         }
+    }   
 
-
-
-        DestroyEnemy();
+    private void OnUpdateStateDamaged()
+    {
+        m_deathTimer += Time.deltaTime;
+        if ( m_deathTimer > 2.0f )
+        {
+            DestroyEnemy();
+            m_deathTimer = 0.0f;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -237,6 +255,13 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        UpdateState();
+
+        if ( State == EnemyState.DAMAGE )
+        {
+            return;
+        }
+
         int prevCount = PickedMushrooms.Count;
         for( int i = 0; i < PickedMushrooms.Count; ++i )
         {
@@ -269,8 +294,6 @@ public class Enemy : MonoBehaviour
             }
             PickedMushrooms = tmpList;
         }
-
-        UpdateState();
     }
 }
 
