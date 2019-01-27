@@ -18,16 +18,20 @@ public class MushroomHome : MonoBehaviour
     public Mesh[] meshes;
 
     private int currentMesh = -1;
+    private bool isGrowing;
 
     public void Grow()
     {
-        mushroomCount = 0;
-
-        StartCoroutine("IncreaseSizeOverTime");
+        if (!isGrowing)
+        {
+            StartCoroutine("IncreaseSizeOverTime");
+            mushroomCount = 0;
+        }
     }
 
     IEnumerator IncreaseSizeOverTime()
     {
+        isGrowing = true;
         float scaleTimer = 0.0f;
         float startScale = transform.localScale.y;
         float targetScale = startScale * scaleFactor;
@@ -44,6 +48,7 @@ public class MushroomHome : MonoBehaviour
 
             yield return null;
         }
+        isGrowing = false;
     }
 
     public void SwapMesh()
@@ -57,6 +62,8 @@ public class MushroomHome : MonoBehaviour
 
     public void EatMushroom()
     {
+        if (isGrowing) return;
+
         StartCoroutine("AnimateEating");
 
         mushroomCount++;
@@ -99,6 +106,7 @@ public class MushroomHome : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Mushroom"))
         {
+            other.gameObject.GetComponent<Mushroom>().DestroyMushroom();
             EatMushroom();
         }
     }
