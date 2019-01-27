@@ -35,6 +35,8 @@ public class MushroomHome : MonoBehaviour
             float newScale = Mathf.Lerp(startScale, targetScale, pct);
             transform.localScale = new Vector3(newScale, newScale, newScale);
 
+            Camera.main.gameObject.GetComponent<CameraStretcher>().LookAtHome();
+
             yield return null;
         }
     }
