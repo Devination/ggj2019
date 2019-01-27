@@ -25,7 +25,7 @@ public class MushroomSpawner : MonoBehaviour
     private void Start()
     {
         m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms );
-        GameObject mushroomContainer = new GameObject("ShroomContainer");
+        GameObject mushroomContainer = new GameObject( "ShroomContainer" );
 
         for ( int i = 0; i < maxNumberOfMushrooms; ++i )
         {
@@ -80,7 +80,6 @@ public class MushroomSpawner : MonoBehaviour
         int index = FindFreeMushroom();
         if( index >= 0 )
         {
-            Renderer mushroomRenderer = m_mushroomPool[index].GetComponentInChildren<Renderer>();
             m_mushroomPool[index].transform.position = position;
             m_mushroomPool[index].SetActive( true );
             m_numMushrooms += 1;
@@ -112,7 +111,7 @@ public class MushroomSpawner : MonoBehaviour
             for (int i = 0; i < colliders.Length; ++i)
             {
                 Mushroom mushroom = colliders[i].GetComponent<Mushroom>();
-                if( mushroom.State != Mushroom.MushroomState.Idle )
+                if( mushroom.isEnemyTracking )
                 {
                     continue;
                 }

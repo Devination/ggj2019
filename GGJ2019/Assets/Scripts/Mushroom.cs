@@ -7,14 +7,16 @@ public class Mushroom : MonoBehaviour
     public enum MushroomState
     {
         Idle,
-        EnemyTracking,
-        EnemyConsuming,
         Picked,
-        Throw
+        OnGround,
+        Throw,
+        InsideEnemy
     };
 
     [HideInInspector]
     public int mushroomIndex;
+    [HideInInspector]
+    public bool isEnemyTracking;
 
     public MushroomState State { get; private set; }
 
@@ -22,6 +24,7 @@ public class Mushroom : MonoBehaviour
     {
         State = MushroomState.Idle;
         mushroomIndex = -1;
+        isEnemyTracking = false;
     }
 
     // never actually remove the mushroom gameobject, just call this instead, it will return it to the pool
