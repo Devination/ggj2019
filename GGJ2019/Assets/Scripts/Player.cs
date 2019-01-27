@@ -38,10 +38,13 @@ public class Player : MonoBehaviour
 		SetState( PlayerState.Normal );
 	}
 
-	void Throw () {
-		/*GameObject mushroom = Instantiate( Mushroom, body.transform.position, body.transform.rotation );
-		Mushroom mushScript = mushroom.GetComponent<Mushroom>();
-		mushScript.SetVelocity( body.velocity, new Vector2( direction.x, direction.y ) );*/
+	void Throw() {
+		GameObject throwMushroom = PickedMushrooms.Pop();
+		throwMushroom.transform.SetParent( null, true );
+		throwMushroom.transform.position = m_collider.bounds.center + transform.forward * 2;
+
+		Mushroom mushScript = throwMushroom.GetComponent<Mushroom>();
+		mushScript.Throw( transform.forward );
 	}
 
 	void Pick () {
@@ -93,7 +96,12 @@ public class Player : MonoBehaviour
 		if( pickPressed && m_state == PlayerState.Normal ) {
 			Pick();
 		}
-	}
+
+		bool throwPressed = Input.GetButtonDown( "Fire2" );
+		if( throwPressed && m_state == PlayerState.Normal && PickedMushrooms.Count > 0 ) {
+			Throw();
+		}
+	} 
 
 
 	void OnEnterPicking () {
