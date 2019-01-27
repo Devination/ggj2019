@@ -113,13 +113,17 @@ public class MushroomSpawner : MonoBehaviour
     public static GameObject FindClosestMushroom( Vector3 position )
     {
         GameObject closestMush = null; 
-        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, ( 1 << LayerMask.NameToLayer( "Mushroom") ) );
+        Collider[] colliders = Physics.OverlapSphere( position, float.MaxValue, ( 1 << LayerMask.NameToLayer( "Mushroom" ) ) );
         if ( colliders.Length > 0 )
         {
             float distance = float.MaxValue;
             for ( int i = 0; i < colliders.Length; ++i )
             {
                 Mushroom mushroom = colliders[i].GetComponent<Mushroom>();
+                if( mushroom == null ) // shoud not happen
+                {
+                    continue;
+                }
                 if( mushroom.isEnemyTracking )
                 {
                     continue;
@@ -149,20 +153,20 @@ public class MushroomSpawner : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        UnityEditor.Handles.color = Color.yellow;
-        UnityEditor.Handles.DrawWireDisc( transform.position, transform.up, spawnRadius );
+        //UnityEditor.Handles.color = Color.yellow;
+        //UnityEditor.Handles.DrawWireDisc( transform.position, transform.up, spawnRadius );
 
-        if ( m_mushroomPool == null )
-        {
-            return;
-        }
-        UnityEditor.Handles.color = Color.green;
-        for (int i = 0; i < m_mushroomPool.Count; ++i)
-        {
-            if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf )
-            {
-                UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
-            }
-        }
+        //if ( m_mushroomPool == null )
+        //{
+        //    return;
+        //}
+        //UnityEditor.Handles.color = Color.green;
+        //for (int i = 0; i < m_mushroomPool.Count; ++i)
+        //{
+        //    if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf )
+        //    {
+        //        UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
+        //    }
+        //}
     }
 }
