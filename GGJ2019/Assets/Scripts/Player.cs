@@ -27,14 +27,14 @@ public class Player : MonoBehaviour
 
 	private Collider m_pickingShroom;
 	private float m_pickStartTime;
-	private static Stack<GameObject> m_pickedMushrooms;
+	public Stack<GameObject> PickedMushrooms { get; private set; }
 
 	void Start () {
 		m_body = GetComponent<Rigidbody>();
 		m_animator = GetComponentInChildren<Animator>();
 		m_collider = GetComponent<BoxCollider>();
 		m_mushroomPosition = GameObject.Find( "MushroomPosition" );
-		m_pickedMushrooms = new Stack<GameObject>();
+		PickedMushrooms = new Stack<GameObject>();
 		SetState( PlayerState.Normal );
 	}
 
@@ -108,10 +108,10 @@ public class Player : MonoBehaviour
 	void OnExitPicking() {
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.gameObject;
-		m_pickedMushrooms.Push( pickedShroom );
+		PickedMushrooms.Push( pickedShroom );
 		Mushroom mushroomScript = pickedShroom.GetComponent<Mushroom>();
 		mushroomScript.SetState( Mushroom.MushroomState.Picked );
-		int headMushCount = m_pickedMushrooms.Count;
+		int headMushCount = PickedMushrooms.Count;
 		float mushroomHeight = headMushCount * m_pickingShroom.bounds.extents.y;
 		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
 		pickedShroom.transform.SetParent( transform );

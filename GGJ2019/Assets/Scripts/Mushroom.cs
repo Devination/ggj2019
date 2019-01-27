@@ -42,6 +42,16 @@ public class Mushroom : MonoBehaviour
             State = state;
         }
     }
+	
+
+	void OnEnterPicked() {
+		GetComponent<Collider>().enabled = false;
+	}
+	
+
+	void OnExitPicked() {
+		GetComponent<Collider>().enabled = true;
+	}
 
     void OnEnterState( MushroomState state )
     {
@@ -50,7 +60,8 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-                break;
+				OnEnterPicked();
+				break;
             case MushroomState.Throw:
                 break;
         }
@@ -63,7 +74,8 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-                break;
+				OnExitPicked();
+				break;
             case MushroomState.Throw:
                 break;
         }
