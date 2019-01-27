@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 	const float SPEED = 25f;
 	const float SLOW_DURATION = 0.25f;
 	const float MAX_PICKUP_DISTANCE = 100f;
-	const float PICKING_TIME = 1.5f;
+	const float PICKING_TIME = 1f;
 	const float DAMAGE_TIME = 1.0f;
 	const float FLASH_TIME = 0.05f;
 	const float NO_MOVE_TIME = 0.3f;
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
 
 		Mushroom mushScript = throwMushroom.GetComponent<Mushroom>();
 		mushScript.Throw( transform.forward );
+		m_animator.SetTrigger("Throw");
 	}
 
 	void Pick () {
@@ -139,6 +140,7 @@ public class Player : MonoBehaviour
 
 
 	void OnEnterPicking () {
+		m_animator.SetTrigger("Pickup");
 		m_pickStartTime = Time.time;
 	}
 
