@@ -141,7 +141,7 @@ public class MushroomHome : MonoBehaviour
         {
             if( other.gameObject.GetComponent<Mushroom>().State != Mushroom.MushroomState.Idle )
             {
-                other.gameObject.GetComponent<Mushroom>().DestroyMushroom();
+                Destroy( other.gameObject );
                 EatMushroom();
             }
         }

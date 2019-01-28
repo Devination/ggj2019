@@ -22,22 +22,11 @@ public class MushroomSpawner : MonoBehaviour
     public LayerMask obstructedLayerMask;
 
     private static int m_numMushrooms = 0;
-    private static List<GameObject> m_mushroomPool;
     private float m_currentSpawnTime = 0.0f;
 
     private void Start()
     {
-        m_mushroomPool = new List<GameObject>( maxNumberOfMushrooms );
         mushroomContainer = new GameObject( "ShroomContainer" );
-
-        for ( int i = 0; i < maxNumberOfMushrooms; ++i )
-        {
-            m_mushroomPool.Insert( i, Instantiate( mushroomPrefab, Vector3.zero, Quaternion.identity ) );
-            m_mushroomPool[i].name = "Mushroom " + i;
-            m_mushroomPool[i].SetActive( false );
-            m_mushroomPool[i].transform.SetParent( mushroomContainer.transform );
-            m_mushroomPool[i].GetComponent<Mushroom>().mushroomIndex = i;
-        }
     }
 
     void Update()
@@ -45,7 +34,7 @@ public class MushroomSpawner : MonoBehaviour
 		if( !GameManager.ShouldSpawnMushrooms() )
 			return;
 
-		float maxNumMushrooms = GameManager.GetState() == GameManager.GameState.Tutorial ? 5 : m_mushroomPool.Count;
+		float maxNumMushrooms = GameManager.GetState() == GameManager.GameState.Tutorial ? 5 : maxNumberOfMushrooms;
         m_currentSpawnTime += Time.deltaTime;
         if( m_currentSpawnTime > spawnTimer )
         {
@@ -75,47 +64,17 @@ public class MushroomSpawner : MonoBehaviour
         return !( Physics.CheckSphere( position, mushroomRadius, obstructedLayerMask) );
     }
 
-    private int FindFreeMushroom()
+    private void SpawnMushroom( Vector3 position )
     {
-        int freeIndex = -1;
-        for ( int i = 0; i < m_mushroomPool.Count; ++i )
-        {
-            if( !m_mushroomPool[i].active )
-            {
-                return i;
-            }
-        }
-        return freeIndex;
+        GameObject mushroom = Instantiate(mushroomPrefab, Vector3.zero, Quaternion.identity);
+        mushroom.transform.parent = mushroomContainer.transform;
+        mushroom.transform.position = position;
+        m_numMushrooms += 1;
     }
 
-    private SPAWN_RESULT SpawnMushroom( Vector3 position )
+    public static void RemoveMushroom()
     {
-        int index = FindFreeMushroom();
-        if( index >= 0 )
-        {
-            m_mushroomPool[index].transform.position = position;
-            m_mushroomPool[index].SetActive( true );
-            m_mushroomPool[index].GetComponent<Mushroom>().SetState( Mushroom.MushroomState.Idle );
-            m_mushroomPool[index].GetComponent<Rigidbody>().isKinematic = true;
-            m_mushroomPool[index].GetComponent<Rigidbody>().useGravity = false;
-            m_numMushrooms += 1;
-            return SPAWN_RESULT.SUCESS;
-        }
-        return SPAWN_RESULT.FAIL;
-    }
-
-    public static void RemoveMushroom( int index )
-    {
-        Assert.IsTrue( index >= 0 && index < m_mushroomPool.Count );
-        m_mushroomPool[index].transform.SetParent( mushroomContainer.transform );
-        m_mushroomPool[index].SetActive( false );
         m_numMushrooms -= 1;
-    }
-
-    public static GameObject GetMushroomFromIndex( int index )
-    {
-        Assert.IsTrue(index >= 0 && index < m_mushroomPool.Count);
-        return m_mushroomPool[index];
     }
 
     public static GameObject FindClosestMushroom( Vector3 position )

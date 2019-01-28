@@ -42,17 +42,9 @@ public class Enemy : MonoBehaviour
 		m_audioSource = GetComponent<AudioSource>();
     }
 
-    // never actually remove the enemy gameobject, just call this instead, it will return it to the pool
-    public void DestroyEnemy()
+    private void OnDestroy()
     {
-        m_deathTimer = 0.0f;
-        m_currentEatTime = 0.0f;
-        SetState( EnemyState.HUNGRY );
-        m_agent.destination = transform.position; 
-        transform.position = Vector3.zero;
-        GetComponentInChildren<MeshRenderer>().enabled = true;
-        GetComponentInChildren<BoxCollider>().enabled = true;
-        EnemySpawner.RemoveEnemy(enemyIndex);
+        EnemySpawner.RemoveEnemy();
     }
 
     public void SetState(EnemyState state )
@@ -251,7 +243,7 @@ public class Enemy : MonoBehaviour
         m_deathTimer += Time.deltaTime;
         if ( m_deathTimer > 2.0f )
         {
-            DestroyEnemy();
+            Destroy( gameObject );
             m_deathTimer = 0.0f;
         }
     }
@@ -288,8 +280,8 @@ public class Enemy : MonoBehaviour
                 mushroom.currentDisolveTime += Time.deltaTime;
                 if ( mushroom.currentDisolveTime > mushroom.timeToDissolve )
                 {
+                    Destroy( PickedMushrooms[i] );
                     PickedMushrooms.RemoveAt( i );
-                    mushroom.DestroyMushroom();
                 }
             }
         }

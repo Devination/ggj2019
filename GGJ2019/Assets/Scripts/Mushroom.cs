@@ -33,15 +33,9 @@ public class Mushroom : MonoBehaviour
 		m_body = GetComponent<Rigidbody>();
     }
 
-    // never actually remove the mushroom gameobject, just call this instead, it will return it to the pool
-    public void DestroyMushroom()
+    private void OnDestroy()
     {
-        currentDisolveTime = 0.0f;
-        isEnemyTracking = false;
-        SetState( MushroomState.Idle );
-        m_body.velocity = Vector3.zero;
-        transform.position = Vector3.zero;
-        MushroomSpawner.RemoveMushroom( mushroomIndex );
+        MushroomSpawner.RemoveMushroom();
     }
 
     public void SetState( MushroomState state )
@@ -90,10 +84,10 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Idle:
                 break;
             case MushroomState.Picked:
-				OnEnterPicked();
+                OnEnterPicked();
 				break;
             case MushroomState.Throw:
-				OnEnterThrow();
+                OnEnterThrow();
 				break;
         }
     }
