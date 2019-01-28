@@ -48,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
                     spawnWorldPosition = new Vector3( spawnPosition.x, 0.0f, spawnPosition.y );
                     numberOfAttempts += 1;
                 }
-                while (!IsValidPlacement(spawnWorldPosition) || numberOfAttempts > 4);
+                while ( !IsValidPlacement(spawnWorldPosition) && numberOfAttempts < 4 );
                 if ( numberOfAttempts < 4 )
                 {
                     m_currentSpawnTime = 0.0f;
