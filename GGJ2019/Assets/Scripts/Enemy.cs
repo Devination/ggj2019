@@ -120,15 +120,12 @@ public class Enemy : MonoBehaviour
 
     private void OnEnemyStateUpdateHungry()
     {
-        if ( m_currentTargetMushroom != null)
-        {
-            m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
-            if (m_currentTargetMushroom == null) return;
-            m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
-            m_agent.destination = m_currentTargetMushroom.transform.position;
-            m_agent.speed = moveSpeed;
-            SetState(EnemyState.SEEKING_MUSHROOM);
-        }
+        m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
+        if (m_currentTargetMushroom == null) return;
+        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
+        m_agent.destination = m_currentTargetMushroom.transform.position;
+        m_agent.speed = moveSpeed;
+        SetState(EnemyState.SEEKING_MUSHROOM);
     }
 
     private void CheckCurrentMushroomStateChanged()
