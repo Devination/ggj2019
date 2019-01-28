@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public int numLevels = 3;
+    public int incrementPerLevel = 10;
 	public float homeGrowthTime = 1.0f;
 	public float screenExpandTime = 1.0f;
 	public float vignetteInTime = 0.75f;
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour {
     private int currentLevel = 0;
     private float scaleFactor;
     private int swapMeshLevel;
-    private int mushroomsToCollect;
+    private int mushroomsToCollect = 0;
 
     private void Start()
     {
@@ -86,7 +87,7 @@ public class GameManager : MonoBehaviour {
         {
             mushroomHome = GameObject.Find("MushroomHome").GetComponent<MushroomHome>();
             mushroomHome.gm = this;
-            swapMeshLevel = numLevels / mushroomHome.meshes.Length;
+            swapMeshLevel = numLevels / (mushroomHome.meshes.Length + 1);
             mushroomHome.scaleFactor = scaleFactor;
             cameraStretcher.MushroomHome = mushroomHome.gameObject;
             SetShroomsCollect();
@@ -112,7 +113,7 @@ public class GameManager : MonoBehaviour {
 
     public void SetShroomsCollect()
     {
-        mushroomsToCollect = (int)Mathf.Pow(2.0f, currentLevel);
+        mushroomsToCollect += (currentLevel <= 1) ? incrementPerLevel / 2 : incrementPerLevel;
         mushroomHome.mushroomsToCollect = mushroomsToCollect;
     }
 
