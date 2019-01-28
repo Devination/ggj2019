@@ -75,9 +75,9 @@ public class EnemySpawner : MonoBehaviour
                     numberOfAttempts += 1;
                 }
                 while (!IsValidPlacement( spawnWorldPosition ) );
-                m_currentSpawnTime = 0.0f;
                 if ( numberOfAttempts < 4 )
                 {
+                    m_currentSpawnTime = 0.0f;
                     SpawnEnemy(spawnWorldPosition);
                 }
             }
