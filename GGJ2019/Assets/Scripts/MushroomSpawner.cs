@@ -53,14 +53,19 @@ public class MushroomSpawner : MonoBehaviour
             {
                 Vector2 spawnPosition;
                 Vector3 spawnWorldPosition;
+                int numberOfAttempts = 0;
                 do
                 {
                     spawnPosition = Random.insideUnitCircle * spawnRadius;
                     spawnWorldPosition = new Vector3( spawnPosition.x, 0.0f, spawnPosition.y );
+                    numberOfAttempts += 1;
                 }
-                while ( !IsValidPlacement( spawnWorldPosition ) );
+                while ( !IsValidPlacement( spawnWorldPosition ) || numberOfAttempts > 4 );
                 m_currentSpawnTime = 0.0f;
-                SpawnMushroom( spawnWorldPosition );
+                if( numberOfAttempts < 4 )
+                {
+                    SpawnMushroom( spawnWorldPosition );
+                }
             }
         }
     }
