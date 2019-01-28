@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour
         m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
         if (m_currentTargetMushroom == null) return;
         m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
-        if( m_agent != null &&  m_agent.isActiveAndEnabled )
+        if( m_agent != null &&  m_agent.isActiveAndEnabled && m_agent.isOnNavMesh )
         {
             m_agent.destination = m_currentTargetMushroom.transform.position;
             m_agent.speed = moveSpeed;
@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour
 
     private void OnEnemyStateChasePlayer()
     {
-        if (m_agent != null && m_agent.isActiveAndEnabled)
+        if (m_agent != null && m_agent.isActiveAndEnabled && m_agent.isOnNavMesh )
         {
             m_agent.destination = m_player.transform.position;
             m_agent.speed = moveSpeed * 1.5f;
@@ -183,7 +183,7 @@ public class Enemy : MonoBehaviour
         float sizeOfMushroom = m_currentTargetMushroom.GetComponentInChildren<Renderer>().bounds.size.x;
         if( distanceToTarget < sizeOfMushroom )
         {
-            if (m_agent != null && m_agent.isActiveAndEnabled)
+            if (m_agent != null && m_agent.isActiveAndEnabled && m_agent.isOnNavMesh )
             {
                 m_agent.destination = transform.position; // stop movement
                 SetState( EnemyState.PICKING );
