@@ -272,7 +272,7 @@ public class Enemy : MonoBehaviour
         }
 
         int prevCount = PickedMushrooms.Count;
-        for( int i = 0; i < PickedMushrooms.Count; ++i )
+        for( int i = PickedMushrooms.Count - 1; i >= 0; --i)
         {
             Mushroom mushroom = PickedMushrooms[i].GetComponent<Mushroom>();
             if ( mushroom.State == Mushroom.MushroomState.InsideEnemy )
