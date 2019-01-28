@@ -115,9 +115,12 @@ public class Enemy : MonoBehaviour
         m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
         if (m_currentTargetMushroom == null) return;
         m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
-        m_agent.destination = m_currentTargetMushroom.transform.position;
-        m_agent.speed = moveSpeed;
-        SetState(EnemyState.SEEKING_MUSHROOM);
+        if( m_agent != null &&  m_agent.isActiveAndEnabled )
+        {
+            m_agent.destination = m_currentTargetMushroom.transform.position;
+            m_agent.speed = moveSpeed;
+            SetState(EnemyState.SEEKING_MUSHROOM);
+        }
     }
 
     private void CheckCurrentMushroomStateChanged()
@@ -134,8 +137,11 @@ public class Enemy : MonoBehaviour
 
     private void OnEnemyStateChasePlayer()
     {
-        m_agent.destination = m_player.transform.position;
-        m_agent.speed = moveSpeed * 1.5f;
+        if (m_agent != null && m_agent.isActiveAndEnabled)
+        {
+            m_agent.destination = m_player.transform.position;
+            m_agent.speed = moveSpeed * 1.5f;
+        }
         if ( m_player.GetComponent<Player>().PickedMushrooms.Count <= 1 )
         {
             SetState( EnemyState.HUNGRY );
@@ -177,8 +183,11 @@ public class Enemy : MonoBehaviour
         float sizeOfMushroom = m_currentTargetMushroom.GetComponentInChildren<Renderer>().bounds.size.x;
         if( distanceToTarget < sizeOfMushroom )
         {
-            m_agent.destination = transform.position; // stop movement
-            SetState( EnemyState.PICKING );
+            if (m_agent != null && m_agent.isActiveAndEnabled)
+            {
+                m_agent.destination = transform.position; // stop movement
+                SetState( EnemyState.PICKING );
+            }
         }
     }
 
