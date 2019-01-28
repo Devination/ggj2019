@@ -23,19 +23,19 @@ public class Results : MonoBehaviour
         string statusStr = "";
         switch ( mushroomMeshIndex )
         {
-            case -1:
-                statusStr = "You are...Inadequate!";
+			case -1:
+				statusStr = "You are...Bad!";
 				MyAudioSource.clip = InadequateAudio;
-                break;
-            case 0:
-                statusStr = "You are...Decent!";
+				break;
+			case 0:
+				statusStr = "You are...Adequate!";
 				MyAudioSource.clip = DecentAudio;
 				break;
-            case 1:
-                statusStr = "You are...Amazing!";
+			case 1:
+				statusStr = "You are...Incredible!";
 				MyAudioSource.clip = AmazingAudio;
 				break;
-        }
+		}
         status.text = statusStr;
 		MyAudioSource.Play();
     }
