@@ -61,7 +61,23 @@ public class MushroomSpawner : MonoBehaviour
   
     private bool IsValidPlacement( Vector3 position )
     {
-        return !( Physics.CheckSphere( position, mushroomRadius, obstructedLayerMask) );
+        // make sure the world point is inside the viewport bounds
+        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(position);
+        if ( viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1 )
+        {
+            // fire ray through that point into the world and make sure it is not ocluded by something 
+            Ray ray = Camera.main.ViewportPointToRay( viewportPoint );
+            if ( Physics.Raycast( ray, out RaycastHit hit ) )
+            {
+                // for some reason the house has a tag of Ground, so im checking directly against the colliders name 
+                if ( hit.collider.name != "GroundPlane" )
+                {
+                    return false;
+                }
+                return !(Physics.CheckSphere(position, mushroomRadius, obstructedLayerMask));
+            }
+        }
+        return false;
     }
 
     private void SpawnMushroom( Vector3 position )

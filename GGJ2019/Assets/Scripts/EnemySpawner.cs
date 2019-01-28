@@ -68,9 +68,24 @@ public class EnemySpawner : MonoBehaviour
 
     private bool IsValidPlacement( Vector3 position )
     {
-        if( !(Physics.CheckSphere( position, enemyRadius, obstructedLayerMask) ))
+        // make sure the world point is inside the viewport bounds
+        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(position);
+        if ( viewportPoint.z > 0 && viewportPoint.x > 0 && viewportPoint.x < 1 && viewportPoint.y > 0 && viewportPoint.y < 1 )
         {
-            return Vector3.SqrMagnitude( player.transform.position - position ) > ( minSpawnDistanceFromPlayer * minSpawnDistanceFromPlayer );
+            // fire ray through that point into the world and make sure it is not ocluded by something 
+            Ray ray = Camera.main.ViewportPointToRay(viewportPoint);
+            if (Physics.Raycast( ray, out RaycastHit hit ) )
+            {
+                // for some reason the house has a tag of Ground, so im checking directly against the colliders name 
+                if (hit.collider.name != "GroundPlane")
+                {
+                    return false;
+                }
+                if (!(Physics.CheckSphere(position, enemyRadius, obstructedLayerMask)))
+                {
+                    return Vector3.SqrMagnitude(player.transform.position - position) > (minSpawnDistanceFromPlayer * minSpawnDistanceFromPlayer);
+                }
+            }
         }
         return false;
     }
