@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
     
     // stats
     public static int numMushroomsCollected = 0;
-    public static int mushroomHouseIndex = 0;
+    public static int mushroomHouseIndex = -1;
     public static int mushroomHouseSize = 0;
 
     public static void ResetStats()
