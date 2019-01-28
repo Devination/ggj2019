@@ -67,14 +67,19 @@ public class EnemySpawner : MonoBehaviour
             {
                 Vector2 spawnPosition;
                 Vector3 spawnWorldPosition;
+                int numberOfAttempts = 0;
                 do
                 {
                     spawnPosition = Random.insideUnitCircle * spawnRadius;
                     spawnWorldPosition = new Vector3( spawnPosition.x, 0.0f, spawnPosition.y );
+                    numberOfAttempts += 1;
                 }
                 while (!IsValidPlacement( spawnWorldPosition ) );
-                m_currentSpawnTime = 0.0f;
-                SpawnEnemy( spawnWorldPosition );
+                if ( numberOfAttempts < 4 )
+                {
+                    m_currentSpawnTime = 0.0f;
+                    SpawnEnemy(spawnWorldPosition);
+                }
             }
         }
     }

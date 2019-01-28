@@ -74,8 +74,12 @@ public class Player : MonoBehaviour
 		}
 
 		Collider firstMushroom = colliders[0];
+        if( firstMushroom == null )
+        {
+            return;
+        }
 		Mushroom mushroomScript = firstMushroom.gameObject.GetComponent<Mushroom>();
-		if( mushroomScript.State != Mushroom.MushroomState.Idle )
+		if( mushroomScript != null && mushroomScript.State != Mushroom.MushroomState.Idle )
 		{
 			return;
 		}
@@ -163,8 +167,11 @@ public class Player : MonoBehaviour
 	void OnExitPicking() {
 		m_pickStartTime = -1;
 		GameObject pickedShroom = m_pickingShroom.gameObject;
-		PickUp( pickedShroom );
-	}
+        if( pickedShroom != null )
+        {
+            PickUp(pickedShroom);
+        }
+    }
 
 
 	void OnEnterDamaged() {
@@ -198,16 +205,18 @@ public class Player : MonoBehaviour
 		PickedMushrooms.Push( mushroom );
 		mushroom.transform.rotation = Quaternion.identity;
 		Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
-		mushroomScript.SetState( Mushroom.MushroomState.Picked );
-
-		int headMushCount = PickedMushrooms.Count;
-		float mushroomHeight = headMushCount * mushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
-		Vector3 mushroomPosition = m_mushroomPosition.transform.position;
-        mushroom.transform.rotation = Quaternion.identity;
-		mushroom.transform.SetParent( transform );
-		mushroom.transform.position = new Vector3( mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z );
-		m_audioSource.clip = PickupAudio;
-		m_audioSource.Play();
+        if( mushroomScript )
+        {
+            mushroomScript.SetState(Mushroom.MushroomState.Picked);
+            int headMushCount = PickedMushrooms.Count;
+            float mushroomHeight = headMushCount * mushroom.GetComponentInChildren<MeshRenderer>().bounds.extents.y;
+            Vector3 mushroomPosition = m_mushroomPosition.transform.position;
+            mushroom.transform.rotation = Quaternion.identity;
+            mushroom.transform.SetParent(transform);
+            mushroom.transform.position = new Vector3(mushroomPosition.x, mushroomPosition.y + mushroomHeight, mushroomPosition.z);
+            m_audioSource.clip = PickupAudio;
+            m_audioSource.Play();
+        }
 	}
 
 
