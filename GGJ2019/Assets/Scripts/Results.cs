@@ -19,6 +19,7 @@ public class Results : MonoBehaviour
         numMushrooms.text = "Number of Mushrooms: " + GameManager.numMushroomsCollected;
         
         int mushroomMeshIndex = GameManager.mushroomHouseIndex;
+        mushroomMeshIndex = Mathf.Clamp( mushroomMeshIndex, -1, 1 );
         string statusStr = "";
         switch ( mushroomMeshIndex )
         {
