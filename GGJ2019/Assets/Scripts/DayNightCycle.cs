@@ -7,7 +7,7 @@ public class DayNightCycle : MonoBehaviour
 {
 	public float speed = 1f;
 	public static float RotationSoFar = 0f; //Increment this and stop rotating after we've rotated 180
-	public const float MAX_ROTATION = 180f;
+	public const float MAX_ROTATION = 500f;
 
 	void Update()
 	{
@@ -20,7 +20,7 @@ public class DayNightCycle : MonoBehaviour
 			transform.Rotate(delta, 0, 0, Space.Self);
 			RotationSoFar += delta;
 		}
-        if( RotationSoFar >= 140.0f )
+        if( RotationSoFar >= MAX_ROTATION )
         {
             SceneManager.LoadScene("Results");
         }
