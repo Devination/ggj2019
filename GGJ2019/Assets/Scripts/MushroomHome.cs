@@ -24,10 +24,20 @@ public class MushroomHome : MonoBehaviour
 
     private int currentMesh = -1;
     private bool isGrowing;
+    private float originalScale; 
+    private bool isBouncing = false;
 
     public int GetCurrentMeshindex()
     {
         return currentMesh;
+    }
+
+    private void Update()
+    {
+        if (!isBouncing)
+        {
+            originalScale = transform.localScale.x;
+        }
     }
 
     public void Grow()
@@ -89,11 +99,12 @@ public class MushroomHome : MonoBehaviour
 
     IEnumerator AnimateEating()
     {
+        isBouncing = true;
 		HomeAudioSource.clip = EatSound;
 		HomeAudioSource.Play();
 
 		float eatTimer = 0.0f;
-        float scale = transform.localScale.y;
+        float scale = originalScale;
         float targetScale = scale * scaleFactor;
 
         // Scale up
@@ -104,6 +115,7 @@ public class MushroomHome : MonoBehaviour
             transform.localScale = new Vector3(newScale, newScale, newScale);
 
             eatTimer += Time.deltaTime;
+            isBouncing = true;
             yield return null;
         }
 
@@ -115,8 +127,12 @@ public class MushroomHome : MonoBehaviour
             transform.localScale = new Vector3(newScale, newScale, newScale);
 
             eatTimer += Time.deltaTime;
+            isBouncing = true;
             yield return null;
         }
+        isBouncing = false;
+
+        transform.localScale = new Vector3(originalScale, originalScale, originalScale);
     }
 
     private void OnTriggerEnter(Collider other)
