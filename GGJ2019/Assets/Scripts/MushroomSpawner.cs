@@ -153,20 +153,17 @@ public class MushroomSpawner : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //UnityEditor.Handles.color = Color.yellow;
-        //UnityEditor.Handles.DrawWireDisc( transform.position, transform.up, spawnRadius );
+		UnityEditor.Handles.color = Color.yellow;
+		UnityEditor.Handles.DrawWireDisc( transform.position, transform.up, spawnRadius );
 
-        //if ( m_mushroomPool == null )
-        //{
-        //    return;
-        //}
-        //UnityEditor.Handles.color = Color.green;
-        //for (int i = 0; i < m_mushroomPool.Count; ++i)
-        //{
-        //    if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf )
-        //    {
-        //        UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
-        //    }
-        //}
-    }
+		if( m_mushroomPool == null ) {
+			return;
+		}
+		UnityEditor.Handles.color = Color.green;
+		for( int i = 0; i < m_mushroomPool.Count; ++i ) {
+			if( m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf ) {
+				UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
+			}
+		}
+	}
 }
