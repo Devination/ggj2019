@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4248ca66fcb11409c29d1319319807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRadius: 65
+  spawnRadius: 50
   spawnTimer: 1
   mushroomRadius: 2
   maxNumberOfMushrooms: 40

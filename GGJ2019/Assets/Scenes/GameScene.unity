@@ -188,7 +188,7 @@ PrefabInstance:
     - target: {fileID: 5643242844229905470, guid: fe4511f7263a2ab4b93688d54dfa4dea,
         type: 3}
       propertyPath: spawnRadius
-      value: 70
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5643242844229905470, guid: fe4511f7263a2ab4b93688d54dfa4dea,
         type: 3}
@@ -427,7 +427,7 @@ PrefabInstance:
     - target: {fileID: 7968759019399506646, guid: 2714f8cb4629b9f41aabf33a6f57ce2e,
         type: 3}
       propertyPath: spawnRadius
-      value: 60
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7968759019399506646, guid: 2714f8cb4629b9f41aabf33a6f57ce2e,
         type: 3}

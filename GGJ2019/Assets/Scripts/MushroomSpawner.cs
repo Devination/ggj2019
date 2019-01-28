@@ -90,6 +90,9 @@ public class MushroomSpawner : MonoBehaviour
         {
             m_mushroomPool[index].transform.position = position;
             m_mushroomPool[index].SetActive( true );
+            m_mushroomPool[index].GetComponent<Mushroom>().SetState( Mushroom.MushroomState.Idle );
+            m_mushroomPool[index].GetComponent<Rigidbody>().isKinematic = true;
+            m_mushroomPool[index].GetComponent<Rigidbody>().useGravity = false;
             m_numMushrooms += 1;
             return SPAWN_RESULT.SUCESS;
         }
@@ -153,20 +156,20 @@ public class MushroomSpawner : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //UnityEditor.Handles.color = Color.yellow;
-        //UnityEditor.Handles.DrawWireDisc( transform.position, transform.up, spawnRadius );
+        UnityEditor.Handles.color = Color.yellow;
+        UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, spawnRadius);
 
-        //if ( m_mushroomPool == null )
-        //{
-        //    return;
-        //}
-        //UnityEditor.Handles.color = Color.green;
-        //for (int i = 0; i < m_mushroomPool.Count; ++i)
-        //{
-        //    if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf )
-        //    {
-        //        UnityEditor.Handles.DrawWireDisc( m_mushroomPool[i].transform.position, transform.up, mushroomRadius );
-        //    }
-        //}
+        if (m_mushroomPool == null)
+        {
+            return;
+        }
+        UnityEditor.Handles.color = Color.green;
+        for (int i = 0; i < m_mushroomPool.Count; ++i)
+        {
+            if (m_mushroomPool[i] != null && m_mushroomPool[i].activeSelf)
+            {
+                UnityEditor.Handles.DrawWireDisc(m_mushroomPool[i].transform.position, transform.up, mushroomRadius);
+            }
+        }
     }
 }
