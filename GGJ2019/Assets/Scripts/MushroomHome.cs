@@ -123,8 +123,11 @@ public class MushroomHome : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Mushroom"))
         {
-            other.gameObject.GetComponent<Mushroom>().DestroyMushroom();
-            EatMushroom();
+            if( other.gameObject.GetComponent<Mushroom>().State != Mushroom.MushroomState.Idle )
+            {
+                other.gameObject.GetComponent<Mushroom>().DestroyMushroom();
+                EatMushroom();
+            }
         }
     }
 }
