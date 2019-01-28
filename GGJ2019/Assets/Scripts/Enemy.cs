@@ -112,21 +112,31 @@ public class Enemy : MonoBehaviour
 
     private void OnEnterStateHungry()
     {
-        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
+        if ( m_currentTargetMushroom != null )
+        {
+            m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
+        }
     }
 
     private void OnEnemyStateUpdateHungry()
     {
-        m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom( transform.position );
-        if ( m_currentTargetMushroom == null ) return;
-        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
-        m_agent.destination = m_currentTargetMushroom.transform.position;
-        m_agent.speed = moveSpeed;
-        SetState( EnemyState.SEEKING_MUSHROOM );
+        if ( m_currentTargetMushroom != null)
+        {
+            m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
+            if (m_currentTargetMushroom == null) return;
+            m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
+            m_agent.destination = m_currentTargetMushroom.transform.position;
+            m_agent.speed = moveSpeed;
+            SetState(EnemyState.SEEKING_MUSHROOM);
+        }
     }
 
     private void CheckCurrentMushroomStateChanged()
     {
+        if ( m_currentTargetMushroom == null)
+        {
+            return;
+        }
         if ( m_currentTargetMushroom.GetComponent<Mushroom>().State == Mushroom.MushroomState.Picked )
         {
             SetState( EnemyState.HUNGRY );
@@ -199,6 +209,10 @@ public class Enemy : MonoBehaviour
 
     private void OnExitStatePicking()
     {
+        if( m_currentTargetMushroom == null )
+        {
+            return;
+        }
         // we ate the mushroom, possibly to prematurely exit this state if the current mushroom state changes
         if( m_currentEatTime >= eatTimer )
         {
