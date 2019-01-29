@@ -110,7 +110,6 @@ MonoBehaviour:
   eatTimer: 5
   moveSpeed: 10
   DeadSound: {fileID: 8300000, guid: 202b771b2aeb87d488a8359ec06c0fba, type: 3}
-  PickupSound: {fileID: 8300000, guid: 352e307867cd7af4e857ceb408619605, type: 3}
   enemyIndex: 0
   myMushroomPosition: {fileID: 5988080170092608088}
 --- !u!195 &7340254264172027250
@@ -147,7 +146,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -16,16 +16,19 @@ public class GameSoundsManager : MonoBehaviour
 	public static bool m_fading = false;
 	public static float m_startBackgroundVolume;
 
-	float NIGHT_VOLUME = 0.06f;
-	float MORNING_VOLUME = 0.5f;
+	float NIGHT_VOLUME = 0.02f;
+	float MORNING_VOLUME = 0.2f;
 
 	public AudioClip DaytimeAmbience;
 	public AudioClip AfternoonAmbience;
 	public AudioClip NighttimeAmbience;
-	public AudioClip[] PianoClips;
-	public float[] PianoClipsStartTime;
-	public int currentPianoClip = 0;
+	public AudioClip[] GoodPianoClips;
+	public AudioClip[] BadPianoClips;
+	int m_currentPianoClip = 0;
 	public AudioClip EndClip;
+	float PIANO_CLIP_STEP_SIZE = 0.5f;
+	float m_lastPianoClipTime = 0;
+	float NUM_GOOD_CLIP = 4;
 
     // Start is called before the first frame update
     void Start() {
@@ -37,10 +40,7 @@ public class GameSoundsManager : MonoBehaviour
 		m_backgroundSource.clip = DaytimeAmbience;
 		m_backgroundSource.Play();
 		m_otherSource.loop = false;
-		float timeStepSize = DayNightCycle.MAX_ROTATION / ( PianoClips.Length + 1 );
-		for( int i = 0; i < PianoClips.Length; i++ ) {
-			PianoClipsStartTime[i] = timeStepSize * ( i + 1 );
-		}
+		m_otherSource.volume = 2;
 	}
 
 
@@ -72,13 +72,28 @@ public class GameSoundsManager : MonoBehaviour
 				m_backgroundSource.clip = AfternoonAmbience;
 				m_backgroundSource.Play();
 				SetBackgroundVolume( NIGHT_VOLUME );
+				m_currentPianoClip = 0;
 			}
 		}
 
-		if( currentPianoClip < PianoClips.Length && DayNightCycle.RotationSoFar > PianoClipsStartTime[currentPianoClip]  ) {
-			m_otherSource.clip = PianoClips[currentPianoClip];
-			m_otherSource.Play();
-			currentPianoClip++;
+		if( DayNightCycle.RotationSoFar > m_lastPianoClipTime + PIANO_CLIP_STEP_SIZE ) { 
+			if( CurrentState != BackgroundState.Night ) {
+				m_otherSource.clip = GoodPianoClips[m_currentPianoClip];
+				m_otherSource.Play();
+				m_currentPianoClip++;
+				if( m_currentPianoClip >= GoodPianoClips.Length ) {
+					m_currentPianoClip = 0;
+				}
+			} else {
+				m_otherSource.clip = BadPianoClips[m_currentPianoClip];
+				m_otherSource.Play();
+				m_currentPianoClip++;
+				if( m_currentPianoClip >= BadPianoClips.Length ) {
+					m_currentPianoClip = 0;
+				}
+			}
+			Debug.Log( "Played clip " + m_currentPianoClip );
+			m_lastPianoClipTime = Time.time;
 		}
     }
 }

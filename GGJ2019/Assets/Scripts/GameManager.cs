@@ -113,7 +113,14 @@ public class GameManager : MonoBehaviour {
 
     public void SetShroomsCollect()
     {
-        mushroomsToCollect += (currentLevel <= 1) ? incrementPerLevel / 2 : incrementPerLevel;
+		if( currentLevel == 0 ) {
+			mushroomsToCollect = 1;
+		} else if ( currentLevel == 1 ) {
+			mushroomsToCollect = 5;
+		} else {
+			mushroomsToCollect += incrementPerLevel;
+		}
+        
         mushroomHome.mushroomsToCollect = mushroomsToCollect;
     }
 

@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numLevels: 12
+  incrementPerLevel: 10
   homeGrowthTime: 1
   screenExpandTime: 1
   vignetteInTime: 0.75
@@ -205,27 +206,17 @@ MonoBehaviour:
   DaytimeAmbience: {fileID: 8300000, guid: b50b80a95b1ba80409c53ce76e1f29fd, type: 3}
   AfternoonAmbience: {fileID: 8300000, guid: f904602866da4344a8095cedb01d1550, type: 3}
   NighttimeAmbience: {fileID: 8300000, guid: b50b80a95b1ba80409c53ce76e1f29fd, type: 3}
-  PianoClips:
+  GoodPianoClips:
   - {fileID: 8300000, guid: 93cb80689d3aa48409758147274d3c8f, type: 3}
   - {fileID: 8300000, guid: c465e7c14d1138b4abea3c40d9e9cb08, type: 3}
   - {fileID: 8300000, guid: ee5a2f6d840d9734098689010311ce68, type: 3}
   - {fileID: 8300000, guid: 6c9065b1cfbb5da41ab98e801896a1cf, type: 3}
+  BadPianoClips:
   - {fileID: 8300000, guid: 13fb550760b4ba1428d0dc86c7150477, type: 3}
   - {fileID: 8300000, guid: 63b880ab6f5414541b44cebf12276731, type: 3}
   - {fileID: 8300000, guid: 68899ede795ef524db83d33849da546c, type: 3}
   - {fileID: 8300000, guid: 3a750f80616a8824d859f4b4bdae6e09, type: 3}
   - {fileID: 8300000, guid: 0862b5a9c5833c44599ec8540de06635, type: 3}
-  PianoClipsStartTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  currentPianoClip: 0
   EndClip: {fileID: 8300000, guid: 8fd55304ad5e81c43aa92779a68ed688, type: 3}
 --- !u!82 &764520123903248269
 AudioSource:
@@ -334,7 +325,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
