@@ -26,7 +26,7 @@ public class GameSoundsManager : MonoBehaviour
 	public AudioClip[] BadPianoClips;
 	int m_currentPianoClip = 0;
 	public AudioClip EndClip;
-	float PIANO_CLIP_STEP_SIZE = 0.5f;
+	float PIANO_CLIP_STEP_SIZE = 8f;
 	float m_lastPianoClipTime = 0;
 	float NUM_GOOD_CLIP = 4;
 
@@ -40,7 +40,6 @@ public class GameSoundsManager : MonoBehaviour
 		m_backgroundSource.clip = DaytimeAmbience;
 		m_backgroundSource.Play();
 		m_otherSource.loop = false;
-		m_otherSource.volume = 2;
 	}
 
 
@@ -61,7 +60,7 @@ public class GameSoundsManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-		if( DayNightCycle.RotationSoFar > ( DayNightCycle.MAX_ROTATION / 2.5f ) ) {
+		if( DayNightCycle.RotationSoFar > ( DayNightCycle.MAX_ROTATION / 1.5f ) ) {
 			if( CurrentState == BackgroundState.Morning ) {
 				CurrentState = BackgroundState.MorningFade;
 				IEnumerator fadeBackground = FadeOut( m_backgroundSource, BackgroundState.Night );
@@ -92,8 +91,7 @@ public class GameSoundsManager : MonoBehaviour
 					m_currentPianoClip = 0;
 				}
 			}
-			Debug.Log( "Played clip " + m_currentPianoClip );
-			m_lastPianoClipTime = Time.time;
+			m_lastPianoClipTime = DayNightCycle.RotationSoFar;
 		}
     }
 }

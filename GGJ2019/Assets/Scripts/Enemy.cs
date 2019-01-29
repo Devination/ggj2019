@@ -196,7 +196,7 @@ public class Enemy : MonoBehaviour
         CheckCurrentMushroomStateChanged();
 
         m_currentEatTime += Time.deltaTime;
-        if( m_currentEatTime > eatTimer || m_currentTargetMushroom.GetComponent<Mushroom>().State == Mushroom.MushroomState.OnGround)
+        if( m_currentEatTime > eatTimer || ( m_currentTargetMushroom.GetComponent<Mushroom>().State == Mushroom.MushroomState.OnGround ) )
         {
             m_currentEatTime = eatTimer;
             SetState( EnemyState.HUNGRY );
