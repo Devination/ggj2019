@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
 
     public static void ResetStats()
     {
+        DayNightCycle.RotationSoFar = 0.0f;
         numMushroomsCollected = 0;
         mushroomHouseIndex = -1;
         mushroomHouseSize = 0;
