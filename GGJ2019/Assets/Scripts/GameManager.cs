@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour {
     private CameraStretcher cameraStretcher;
     private MushroomSpawner shroomSpawner;
     private EnemySpawner enemySpawner;
+    private HUD hud;
     private int currentLevel = 0;
     private float scaleFactor;
     private int swapMeshLevel;
@@ -104,12 +105,24 @@ public class GameManager : MonoBehaviour {
             enemySpawner = GameObject.Find("EnemySpawner").GetComponent<EnemySpawner>();
         }
 
+        if (hud == null)
+        {
+            hud = GameObject.Find("HUD").GetComponent<HUD>();
+        }
+
+        UpdateHUD();
+
         cameraStretcher.scaleFactor = scaleFactor;
         cameraStretcher.stretchTime = screenExpandTime;
         mushroomHome.growthTime = homeGrowthTime;
         mushroomHome.eatTime = eatTime;
         cameraStretcher.vignetteInTime = vignetteInTime;
         cameraStretcher.vignetteOutTime = vignetteOutTime;
+    }
+
+    private void UpdateHUD()
+    {
+        hud.UpdateShroomsRemaining(mushroomHome.GetShroomsRemaining());
     }
 
     public void SetShroomsCollect()

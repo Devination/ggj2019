@@ -97,6 +97,11 @@ public class MushroomHome : MonoBehaviour
         }
     }
 
+    public int GetShroomsRemaining()
+    {
+        return mushroomsToCollect - mushroomCount;
+    }
+
     IEnumerator AnimateEating()
     {
         isBouncing = true;
