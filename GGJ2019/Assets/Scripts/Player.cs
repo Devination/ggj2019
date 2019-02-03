@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
 		throwMushroom.transform.position = m_collider.bounds.center + transform.forward * 2;
 
 		Mushroom mushScript = throwMushroom.GetComponent<Mushroom>();
+		mushScript.playerThrew = true;
 		mushScript.Throw( transform.forward );
 		m_animator.SetTrigger("Throw");
 	}

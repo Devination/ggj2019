@@ -25,6 +25,8 @@ public class Mushroom : MonoBehaviour
     public MushroomState State { get; private set; }
 
     public Material onGroundMat;
+	public int slimeHitCounter;
+	public bool playerThrew;
     private Material defaultMat;
 
 	private Rigidbody m_body;
@@ -35,6 +37,8 @@ public class Mushroom : MonoBehaviour
         isEnemyTracking = false;
 		m_body = GetComponent<Rigidbody>();
         defaultMat = transform.GetComponentInChildren<Renderer>().material;
+		slimeHitCounter = 0;
+		playerThrew = false;
     }
 
     private void OnDestroy()
@@ -51,6 +55,12 @@ public class Mushroom : MonoBehaviour
             State = state;
         }
     }
+
+
+	public void IncrementHitCounter() {
+		if( playerThrew )
+			slimeHitCounter++;
+	}
 
 
 	public void Throw( Vector3 direction ) {
@@ -82,7 +92,9 @@ public class Mushroom : MonoBehaviour
 
     void OnEnterGround() {
         transform.GetComponentInChildren<Renderer>().material = onGroundMat;
-    }
+		GameObject.Find( "Main Camera" ).GetComponent<GameManager>().PlayMultiHit( slimeHitCounter );
+		slimeHitCounter = 0;
+	}
 
     void OnExitGround() {
         transform.GetComponentInChildren<Renderer>().material = defaultMat;

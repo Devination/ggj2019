@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 	public AudioClip Tutorial2Audio;
 	public AudioClip Tutorial3Audio;
 	public AudioSource TutorialSource;
+	public AudioClip[] MultiKillAudio;
+	public AudioSource MultiKillSource;
     public static GameState CurrentGameState = GameState.TitleScreen;
     
     // stats
@@ -29,48 +31,7 @@ public class GameManager : MonoBehaviour {
     public static int mushroomHouseIndex = -1;
     public static int mushroomHouseSize = 0;
 
-    public static void ResetStats()
-    {
-        DayNightCycle.RotationSoFar = 0.0f;
-        numMushroomsCollected = 0;
-        mushroomHouseIndex = -1;
-        mushroomHouseSize = 0;
-    }
-
-	public static void SetState ( GameState newState ) {
-		CurrentGameState = newState;
-	}
-
-	public static GameState GetState () {
-		return CurrentGameState;
-	}
-
-	public static bool InUI() {
-		return GetState() == GameState.TitleScreen || GetState() == GameState.Results;
-	}
-
-	public static bool ShouldSpawnMushrooms() {
-		return !InUI();
-	}
-
-	public static bool ShouldSpawnEnemies() {
-		return !InUI() && GetState() != GameState.Tutorial;
-	}
-
-	public void PlayTutorial ( int index ) {
-		if( index == 0 ) {
-			TutorialSource.clip = Tutorial1Audio;
-		}
-		else if( index == 2 ) {
-			TutorialSource.clip = Tutorial2Audio;
-		} else {
-			TutorialSource.clip = Tutorial3Audio;
-		}
-
-		TutorialSource.Play();
-	}
-
-    private static MushroomHome mushroomHome;
+	private static MushroomHome mushroomHome;
     private CameraStretcher cameraStretcher;
     private MushroomSpawner shroomSpawner;
     private EnemySpawner enemySpawner;
@@ -123,7 +84,67 @@ public class GameManager : MonoBehaviour {
         cameraStretcher.vignetteOutTime = vignetteOutTime;
     }
 
-    private void UpdateHUD()
+	public static void ResetStats () {
+		DayNightCycle.RotationSoFar = 0.0f;
+		numMushroomsCollected = 0;
+		mushroomHouseIndex = -1;
+		mushroomHouseSize = 0;
+	}
+
+	public static void SetState ( GameState newState ) {
+		CurrentGameState = newState;
+	}
+
+	public static GameState GetState () {
+		return CurrentGameState;
+	}
+
+	public static bool InUI () {
+		return GetState() == GameState.TitleScreen || GetState() == GameState.Results;
+	}
+
+	public static bool ShouldSpawnMushrooms () {
+		return !InUI();
+	}
+
+	public static bool ShouldSpawnEnemies () {
+		return !InUI() && GetState() != GameState.Tutorial;
+	}
+
+	public void PlayTutorial ( int index ) {
+		if( index == 0 ) {
+			TutorialSource.clip = Tutorial1Audio;
+		}
+		else if( index == 2 ) {
+			TutorialSource.clip = Tutorial2Audio;
+		}
+		else {
+			TutorialSource.clip = Tutorial3Audio;
+		}
+
+		TutorialSource.Play();
+	}
+
+	public void PlayMultiHit ( int numHits ) {
+		if( numHits < 2 )
+			return;
+
+		if( numHits == 2 ) {
+			int random = Random.Range( 0, 2 );
+			MultiKillSource.clip = MultiKillAudio[2 + random];
+		}
+		else if( numHits == 3 ) {
+			int random = Random.Range( 0, 2 );
+			MultiKillSource.clip = MultiKillAudio[random];
+		}
+		else {
+			MultiKillSource.clip = MultiKillAudio[4];
+		}
+
+		MultiKillSource.Play();
+	}
+
+	private void UpdateHUD()
     {
         hud.UpdateShroomsRemaining(mushroomHome.GetShroomsRemaining());
     }
@@ -147,7 +168,8 @@ public class GameManager : MonoBehaviour {
     {
         currentLevel++;
 		if( currentLevel <= 2 ) {
-			GameManager.SetState( GameState.MainGame );
+			if( currentLevel == 2 )
+				GameManager.SetState( GameState.MainGame );
 			PlayTutorial( currentLevel );
 		}
         StartCoroutine("UpgradeHomeCoroutine");

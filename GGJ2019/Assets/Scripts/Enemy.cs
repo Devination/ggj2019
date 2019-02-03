@@ -267,6 +267,7 @@ public class Enemy : MonoBehaviour
             if ( mushroomScript.State == Mushroom.MushroomState.Throw )
             {
                 SetState( EnemyState.DAMAGE );
+				mushroomScript.IncrementHitCounter();
             }
         }
     }
