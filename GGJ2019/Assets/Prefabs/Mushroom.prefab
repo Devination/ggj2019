@@ -79,6 +79,7 @@ MonoBehaviour:
   isEnemyTracking: 0
   currentDisolveTime: 0
   timeToDissolve: 20
+  onGroundMat: {fileID: 2100000, guid: b6a0be07150514da59bb2dcf14e5ea79, type: 2}
 --- !u!54 &4563922833917373394
 Rigidbody:
   m_ObjectHideFlags: 0

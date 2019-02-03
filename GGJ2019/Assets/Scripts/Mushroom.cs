@@ -24,6 +24,9 @@ public class Mushroom : MonoBehaviour
 	public static float THROW_SPEED = 35f;
     public MushroomState State { get; private set; }
 
+    public Material onGroundMat;
+    private Material defaultMat;
+
 	private Rigidbody m_body;
 
     private void Start()
@@ -31,6 +34,7 @@ public class Mushroom : MonoBehaviour
         State = MushroomState.Idle;
         isEnemyTracking = false;
 		m_body = GetComponent<Rigidbody>();
+        defaultMat = transform.GetComponentInChildren<Renderer>().material;
     }
 
     private void OnDestroy()
@@ -76,6 +80,13 @@ public class Mushroom : MonoBehaviour
 		GetComponent<Collider>().enabled = true;
 	}
 
+    void OnEnterGround() {
+        transform.GetComponentInChildren<Renderer>().material = onGroundMat;
+    }
+
+    void OnExitGround() {
+        transform.GetComponentInChildren<Renderer>().material = defaultMat;
+    }
 
     void OnEnterState( MushroomState state )
     {
@@ -89,6 +100,9 @@ public class Mushroom : MonoBehaviour
             case MushroomState.Throw:
                 OnEnterThrow();
 				break;
+            case MushroomState.OnGround:
+                OnEnterGround();
+                break;
         }
     }
 
@@ -103,6 +117,9 @@ public class Mushroom : MonoBehaviour
                 break;
             case MushroomState.Throw:
 				OnExitThrow();
+                break;
+            case MushroomState.OnGround:
+                OnExitGround();
                 break;
         }
     }
