@@ -25,6 +25,7 @@ public class Mushroom : MonoBehaviour
     public MushroomState State { get; private set; }
 
     public Material onGroundMat;
+	public Material onEnemyMat;
 	public int slimeHitCounter;
 	public bool playerThrew;
     private Material defaultMat;
@@ -100,7 +101,15 @@ public class Mushroom : MonoBehaviour
         transform.GetComponentInChildren<Renderer>().material = defaultMat;
     }
 
-    void OnEnterState( MushroomState state )
+	void OnEnterInsideEnemy () {
+		transform.GetComponentInChildren<Renderer>().material = onEnemyMat;
+	}
+
+	void OnExitInsideEnemy () {
+		transform.GetComponentInChildren<Renderer>().material = defaultMat;
+	}
+
+	void OnEnterState( MushroomState state )
     {
         switch ( state )
         {
@@ -115,6 +124,9 @@ public class Mushroom : MonoBehaviour
             case MushroomState.OnGround:
                 OnEnterGround();
                 break;
+			case MushroomState.InsideEnemy:
+				OnEnterInsideEnemy();
+				break;
         }
     }
 
@@ -133,6 +145,9 @@ public class Mushroom : MonoBehaviour
             case MushroomState.OnGround:
                 OnExitGround();
                 break;
+			case MushroomState.InsideEnemy:
+				OnExitInsideEnemy();
+				break;
         }
     }
 
