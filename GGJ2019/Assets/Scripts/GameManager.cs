@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
 	public float eatTime = 0.25f;
 	public AudioClip Tutorial1Audio;
 	public AudioClip Tutorial2Audio;
+	public AudioClip Tutorial3Audio;
 	public AudioSource TutorialSource;
     public static GameState CurrentGameState = GameState.TitleScreen;
     
@@ -60,8 +61,10 @@ public class GameManager : MonoBehaviour {
 		if( index == 0 ) {
 			TutorialSource.clip = Tutorial1Audio;
 		}
-		else {
+		else if( index == 2 ) {
 			TutorialSource.clip = Tutorial2Audio;
+		} else {
+			TutorialSource.clip = Tutorial3Audio;
 		}
 
 		TutorialSource.Play();
@@ -143,9 +146,9 @@ public class GameManager : MonoBehaviour {
     public void UpgradeHome()
     {
         currentLevel++;
-		if( currentLevel == 2 ) {
+		if( currentLevel <= 2 ) {
 			GameManager.SetState( GameState.MainGame );
-			PlayTutorial( 1 );
+			PlayTutorial( currentLevel );
 		}
         StartCoroutine("UpgradeHomeCoroutine");
         SetShroomsCollect();
