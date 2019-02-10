@@ -41,8 +41,10 @@ public class Player : MonoBehaviour
 	private float m_pickStartTime;
 	public Stack<GameObject> PickedMushrooms { get; private set; }
 
-    private bool wrappingNS = false;
-    private float wrapTimer = 0.0f;
+    private float m_defaultY;
+
+    private bool m_wrapNorthSouth = false;
+    private float m_wrapTimer = 0.0f;
 
     void Start () {
 		m_body = GetComponent<Rigidbody>();
@@ -53,6 +55,7 @@ public class Player : MonoBehaviour
 		PickedMushrooms = new Stack<GameObject>();
 		m_meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 		SetState( PlayerState.Normal );
+        m_defaultY = transform.position.y;
 	}
 
 	void Throw() {
@@ -295,17 +298,28 @@ public class Player : MonoBehaviour
 	private void Update() {
 		UpdateState();
         WrapEdges();
+
+        // HACK: Something is repositioning player after damaged by enemy,
+        //       clamping position to starting y position as temp fix
+        ClampYPosition();
+    }
+
+    private void ClampYPosition()
+    {
+        Vector3 position = transform.position;
+        position.y = m_defaultY;
+        transform.position = position;
     }
 
     private void WrapEdges()
     {
-        if (wrappingNS)
+        if (m_wrapNorthSouth)
         {
-            wrapTimer += Time.deltaTime;
-            if (wrapTimer >= 0.2f)
+            m_wrapTimer += Time.deltaTime;
+            if (m_wrapTimer >= 0.2f)
             {
-                wrapTimer = 0.0f;
-                wrappingNS = false;
+                m_wrapTimer = 0.0f;
+                m_wrapNorthSouth = false;
             }
             return;
         }
@@ -338,7 +352,7 @@ public class Player : MonoBehaviour
                 Vector3 newPos = hit.point;
                 newPos.y = pos.y;
                 transform.position = newPos;
-                wrappingNS = true;
+                m_wrapNorthSouth = true;
                 return;
             }
         }
@@ -353,7 +367,7 @@ public class Player : MonoBehaviour
                 Vector3 newPos = hit.point;
                 newPos.y = pos.y;
                 transform.position = newPos;
-                wrappingNS = true;
+                m_wrapNorthSouth = true;
                 return;
             }
         }
