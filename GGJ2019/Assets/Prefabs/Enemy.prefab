@@ -25,7 +25,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5296140482068229465}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MushroomPosition
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 8433921129832980347}
   - component: {fileID: 7340254264172027250}
   - component: {fileID: 3673745359609003243}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 2, z: 2}
+  m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!114 &8433921129832980347
 MonoBehaviour:
@@ -241,6 +241,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Art
       objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1a0859ed33fe0e348a7405f512cfbeec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -322,6 +330,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: vfx_poof
+      objectReference: {fileID: 0}
+    - target: {fileID: 3922814908557602687, guid: 3103ba42f5973b34090a37eaba74f52c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 317173834630670970, guid: 3103ba42f5973b34090a37eaba74f52c,
         type: 3}

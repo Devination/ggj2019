@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Mushroom
   - Ground
+  - Enemy
+  - MushroomTrigger
   layers:
   - Default
   - TransparentFX
@@ -19,8 +21,8 @@ TagManager:
   - Mushroom
   - Player
   - Post FX
-  - 
-  - 
+  - MushroomTrigger
+  - Enemy
   - 
   - 
   - 

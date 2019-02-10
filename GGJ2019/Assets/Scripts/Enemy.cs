@@ -257,19 +257,9 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void ThrowMushroomCollide( Mushroom mushroomScript )
     {
-        string collisionTag = collision.gameObject.tag;
-        if ( collisionTag == "Mushroom" )
-        {
-            GameObject mushroom = collision.gameObject;
-            Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
-            if ( mushroomScript.State == Mushroom.MushroomState.Throw )
-            {
-                SetState( EnemyState.DAMAGE );
-				mushroomScript.IncrementHitCounter();
-            }
-        }
+        SetState( EnemyState.DAMAGE );
     }
 
     private void Update()

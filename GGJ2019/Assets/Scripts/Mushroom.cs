@@ -23,8 +23,10 @@ public class Mushroom : MonoBehaviour
     public float timeToDissolve = 10.0f;
 	public static float THROW_SPEED = 35f;
     public MushroomState State { get; private set; }
+	public BoxCollider Collider;
+	public BoxCollider Trigger;
 
-    public Material onGroundMat;
+	public Material onGroundMat;
 	public Material onEnemyMat;
 	public int slimeHitCounter;
 	public bool playerThrew;
@@ -40,6 +42,7 @@ public class Mushroom : MonoBehaviour
         defaultMat = transform.GetComponentInChildren<Renderer>().material;
 		slimeHitCounter = 0;
 		playerThrew = false;
+		Collider = GetComponent<BoxCollider>();
     }
 
     private void OnDestroy()
@@ -83,12 +86,12 @@ public class Mushroom : MonoBehaviour
 
 
 	void OnEnterPicked() {
-		GetComponent<Collider>().enabled = false;
+		Collider.enabled = false;
 	}
 	
 
 	void OnExitPicked() {
-		GetComponent<Collider>().enabled = true;
+		Collider.enabled = true;
 	}
 
     void OnEnterGround() {
@@ -169,8 +172,31 @@ public class Mushroom : MonoBehaviour
 
 
 	private void OnCollisionEnter ( Collision collision ) {
-		if(collision.gameObject != null  && collision.gameObject.tag == "Ground" ) {
+		if( collision.gameObject == null )
+			return;
+
+		string collisionTag = collision.gameObject.tag;
+		if( collisionTag == "Ground" ) {
 			SetState( MushroomState.OnGround );
+		} 
+	}
+
+
+	private void OnTriggerEnter ( Collider collision ) {
+		string collisionTag = collision.gameObject.tag;
+		 if( State == MushroomState.Throw ) {
+			if( collisionTag == "Mushroom" ) {
+				GameObject mushroom = collision.gameObject;
+				Mushroom mushroomScript = mushroom.GetComponent<Mushroom>();
+				if( mushroomScript.State == MushroomState.Idle ) {
+					mushroomScript.SetState( MushroomState.Throw );
+				}
+			} else if( collisionTag == "Enemy" ) {
+				GameObject enemy = collision.gameObject;
+				Enemy enemyScript = enemy.GetComponent<Enemy>();
+				enemyScript.ThrowMushroomCollide( this );
+				IncrementHitCounter();
+			}
 		}
 	}
 
