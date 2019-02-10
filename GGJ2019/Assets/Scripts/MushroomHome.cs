@@ -85,16 +85,15 @@ public class MushroomHome : MonoBehaviour
 
     public void EatMushroom()
     {
-        if (isGrowing) return;
+		mushroomCount++;
+		GameManager.numMushroomsCollected++;
+		if( mushroomCount >= mushroomsToCollect ) {
+			gm.UpgradeHome();
+		}
+
+		if (isGrowing) return;
 
         StartCoroutine("AnimateEating");
-
-        mushroomCount++;
-        GameManager.numMushroomsCollected++;
-        if (mushroomCount >= mushroomsToCollect)
-        {
-            gm.UpgradeHome();
-        }
     }
 
     public int GetShroomsRemaining()
