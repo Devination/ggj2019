@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneTransition : MonoBehaviour {
-	public float fadeSpeed = 1f;
+	private float FADE_SPEED = 1f;
 
 	//TODO: Get post fx and also fade those?
 
@@ -24,7 +24,7 @@ public class SceneTransition : MonoBehaviour {
 		}
 		else {
 			Color color = image.color;
-			color.a = Mathf.Lerp( image.color.a, 0f, fadeSpeed * Time.deltaTime );
+			color.a = Mathf.Lerp( image.color.a, 0f, FADE_SPEED * Time.deltaTime );
 			image.color = color;
 		}
 	}

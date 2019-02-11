@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
     private MushroomSpawner shroomSpawner;
     private EnemySpawner enemySpawner;
     private HUD hud;
-    private int currentLevel = 0;
+    private static int currentLevel = 0;
     private float scaleFactor;
     private int swapMeshLevel;
     private int mushroomsToCollect = 0;
@@ -83,6 +83,10 @@ public class GameManager : MonoBehaviour {
         cameraStretcher.vignetteInTime = vignetteInTime;
         cameraStretcher.vignetteOutTime = vignetteOutTime;
     }
+
+	public static int GetLevel() {
+		return currentLevel;
+	}
 
 	public static void ResetStats () {
 		DayNightCycle.RotationSoFar = 0.0f;
