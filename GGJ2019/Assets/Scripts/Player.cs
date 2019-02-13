@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
 	const float DAMAGE_TIME = 1.0f;
 	const float FLASH_TIME = 0.05f;
 	const float NO_MOVE_TIME = 0.3f;
+	const float TOP_BOUND = 0f;
+	const float BOTTOM_BOUND = 0.2f;
+	const float LEFT_BOUND = 0f;
+	const float RIGHT_BOUND = 0f;
 
 	public LayerMask PickMask;
 	public AudioClip ThrowAudio;
@@ -325,26 +329,25 @@ public class Player : MonoBehaviour
         }
 
         Camera cam = Camera.main;
-        float bound = 0.1f;
         Vector3 pos = transform.position;
         Vector3 vPos = cam.WorldToScreenPoint(pos);
         bool willChangePos = false;
 
-        if (vPos.x < -(bound*cam.pixelWidth))
+        if (vPos.x < -(LEFT_BOUND*cam.pixelWidth))
         {
-            vPos.x = cam.pixelWidth + (bound * cam.pixelWidth);
+			vPos.x = cam.pixelWidth + (RIGHT_BOUND * cam.pixelWidth);
             willChangePos = true;
         }
 
-        else if (vPos.x > cam.pixelWidth + (bound * cam.pixelWidth))
+        else if (vPos.x > cam.pixelWidth + (RIGHT_BOUND * cam.pixelWidth))
         {
-            vPos.x = -(bound * cam.pixelWidth);
+			vPos.x = -(RIGHT_BOUND * cam.pixelWidth);
             willChangePos = true;
         }
 
-        else if (vPos.y < -(bound * cam.pixelHeight))
+        else if (vPos.y < -(BOTTOM_BOUND * cam.pixelHeight))
         {
-            vPos.y = cam.pixelHeight + (cam.pixelHeight * bound);
+            vPos.y = cam.pixelHeight + (cam.pixelHeight * TOP_BOUND);
             Ray ray = cam.ScreenPointToRay(vPos);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Water")))
@@ -357,9 +360,9 @@ public class Player : MonoBehaviour
             }
         }
 
-        else if (vPos.y > cam.pixelHeight + (bound * cam.pixelHeight) )
+        else if (vPos.y > cam.pixelHeight + (TOP_BOUND * cam.pixelHeight) )
         {
-            vPos.y = -(bound * cam.pixelHeight);
+			vPos.y = -(BOTTOM_BOUND * cam.pixelHeight);
             Ray ray = cam.ScreenPointToRay(vPos);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Water")))
