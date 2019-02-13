@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class DayNightCycle : MonoBehaviour
 {
-	public float speed = 1f;
+	public float SPEED = 1f;
+	public float DUSK_SPEED = 0.1f;
+	public float DUSK_START_TIME = 105f;
+	public float DUSK_END_TIME = 120f;
 	public static float RotationSoFar = 0f; //Increment this and stop rotating after we've rotated 180
-	public const float MAX_ROTATION = 135f;
+	public const float MAX_ROTATION = 130f;
 
 	void Update()
 	{
@@ -16,7 +19,11 @@ public class DayNightCycle : MonoBehaviour
 
 		if ( RotationSoFar < MAX_ROTATION )
 		{
-			float delta = speed * Time.deltaTime;
+			float step = SPEED;
+			if( RotationSoFar >= DUSK_START_TIME && RotationSoFar <= DUSK_END_TIME )
+				step = DUSK_SPEED;
+
+			float delta = step * Time.deltaTime;
 			transform.Rotate(delta, 0, 0, Space.Self);
 			RotationSoFar += delta;
 		}
