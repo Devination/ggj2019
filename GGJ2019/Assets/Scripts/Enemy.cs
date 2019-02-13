@@ -161,6 +161,9 @@ public class Enemy : MonoBehaviour
 
     private void OnEnemyStateSeekingMushroom()
     {
+		if( m_currentTargetMushroom == null )
+			return;
+
         float distanceToPlayer = Vector3.Distance( transform.position, m_player.transform.position );
         float distanceToTarget = Vector3.Distance( transform.position, m_currentTargetMushroom.transform.position );
 
@@ -272,7 +275,8 @@ public class Enemy : MonoBehaviour
         }
 
         int prevCount = PickedMushrooms.Count;
-        for( int i = PickedMushrooms.Count - 1; i >= 0; --i)
+		// Temp disabling mushroom dissolve, sorry Raz.
+        /*for( int i = PickedMushrooms.Count - 1; i >= 0; --i)
         {
             if( PickedMushrooms[i] == null ) 
             {
@@ -288,7 +292,7 @@ public class Enemy : MonoBehaviour
                     PickedMushrooms.RemoveAt( i );
                 }
             }
-        }
+        }*/
 
         int newCount = PickedMushrooms.Count;
         if ( prevCount != newCount )
