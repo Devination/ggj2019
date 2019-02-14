@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public int numLevels = 3;
-    public int incrementPerLevel = 10;
+	private int incrementPerLevel = 4;
 	public float homeGrowthTime = 1.0f;
 	public float screenExpandTime = 1.0f;
 	public float vignetteInTime = 0.75f;
