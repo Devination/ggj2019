@@ -210,9 +210,9 @@ public class Mushroom : MonoBehaviour
     {
         // bob up and down and rotate 
         float centerY = 5.0f;
-        float totalHeight = 10.0f;
-        transform.Rotate( new Vector3( Random.value * 2.0f, Random.value * 2.0f, Random.value * 2.0f) );
-        transform.position = new Vector3( transform.position.x, centerY + Mathf.PingPong( Time.time * 5.0f, totalHeight ) - totalHeight / 2f, transform.position.z );
+        float totalHeight = 2.0f;
+        transform.Rotate( new Vector3( Random.value, Random.value, Random.value ) );
+        transform.position = new Vector3( transform.position.x, centerY + Mathf.PingPong( ( Time.time / 4 ) * centerY, totalHeight ) - totalHeight / 2f, transform.position.z );
     }
 
     private void Update()
