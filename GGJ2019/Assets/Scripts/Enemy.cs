@@ -159,6 +159,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
+	public float GetFollowMultiplier() {
+		float rotationSoFar = DayNightCycle.RotationSoFar;
+		float followMultiplier = Mathf.Floor( rotationSoFar / 25 ) * 1.5f;
+		if( rotationSoFar > 115 ) {
+			followMultiplier += 1;
+		}
+		return DayNightCycle.IsNight() ? followMultiplier + 1 : followMultiplier;
+	}
+
     private void OnEnemyStateSeekingMushroom()
     {
 		if( m_currentTargetMushroom == null )
@@ -172,7 +181,7 @@ public class Enemy : MonoBehaviour
             m_player = GameObject.Find("Player");
         }
 
-        if( distanceToPlayer < distanceToTarget )
+        if( distanceToPlayer < ( distanceToTarget * GetFollowMultiplier() ) )
         {
             if( m_player.GetComponent<Player>().PickedMushrooms.Count > 1 )
             {
