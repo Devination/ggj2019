@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public float spawnRadius = 30.0f;
     public float enemyRadius = 1.0f;
     public float minSpawnDistanceFromPlayer = 20.0f;
-    public int maxNumberOfEnemies = 20;
+    public int maxNumberOfEnemies = 35;
 
     public GameObject player;
     public GameObject enemyPrefab;
@@ -17,7 +17,10 @@ public class EnemySpawner : MonoBehaviour
 
     private static int m_numEnemies = 0;
     private float m_currentSpawnTime = 0.0f;
-	private float m_spawnTimer = 3.0f;
+	private float BASE_SPAWN_TIMER = 5.0f;
+	private float SPAWN_TIMER2 = 3.0f;
+	private float SPAWN_TIMER3 = 2.0f;
+	private float SPAWN_TIMER4 = 1.0f;
 
 	private void Start()
     {
@@ -29,13 +32,29 @@ public class EnemySpawner : MonoBehaviour
         m_numEnemies -= 1;
     }
 
+	private float GetSpawnTimer() {
+		float spawnTimer = BASE_SPAWN_TIMER;
+		float rotationSoFar = DayNightCycle.RotationSoFar;
+		
+		if ( rotationSoFar >= DayNightCycle.DUSK_END_TIME ) {
+			spawnTimer = SPAWN_TIMER4;
+		} else if ( DayNightCycle.IsDusk() ) {
+			spawnTimer = SPAWN_TIMER3;
+		}
+		else if ( rotationSoFar >= 50 ) {
+			spawnTimer = SPAWN_TIMER2;
+		}
+
+		return spawnTimer;
+	}
+
     void Update()
     {
 		if( !GameManager.ShouldSpawnEnemies() )
 			return;
 
 		m_currentSpawnTime += Time.deltaTime;
-        if ( m_currentSpawnTime > m_spawnTimer )
+        if ( m_currentSpawnTime > GetSpawnTimer() )
         {
             if ( m_numEnemies < maxNumberOfEnemies )
             {
