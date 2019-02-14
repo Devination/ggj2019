@@ -45,9 +45,13 @@ public class Mushroom : MonoBehaviour
 		Collider = GetComponent<BoxCollider>();
     }
 
-    private void OnDestroy()
+	private void OnDestroy () {
+		MushroomSpawner.RemoveMushroom();
+	}
+
+	private void OnExitIdle()
     {
-        MushroomSpawner.RemoveMushroom();
+        MushroomSpawner.RemoveIdleMushroom();
     }
 
     public void SetState( MushroomState state )
@@ -138,6 +142,7 @@ public class Mushroom : MonoBehaviour
         switch ( state )
         {
             case MushroomState.Idle:
+				OnExitIdle();
                 break;
             case MushroomState.Picked:
                 OnExitPicked();

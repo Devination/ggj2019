@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class DayNightCycle : MonoBehaviour
 {
 	public float SPEED = 1f;
-	public float DUSK_SPEED = 0.1f;
+	public float DUSK_SPEED = 0.2f;
 	public float DUSK_START_TIME = 105f;
 	public float DUSK_END_TIME = 120f;
 	public static float RotationSoFar = 0f; //Increment this and stop rotating after we've rotated 180

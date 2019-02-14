@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour {
     public void SetShroomsCollect()
     {
 		if( currentLevel == 0 ) {
-			mushroomsToCollect = 1;
+			mushroomsToCollect = 3;
 		} else if ( currentLevel == 1 ) {
 			mushroomsToCollect = 5;
 		} else {

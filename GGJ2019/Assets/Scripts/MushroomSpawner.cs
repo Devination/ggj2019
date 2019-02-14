@@ -17,11 +17,12 @@ public class MushroomSpawner : MonoBehaviour
     public float spawnRadius = 40.0f;
     public float spawnTimer = 1.0f;
     public float mushroomRadius = 1.0f; // replace with mushroom collider bounds?
-    public int maxNumberOfMushrooms = 40;
+    public int maxNumberOfMushrooms = 60;
     public GameObject mushroomPrefab;
     public LayerMask obstructedLayerMask;
 
-    private static int m_numMushrooms = 0;
+    private static int m_numIdleMushrooms = 0;
+	private static int m_totalMushrooms = 0;
     private float m_currentSpawnTime = 0.0f;
 
     private void Start()
@@ -38,7 +39,9 @@ public class MushroomSpawner : MonoBehaviour
         m_currentSpawnTime += Time.deltaTime;
         if( m_currentSpawnTime > spawnTimer )
         {
-            if( m_numMushrooms < maxNumMushrooms )
+			bool canSpawnMushroom = m_numIdleMushrooms < maxNumberOfMushrooms;
+			bool stopSpawning = GameManager.GetState() == GameManager.GameState.Tutorial && m_totalMushrooms > 5;
+			if( !stopSpawning && m_numIdleMushrooms < maxNumMushrooms )
             {
                 Vector2 spawnPosition;
                 Vector3 spawnWorldPosition;
@@ -85,13 +88,18 @@ public class MushroomSpawner : MonoBehaviour
         GameObject mushroom = Instantiate(mushroomPrefab, Vector3.zero, Quaternion.identity);
         mushroom.transform.parent = mushroomContainer.transform;
         mushroom.transform.position = position;
-        m_numMushrooms += 1;
+        m_numIdleMushrooms += 1;
+		m_totalMushrooms += 1;
     }
 
-    public static void RemoveMushroom()
+    public static void RemoveIdleMushroom ()
     {
-        m_numMushrooms -= 1;
+        m_numIdleMushrooms -= 1;
     }
+
+	public static void RemoveMushroom() {
+		m_totalMushrooms -= 1;
+	}
 
     public static GameObject FindClosestMushroom( Vector3 position )
     {
