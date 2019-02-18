@@ -16,11 +16,11 @@ public class EnemySpawner : MonoBehaviour
     public LayerMask obstructedLayerMask;
 
     private static int m_numEnemies = 0;
-    private float m_currentSpawnTime = 0.0f;
-	private float BASE_SPAWN_TIMER = 5.0f;
+	private static float BASE_SPAWN_TIMER = 5.0f;
 	private float SPAWN_TIMER2 = 3.0f;
 	private float SPAWN_TIMER3 = 2.0f;
 	private float SPAWN_TIMER4 = 1.0f;
+	private float m_currentSpawnTime = BASE_SPAWN_TIMER;
 
 	private void Start()
     {

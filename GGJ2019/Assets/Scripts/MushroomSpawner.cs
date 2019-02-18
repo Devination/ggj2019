@@ -15,9 +15,8 @@ public class MushroomSpawner : MonoBehaviour
     public static GameObject mushroomContainer;
 
     public float spawnRadius = 40.0f;
-    public float spawnTimer = 1.0f;
     public float mushroomRadius = 1.0f; // replace with mushroom collider bounds?
-    public int maxNumberOfMushrooms = 60;
+    public int maxNumberOfMushrooms = 70;
     public GameObject mushroomPrefab;
     public LayerMask obstructedLayerMask;
 
@@ -30,6 +29,25 @@ public class MushroomSpawner : MonoBehaviour
         mushroomContainer = new GameObject( "ShroomContainer" );
     }
 
+	public float GetSpawnTimer() {
+		int currentLevel = GameManager.GetLevel();
+		switch( currentLevel ) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				return 1.0f;
+			case 4:
+				return 0.8f;
+			case 5:
+				return 0.6f;
+			case 6:
+				return 0.5f;
+			default:
+				return 0.4f;
+		}
+	}
+
     void Update()
     {
 		if( !GameManager.ShouldSpawnMushrooms() )
@@ -37,7 +55,7 @@ public class MushroomSpawner : MonoBehaviour
 
 		float maxNumMushrooms = GameManager.GetState() == GameManager.GameState.Tutorial ? 5 : maxNumberOfMushrooms;
         m_currentSpawnTime += Time.deltaTime;
-        if( m_currentSpawnTime > spawnTimer )
+        if( m_currentSpawnTime > GetSpawnTimer() )
         {
 			bool canSpawnMushroom = m_numIdleMushrooms < maxNumberOfMushrooms;
 			bool stopSpawning = GameManager.GetState() == GameManager.GameState.Tutorial && m_totalMushrooms > 5;
