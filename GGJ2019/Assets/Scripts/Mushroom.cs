@@ -116,11 +116,16 @@ public class Mushroom : MonoBehaviour
 		transform.GetComponentInChildren<Renderer>().material = defaultMat;
 	}
 
-	void OnEnterState( MushroomState state )
+    void OnEnterIdle(){
+        isEnemyTracking = false;
+    }
+
+    void OnEnterState( MushroomState state )
     {
         switch ( state )
         {
             case MushroomState.Idle:
+                OnEnterIdle();
                 break;
             case MushroomState.Picked:
                 OnEnterPicked();

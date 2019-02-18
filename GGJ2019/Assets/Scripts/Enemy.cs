@@ -112,14 +112,30 @@ public class Enemy : MonoBehaviour
 
     private void OnEnemyStateUpdateHungry()
     {
-        m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
-        if (m_currentTargetMushroom == null) return;
-        m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
-        if( m_agent != null &&  m_agent.isActiveAndEnabled && m_agent.isOnNavMesh )
+        if (m_agent != null && m_agent.isActiveAndEnabled )
         {
-            m_agent.destination = m_currentTargetMushroom.transform.position;
-            m_agent.speed = moveSpeed;
-            SetState(EnemyState.SEEKING_MUSHROOM);
+            if (!m_agent.isOnNavMesh) // for some reason, even though the spawning logic is the same, this fool is not on the navmesh
+            {
+                // find a spot close ( within 50 units I guess ) to current position that is on the navmesh 
+                NavMeshHit hit;
+                NavMesh.SamplePosition( transform.position, out hit, 50.0f, NavMesh.AllAreas);
+                m_agent.Warp( hit.position );
+            }
+            else
+            {
+                m_currentTargetMushroom = MushroomSpawner.FindClosestMushroom(transform.position);
+                if (m_currentTargetMushroom == null) return;
+
+                // now we can actually move to a mushroom and its legit as fuck
+                m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true; 
+
+                Vector3 targetPosition = m_currentTargetMushroom.transform.position;
+                targetPosition.y = transform.position.y;
+                m_agent.destination = targetPosition;
+                m_agent.speed = moveSpeed;
+
+                SetState( EnemyState.SEEKING_MUSHROOM );
+            }
         }
     }
 
@@ -185,7 +201,7 @@ public class Enemy : MonoBehaviour
         {
             if( m_player.GetComponent<Player>().PickedMushrooms.Count > 1 )
             {
-                m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = true;
+                m_currentTargetMushroom.GetComponent<Mushroom>().isEnemyTracking = false;
                 SetState( EnemyState.CHASE_PLAYER );
             }
         }
