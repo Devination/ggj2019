@@ -12,7 +12,11 @@ public class MushroomHome : MonoBehaviour
 	public AudioClip GrowSound;
 	public AudioClip Tutorial1Sound;
 	public AudioClip Tutorial2Sound;
+	public AudioClip[] MushroomComboSounds;
 	public AudioSource HomeAudioSource;
+	public AudioSource ComboAudioSource;
+
+	private static float MUSHROOM_EAT_TIME = 1.0f;
 
     [HideInInspector]
     public GameManager gm;
@@ -26,6 +30,8 @@ public class MushroomHome : MonoBehaviour
     private bool isGrowing;
     private float originalScale; 
     private bool isBouncing = false;
+	private float mushroomEatTimer = 0;
+	private int mushroomComboCount = 0;
 
     public int GetCurrentMeshindex()
     {
@@ -83,6 +89,35 @@ public class MushroomHome : MonoBehaviour
         }
     }
 
+	public void PlayMushroomCombo() {
+		switch( mushroomComboCount ) {
+			case 7:
+				ComboAudioSource.clip = MushroomComboSounds[0];
+				ComboAudioSource.Play();
+				break;
+			case 16:
+				ComboAudioSource.clip = MushroomComboSounds[1];
+				ComboAudioSource.Play();
+				break;
+			case 27:
+				ComboAudioSource.clip = MushroomComboSounds[2];
+				ComboAudioSource.Play();
+				break;
+			case 39:
+				ComboAudioSource.clip = MushroomComboSounds[3];
+				ComboAudioSource.Play();
+				break;
+			case 48:
+				ComboAudioSource.clip = MushroomComboSounds[4];
+				ComboAudioSource.Play();
+				break;
+			case 80:
+				ComboAudioSource.clip = MushroomComboSounds[5];
+				ComboAudioSource.Play();
+				break;
+		}
+	}
+
     public void EatMushroom()
     {
 		mushroomCount++;
@@ -90,6 +125,14 @@ public class MushroomHome : MonoBehaviour
 		if( mushroomCount >= mushroomsToCollect ) {
 			gm.UpgradeHome();
 		}
+
+		if( Time.time - MUSHROOM_EAT_TIME < mushroomEatTimer ) {
+			mushroomComboCount++;
+			PlayMushroomCombo();
+		} else {
+			mushroomComboCount = 0;
+		}
+		mushroomEatTimer = Time.time;
 
 		if (isGrowing) return;
 
