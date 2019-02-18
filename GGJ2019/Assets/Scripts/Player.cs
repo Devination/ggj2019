@@ -66,6 +66,10 @@ public class Player : MonoBehaviour
 		m_audioSource.clip = ThrowAudio;
 		m_audioSource.Play();
 		GameObject throwMushroom = PickedMushrooms.Pop();
+        if( !throwMushroom )
+        {
+            return;
+        }
 		throwMushroom.transform.SetParent( null, true );
 		throwMushroom.transform.position = m_collider.bounds.center + transform.forward * 2;
 
