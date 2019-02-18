@@ -93,6 +93,9 @@ public class GameManager : MonoBehaviour {
 		numMushroomsCollected = 0;
 		mushroomHouseIndex = -1;
 		mushroomHouseSize = 0;
+		currentLevel = 0;
+		SetState( GameState.TitleScreen );
+		MushroomSpawner.Reset();
 	}
 
 	public static void SetState ( GameState newState ) {

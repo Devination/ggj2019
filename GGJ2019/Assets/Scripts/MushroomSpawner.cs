@@ -48,7 +48,11 @@ public class MushroomSpawner : MonoBehaviour
 		}
 	}
 
-    void Update()
+	public static void Reset () {
+		m_numIdleMushrooms = 0;
+	}
+
+	void Update()
     {
 		if( !GameManager.ShouldSpawnMushrooms() )
 			return;
